@@ -24,24 +24,31 @@
       (face-foreground 'show-paren-mismatch-face) "white")
 
 ;; indent on newline
-(global-set-key (kbd "C-j") 'newline)
-(global-set-key (kbd "RET") 'newline-and-indent)
+(setf (global-key-binding (kbd "C-j")) 'newline
+      (global-key-binding (kbd "RET")) 'newline-and-indent)
 
-(global-set-key (if (featurep 'dos-w32) (kbd "<apps>") (kbd "<menu>"))
-                'execute-extended-command)
-(when (featurep 'dos-w32)
-  (global-set-key (kbd "M-<f4>") 'save-buffers-kill-emacs))
-(global-set-key (kbd "C-g") 'goto-line)
+;; usual editor bindings
+(setf (global-key-binding (kbd "C-f")) 'occur
+      (global-key-binding (kbd "C-S-f")) 'grep-tree
+      (global-key-binding (kbd "C-g")) 'goto-line)
 
-(global-set-key (kbd "M-<right>") 'forward-sexp)
-(global-set-key (kbd "M-<left>") 'backward-sexp)
-(global-set-key (kbd "M-<up>") 'backward-up-list)
-(global-set-key (kbd "M-<down>") 'down-list)
-(global-set-key (kbd "M-<delete>") 'kill-sexp)
+;; Window system integration
+(when window-system
+  (setf (global-key-binding (kbd "<menu>")) 'execute-extended-command
+        (global-key-binding (kbd "<apps>")) 'execute-extended-command
+        (global-key-binding (kbd "<down-mouse-3>")) (lambda (event prefix)
+                                                      (interactive "@e\np")
+                                                      (popup-menu menu-bar-edit-menu event prefix)))
+  (when (featurep 'dos-w32)
+    (setf (global-key-binding (kbd "M-<f4>")) 'save-buffers-kill-emacs)))
 
-(global-set-key (kbd "<down-mouse-3>") (lambda (event prefix)
-                                         (interactive "@e\nP")
-                                         (popup-menu menu-bar-edit-menu event prefix)))
+;; simpler sexp bindings
+(setf (global-key-binding (kbd "M-<right>")) 'forward-sexp
+      (global-key-binding (kbd "M-<left>")) 'backward-sexp
+      (global-key-binding (kbd "M-<up>")) 'backward-up-list
+      (global-key-binding (kbd "M-<down>")) 'down-list
+      (global-key-binding (kbd "M-<delete>")) 'kill-sexp)
+
 ;; I'm always mistakenly hitting these, when I do NOT want to scroll left/right
 (global-unset-key (kbd "C-<next>"))
 (global-unset-key (kbd "C-<prior>"))

@@ -2,11 +2,14 @@
 (put 'upcase-region 'disabled nil)
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(CUA-mode-overwrite-cursor-color "black")
  '(CUA-mode-read-only-cursor-color "red")
  '(bar-cursor-mode t nil (bar-cursor))
+ '(brew-emulator "c:/brew/v30/sdk/bin/BREW_Simulator.exe")
  '(browse-url-browser-function (quote browse-url-default-browser))
  '(c-basic-offset 4)
  '(c-default-style "stroustrup")
@@ -14,6 +17,7 @@
  '(calculator-number-digits 10)
  '(case-fold-search t)
  '(compilation-ask-about-save nil)
+ '(compilation-scroll-output t)
  '(current-language-environment "English")
  '(cursor-in-non-selected-windows nil)
  '(custom-file "~/.emacs.d/custom.el")
@@ -28,7 +32,9 @@
  '(ecb-source-path (quote ("~/development")))
  '(ecb-tip-of-the-day nil)
  '(ecb-windows-width 0.2)
- '(emacs-lisp-mode-hook (quote (turn-on-eldoc-mode semantic-default-elisp-setup)))
+ '(ediff-split-window-function (quote split-window-horizontally))
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(emacs-lisp-mode-hook (quote (turn-on-eldoc-mode)))
  '(face-font-selection-order (quote (:height :width :weight :slant)))
  '(flyspell-sort-corrections t)
  '(focus-follows-mouse t)
@@ -51,3 +57,9 @@
  '(w3m-favicon-use-cache-file t)
  '(w3m-use-tab nil)
  '(x-select-enable-clipboard t))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
