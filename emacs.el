@@ -1,14 +1,9 @@
 ;; Global customizations -------------------------------------------------------
-(require-noerror 'cua)
-
-(cond ((fboundp 'CUA-mode-on)
-       (message "Using old compatibility mode for CUA")
-       (CUA-mode-on))
-	  ((fboundp 'cua-mode) (cua-mode 1)))
+(cua-mode 1)
 (mouse-wheel-mode 1)
 (column-number-mode 1)
 (iswitchb-mode 1)
-(tool-bar-mode 0)
+(tool-bar-mode -1)
 (menu-bar-mode (if window-system 1 -1))
 
 (setq-default indent-tabs-mode nil)
@@ -46,7 +41,9 @@
       (global-key-binding (kbd "M-<left>")) 'backward-sexp
       (global-key-binding (kbd "M-<up>")) 'backward-up-list
       (global-key-binding (kbd "M-<down>")) 'down-list
-      (global-key-binding (kbd "M-<delete>")) 'kill-sexp)
+      (global-key-binding (kbd "M-SPC")) 'mark-sexp      
+      (global-key-binding (kbd "M-<delete>")) 'kill-sexp 
+      (global-key-binding (kbd "M-<backspace>")) 'backward-kill-sexp)
 
 ;; I'm always mistakenly hitting these, when I do NOT want to scroll left/right
 (global-unset-key (kbd "C-<next>"))
