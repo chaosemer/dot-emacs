@@ -2,7 +2,7 @@
 (require-noerror 'cua)
 
 (cond ((fboundp 'CUA-mode-on)
-       (warn "Using old compatibility mode for CUA")
+       (message "Using old compatibility mode for CUA")
        (CUA-mode-on))
 	  ((fboundp 'cua-mode) (cua-mode 1)))
 (mouse-wheel-mode 1)
@@ -12,15 +12,14 @@
 (menu-bar-mode (if window-system 1 -1))
 
 (setq-default indent-tabs-mode nil)
-(setf frame-title-format "%b - Emacs")
-(setf icon-title-format "%b - Emacs")
+(setf frame-title-format "%b - Emacs"
+      icon-title-format "%b - Emacs")
 (setf x-stretch-cursor t)
 (setf scroll-conservatively 65535)
 
 
-(setf (face-background 'show-paren-match-face)
-      (if window-system "light gray" "yellow"))
-(setf (face-background 'show-paren-mismatch-face) "red"
+(setf (face-background 'show-paren-match-face) (if window-system "light gray" "blue")
+      (face-background 'show-paren-mismatch-face) "red"
       (face-foreground 'show-paren-mismatch-face) "white")
 
 ;; indent on newline

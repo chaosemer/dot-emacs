@@ -2,10 +2,8 @@
 (put 'upcase-region 'disabled nil)
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
   ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
  '(CUA-mode-overwrite-cursor-color "black")
  '(CUA-mode-read-only-cursor-color "red")
  '(bar-cursor-mode t nil (bar-cursor))
@@ -33,8 +31,7 @@
  '(ecb-tip-of-the-day nil)
  '(ecb-windows-width 0.2)
  '(ediff-split-window-function (quote split-window-horizontally))
- '(ediff-window-setup-function (quote ediff-setup-windows-plain))
- '(emacs-lisp-mode-hook (quote (turn-on-eldoc-mode)))
+ '(emacs-lisp-mode-hook (quote (turn-on-eldoc-mode semantic-default-elisp-setup)))
  '(face-font-selection-order (quote (:height :width :weight :slant)))
  '(flyspell-sort-corrections t)
  '(focus-follows-mouse t)
@@ -44,6 +41,7 @@
  '(ilisp-bindings-*bind-right-bracket-p* t)
  '(inhibit-startup-message t)
  '(mouse-autoselect-window t)
+ '(nxml-sexp-element-flag t)
  '(nxml-slash-auto-complete-flag t)
  '(scroll-bar-mode (quote right))
  '(show-paren-mode t nil (paren))
@@ -58,8 +56,6 @@
  '(w3m-use-tab nil)
  '(x-select-enable-clipboard t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
   ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
  )
