@@ -21,3 +21,6 @@
 (unless (fboundp 'grep-tree)
   (message "Using old compatibility mode for GREP-TREE")
   (defalias 'grep-tree 'grep-find))
+(unless (fboundp 'semantic-default-elisp-setup)
+  (message "Using non-existant function SEMANTIC-DEFAULT-ELISP-SETUP")
+  (defun semantic-default-elisp-setup ()))

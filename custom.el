@@ -2,8 +2,10 @@
 (put 'upcase-region 'disabled nil)
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(CUA-mode-overwrite-cursor-color "black")
  '(CUA-mode-read-only-cursor-color "red")
  '(bar-cursor-mode t nil (bar-cursor))
@@ -37,6 +39,7 @@
  '(flyspell-sort-corrections t)
  '(focus-follows-mouse t)
  '(global-font-lock-mode t nil (font-lock))
+ '(hide-ifdef-initially t)
  '(ielm-mode-hook (quote ((lambda nil (eldoc-mode 1)))))
  '(ilisp-*use-fsf-compliant-keybindings* t)
  '(ilisp-bindings-*bind-right-bracket-p* t)
@@ -57,6 +60,8 @@
  '(w3m-use-tab nil)
  '(x-select-enable-clipboard t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  )
