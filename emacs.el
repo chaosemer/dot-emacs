@@ -6,7 +6,8 @@
 (tool-bar-mode -1)
 (menu-bar-mode (if window-system 1 -1))
 
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil
+              truncate-lines t)
 (setf frame-title-format "%b - Emacs"
       icon-title-format "%b - Emacs")
 (setf x-stretch-cursor t)

@@ -3,4 +3,7 @@
 
 (setq inferior-lisp-program "sbcl")
 (slime-setup)
-(add-to-list 'lisp-mode-hook 'flyspell-prog-mode) ; flyspell-prog-mode isn't like other minor modes
+
+(hook-minor-mode lisp-mode-hook
+  hrule-mode
+  (flyspell-prog-mode))

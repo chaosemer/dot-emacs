@@ -1,8 +1,13 @@
 ;; C ---------------------------------------------------------------------------
 (require-noerror 'brew)
+(require 'hrule)
 
-(hook-minor-mode c-mode-hook hide-ifdef-mode)
-(hook-minor-mode c++-mode-hook hide-ifdef-mode)
+(hook-minor-mode c-mode-hook
+  hide-ifdef-mode
+  hrule-mode)
+(hook-minor-mode c++-mode-hook
+  hide-ifdef-mode
+  hrule-mode)
 
 
 ;; Key bindings

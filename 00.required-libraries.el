@@ -1,8 +1,15 @@
 ;; Readability macros ----------------------------------------------------------
 (require 'cl)
 
-(defmacro hook-minor-mode (hook mode)
-  `(add-hook ',hook (lambda () (,mode 1))))
+(defmacro hook-minor-mode (hook &rest modes)
+  "Hook each minor mode MODE on HOOK."
+  (let ((accum '()))
+    (dolist (mode modes)
+      (push  `(add-hook ',hook (lambda () ,(if (listp mode) mode
+                                             `(,mode 1))))
+            accum))
+    `(progn ,@(nreverse accum))))
+    
 
 (defun require-noerror (feature &optional filename)
   (require feature filename t))

@@ -3,7 +3,7 @@
 (defun scratch ()
   "Switch to the scratch buffer."
   (interactive)
-  (display-buffer "*scratch*" nil t))
+  (display-buffer (get-buffer-create "*scratch*") nil t))
 
 (defconst read-only-color "pink")
 (defconst normal-color (face-background 'default))
@@ -23,8 +23,8 @@
       (when (not (string= new-fringe-color (face-background 'fringe)))
         (setf (face-background 'fringe) new-fringe-color)))))
 
-(when window-system
-  (run-at-time t 0.3 'update-background-color))
+;(when window-system
+;  (run-at-time t 0.3 'update-background-color))
 
 ;(defadvice display-buffer (around around-display-buffer)
 ;  (let ((pop-up-frames (buffer-file-name (get-buffer (ad-get-arg 0)))))
