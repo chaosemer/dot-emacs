@@ -1,7 +1,8 @@
 ;; Global customizations -------------------------------------------------------
-(require 'cua)
+(require-noerror 'cua)
 
-(CUA-mode-on)
+(cond ((fboundp 'CUA-mode-on) (CUA-mode-on))
+	  ((fboundp 'cua-mode) (cua-mode 1)))
 (mouse-wheel-mode 1)
 (column-number-mode 1)
 (iswitchb-mode 1)
