@@ -4,11 +4,13 @@
 (column-number-mode 1)
 (iswitchb-mode 1)
 (tool-bar-mode -1)
+(show-paren-mode 1)
 (menu-bar-mode (if window-system 1 -1))
 
-(setq-default indent-tabs-mode nil
-              truncate-lines t)
-(setf frame-title-format "%b - Emacs"
+(setf (default-value 'indent-tabs-mode) nil
+      (default-value 'truncate-lines) nil
+      truncate-partial-width-windows nil
+      frame-title-format "%b - Emacs"
       icon-title-format "%b - Emacs")
 (setf x-stretch-cursor t)
 (setf scroll-conservatively 65535)
@@ -25,7 +27,9 @@
 ;; usual editor bindings
 (setf (global-key-binding (kbd "C-f")) 'occur
       (global-key-binding (kbd "C-S-f")) 'grep-tree
-      (global-key-binding (kbd "C-g")) 'goto-line)
+      (global-key-binding (kbd "C-g")) 'goto-line
+      (global-key-binding (kbd "<f7>")) 'compile
+      (global-key-binding (kbd "S-<f7>")) 'kill-compilation)
 
 ;; Window system integration
 (when window-system
@@ -49,3 +53,15 @@
 ;; I'm always mistakenly hitting these, when I do NOT want to scroll left/right
 (global-unset-key (kbd "C-<next>"))
 (global-unset-key (kbd "C-<prior>"))
+
+;; simple prefix-arg functions
+(defun find-file-context (filename &optional other-window? wildcards)
+  "Calls FIND-FILE or FIND-FILE-OTHER-WINDOW, depending on the prefix arg."
+  (interactive (list (read-file-name "Find file: ")
+                     current-prefix-arg
+                     t))
+
+  (funcall (if other-window? 'find-file-other-window 'find-file)
+           filename
+           wildcards))
+(setf (global-key-binding (kbd "C-x C-f")) 'find-file-context)
