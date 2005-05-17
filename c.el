@@ -9,9 +9,9 @@
   hide-ifdef-mode
   hrule-mode)
 
-(setq-default c-recognize-knr-p nil
-              c-recognize-paren-inits t
-              c-recognize-<>-arglists t)
+(setf (default-value 'c-recognize-knr-p) nil
+      (default-value 'c-recognize-paren-inits) t
+      (default-value 'c-recognize-<>-arglists) t)
 
 ;; Key bindings
 (add-hook 'c-mode-hook

@@ -6,6 +6,8 @@
 (tool-bar-mode -1)
 (show-paren-mode 1)
 (menu-bar-mode (if window-system 1 -1))
+(hook-minor-mode help-mode-hook
+  hrule-mode)
 
 (setf (default-value 'indent-tabs-mode) nil
       (default-value 'truncate-lines) nil
@@ -14,7 +16,6 @@
       icon-title-format "%b - Emacs")
 (setf x-stretch-cursor t)
 (setf scroll-conservatively 65535)
-
 
 (setf (face-background 'show-paren-match-face) (if window-system "light gray" "blue")
       (face-background 'show-paren-mismatch-face) "red"
