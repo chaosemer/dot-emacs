@@ -40,7 +40,15 @@
                                                       (interactive "@e\np")
                                                       (popup-menu menu-bar-edit-menu event prefix)))
   (when (featurep 'dos-w32)
-    (setf (global-key-binding (kbd "M-<f4>")) 'save-buffers-kill-emacs)))
+    (setf (global-key-binding (kbd "M-<f4>")) (lambda ()
+                                                (interactive)
+                                                (if (> (length (frame-list)) 1)
+                                                    (delete-frame)
+                                                  (when (y-or-n-p "Last frame, kill emacs? ")
+                                                    (call-interactively #'save-buffers-kill-emacs )))))))
+
+;; Since Win32 consumes M-<tab> keystrokes, I need some alternative.
+(setf (global-key-binding (kbd "C-<tab>")) (kbd "M-<tab>"))
 
 ;; simpler sexp bindings
 (setf (global-key-binding (kbd "M-<right>")) 'forward-sexp
@@ -54,6 +62,7 @@
 ;; I'm always mistakenly hitting these, when I do NOT want to scroll left/right
 (global-unset-key (kbd "C-<next>"))
 (global-unset-key (kbd "C-<prior>"))
+(global-unset-key (kbd "C-x m"))
 
 ;; simple prefix-arg functions
 (defun find-file-context (filename &optional other-window? wildcards)
