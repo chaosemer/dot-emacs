@@ -8,7 +8,7 @@
       (push  `(add-hook ',hook (lambda () ,(if (listp mode) mode
                                              `(,mode 1))))
             accum))
-    `(progn ,@(nreverse accum))))
+    `(progn ,@(nreverse accum) ',hook)))
     
 
 (defun require-noerror (feature &optional filename)

@@ -1,3 +1,5 @@
+(require 'tramp)
+
 ;; Global customizations -------------------------------------------------------
 (cua-mode 1)
 (mouse-wheel-mode 1)
@@ -13,9 +15,9 @@
       (default-value 'truncate-lines) nil
       truncate-partial-width-windows nil
       frame-title-format "%b - Emacs"
-      icon-title-format "%b - Emacs")
-(setf x-stretch-cursor t)
-(setf scroll-conservatively 65535)
+      icon-title-format "%b - Emacs"
+      x-stretch-cursor t
+      scroll-conservatively most-positive-fixnum)
 
 (setf (face-background 'show-paren-match-face) (if window-system "light gray" "blue")
       (face-background 'show-paren-mismatch-face) "red"
@@ -59,10 +61,10 @@
       (global-key-binding (kbd "M-<delete>")) 'kill-sexp 
       (global-key-binding (kbd "M-<backspace>")) 'backward-kill-sexp)
 
-;; I'm always mistakenly hitting these, when I do NOT want to scroll left/right
-(global-unset-key (kbd "C-<next>"))
-(global-unset-key (kbd "C-<prior>"))
-(global-unset-key (kbd "C-x m"))
+;; I'm always mistakenly hitting these
+(setf (global-key-binding (kbd "C-<next>")) nil
+      (global-key-binding (kbd "C-<prior>")) nil
+      (global-key-binding (kbd "C-x m")) nil)
 
 ;; simple prefix-arg functions
 (defun find-file-context (filename &optional other-window? wildcards)
