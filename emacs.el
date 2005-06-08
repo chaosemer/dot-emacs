@@ -1,4 +1,5 @@
 (require 'tramp)
+(require 'compile)
 
 ;; Global customizations -------------------------------------------------------
 (cua-mode 1)
@@ -31,13 +32,16 @@
 (setf (global-key-binding (kbd "C-f")) 'occur
       (global-key-binding (kbd "C-S-f")) 'grep-tree
       (global-key-binding (kbd "C-g")) 'goto-line
-      (global-key-binding (kbd "<f7>")) 'compile
+      (global-key-binding (kbd "<f7>")) 'recompile
+      (global-key-binding (kbd "C-<f7>")) 'compile
       (global-key-binding (kbd "S-<f7>")) 'kill-compilation)
 
 ;; Window system integration
 (when window-system
   (setf (global-key-binding (kbd "<menu>")) 'execute-extended-command
         (global-key-binding (kbd "<apps>")) 'execute-extended-command
+        (global-key-binding (kbd "S-<menu>")) 'eval-expression
+        (global-key-binding (kbd "S-<apps>")) 'eval-expression
         (global-key-binding (kbd "<down-mouse-3>")) (lambda (event prefix)
                                                       (interactive "@e\np")
                                                       (popup-menu menu-bar-edit-menu event prefix)))

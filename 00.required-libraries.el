@@ -9,6 +9,7 @@
                                              `(,mode 1))))
             accum))
     `(progn ,@(nreverse accum) ',hook)))
+(setf (get 'hook-minor-mode 'lisp-indent-function) 1)
     
 
 (defun require-noerror (feature &optional filename)

@@ -4,18 +4,17 @@
 
 (hook-minor-mode c-mode-hook
   hide-ifdef-mode
-  hrule-mode)
+  hrule-mode
+  
+  (when (boundp 'brew-emulator-run)
+    (setf (local-key-binding (kbd "<f5>") 'brew-emulator-run))))
 (hook-minor-mode c++-mode-hook
   hide-ifdef-mode
-  hrule-mode)
+  hrule-mode
+
+  (when (boundp 'brew-emulator-run)
+    (setf (local-key-binding (kbd "<f5>") 'brew-emulator-run))))
 
 (setf (default-value 'c-recognize-knr-p) nil
       (default-value 'c-recognize-paren-inits) t
       (default-value 'c-recognize-<>-arglists) t)
-
-;; Key bindings
-(add-hook 'c-mode-hook
-          (lambda ()
-            (local-set-key (kbd "<f7>") 'compile)
-            (when (boundp 'brew-emulator-run)
-              (local-set-key (kbd "<f5>") 'brew-emulator-run))))
