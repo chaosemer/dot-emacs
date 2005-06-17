@@ -10,7 +10,7 @@
 (tool-bar-mode -1)
 (show-paren-mode 1)
 (menu-bar-mode (if window-system 1 -1))
-(hook-minor-mode help-mode-hook
+(hook-minor-mode view-mode-hook
   hrule-mode)
 
 (setf (default-value 'indent-tabs-mode) nil
@@ -40,9 +40,7 @@
 ;; Window system integration
 (when window-system
   (setf (global-key-binding (kbd "<menu>")) 'execute-extended-command
-        (global-key-binding (kbd "<apps>")) 'execute-extended-command
         (global-key-binding (kbd "S-<menu>")) 'eval-expression
-        (global-key-binding (kbd "S-<apps>")) 'eval-expression
         (global-key-binding (kbd "<down-mouse-3>")) (lambda (event prefix)
                                                       (interactive "@e\np")
                                                       (popup-menu menu-bar-edit-menu event prefix)))
@@ -54,8 +52,17 @@
                                                   (when (y-or-n-p "Last frame, kill emacs? ")
                                                     (call-interactively #'save-buffers-kill-emacs )))))))
 
-;; Since Win32 consumes M-<tab> keystrokes, I need some alternative.
-(setf (global-key-binding (kbd "C-<tab>")) (kbd "M-<tab>"))
+;; Account for differences in Win32 keycodes
+(setf (global-key-binding (kbd "C-<tab>")) (kbd "M-<tab>")
+      (global-key-binding (kbd "<apps>")) (kbd "<menu>")
+      (global-key-binding (kbd "S-<apps>")) (kbd "S-<menu>"))
+
+;; And Xterm differences
+(when (and (null window-system) (string= (getenv "TERM") "xterm"))
+  (xterm-mouse-mode 1)
+  (setf (global-key-binding (kbd "<print>")) 'execute-extended-command
+        (global-key-binding (kbd "S-<print>")) 'eval-expression))
+  
 
 ;; simpler sexp bindings
 (setf (global-key-binding (kbd "M-<right>")) 'forward-sexp
