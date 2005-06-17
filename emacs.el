@@ -1,5 +1,6 @@
 (require 'tramp)
 (require 'compile)
+(require 'dirvars)
 
 ;; Global customizations -------------------------------------------------------
 (cua-mode 1)
