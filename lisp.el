@@ -14,4 +14,3 @@
                                                        (popup-menu slime-easy-menu))))
 (hook-minor-mode slime-temp-buffer-mode-hook
   hrule-mode)
-  hrule-mode)
