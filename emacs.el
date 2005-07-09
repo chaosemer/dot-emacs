@@ -53,7 +53,8 @@
                                                     (call-interactively #'save-buffers-kill-emacs )))))))
 
 ;; Completions in other places
-(setf (lookup-key minibuffer-local-map (kbd "<tab>")) 'hippie-expand)
+; This doesn't work on every other Emacs other than 21.4, debian.  hmmm...
+;(setf (lookup-key minibuffer-local-map (kbd "<tab>")) 'hippie-expand)
 
 ;; Account for differences in Win32 keycodes
 (setf (global-key-binding (kbd "C-<tab>")) (kbd "M-<tab>")
