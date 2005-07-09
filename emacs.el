@@ -52,6 +52,9 @@
                                                   (when (y-or-n-p "Last frame, kill emacs? ")
                                                     (call-interactively #'save-buffers-kill-emacs )))))))
 
+;; Completions in other places
+(setf (lookup-key minibuffer-local-map (kbd "<tab>")) 'hippie-expand)
+
 ;; Account for differences in Win32 keycodes
 (setf (global-key-binding (kbd "C-<tab>")) (kbd "M-<tab>")
       (global-key-binding (kbd "<apps>")) (kbd "<menu>")
@@ -78,9 +81,20 @@
       (global-key-binding (kbd "C-<prior>")) nil
       (global-key-binding (kbd "C-x m")) nil)
 
+;; Recursive edits
+(defun push-or-pop-excursion (pop?)
+  "Pushes or pops an excursion, depending on the prefix arg."
+  (interactive (list current-prefix-arg))
+
+  (if (not pop?)
+      (save-excursion (save-restriction (save-window-excursion (recursive-edit))))
+    (when (> (recursion-depth) 0)
+      (throw 'exit 'nil))))
+(setf (global-key-binding (kbd "C-x C-p")) 'push-or-pop-excursion)
+
 ;; simple prefix-arg functions
 (defun find-file-context (filename &optional other-window? wildcards)
-  "Calls FIND-FILE or FIND-FILE-OTHER-WINDOW, depending on the prefix arg."
+  "Calls `find-file' or `find-file-other-window', depending on the prefix arg."
   (interactive (list (read-file-name "Find file: ")
                      current-prefix-arg
                      t))
