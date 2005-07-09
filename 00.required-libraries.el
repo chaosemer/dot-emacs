@@ -10,6 +10,8 @@
             accum))
     `(progn ,@(nreverse accum) ',hook)))
 (setf (get 'hook-minor-mode 'lisp-indent-function) 1)
+
+(defsetf lookup-key define-key)
     
 (defun require-noerror (feature &optional filename)
   (require feature filename t))
