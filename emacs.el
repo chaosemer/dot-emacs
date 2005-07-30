@@ -1,15 +1,22 @@
-(require 'tramp)
+(require 'camelCase)
 (require 'compile)
 (require 'dirvars)
+(require 'tramp)
 
 ;; Global customizations -------------------------------------------------------
-(cua-mode 1)
-(mouse-wheel-mode 1)
+(setf (lookup-key camelCase-mode-map (kbd "M-<left>")) nil
+      (lookup-key camelCase-mode-map (kbd "M-<right>")) nil
+      (lookup-key camelCase-mode-map (kbd "M-<delete>")) nil
+      (lookup-key camelCase-mode-map (kbd "M-<backspace>")) nil)
+(camelCase-mode 1)
 (column-number-mode 1)
+(cua-mode 1)
 (iswitchb-mode 1)
-(tool-bar-mode -1)
-(show-paren-mode 1)
+(defalias 'read-buffer 'iswitchb-read-buffer)
 (menu-bar-mode (if window-system 1 -1))
+(mouse-wheel-mode 1)
+(show-paren-mode 1)
+(tool-bar-mode -1)
 (hook-minor-mode view-mode-hook
   hrule-mode)
 
@@ -20,6 +27,10 @@
       icon-title-format "%b - Emacs"
       x-stretch-cursor t
       scroll-conservatively most-positive-fixnum)
+
+(when (require-noerror 'fringe)
+  (set-fringe-mode nil)
+  (set-fringe-indicators-1 nil 'empty))
 
 (setf (face-background 'show-paren-match-face) (if window-system "light gray" "blue")
       (face-background 'show-paren-mismatch-face) "red"
@@ -66,15 +77,15 @@
   (xterm-mouse-mode 1)
   (setf (global-key-binding (kbd "<print>")) 'execute-extended-command
         (global-key-binding (kbd "S-<print>")) 'eval-expression))
-  
+
 
 ;; simpler sexp bindings
 (setf (global-key-binding (kbd "M-<right>")) 'forward-sexp
       (global-key-binding (kbd "M-<left>")) 'backward-sexp
       (global-key-binding (kbd "M-<up>")) 'backward-up-list
       (global-key-binding (kbd "M-<down>")) 'down-list
-      (global-key-binding (kbd "M-SPC")) 'mark-sexp      
-      (global-key-binding (kbd "M-<delete>")) 'kill-sexp 
+      (global-key-binding (kbd "M-SPC")) 'mark-sexp
+      (global-key-binding (kbd "M-<delete>")) 'kill-sexp
       (global-key-binding (kbd "M-<backspace>")) 'backward-kill-sexp)
 
 ;; I'm always mistakenly hitting these
