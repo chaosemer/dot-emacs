@@ -1,7 +1,15 @@
 ;; Readability macros ----------------------------------------------------------
 (require 'cl)
 
-(defmacro hook-minor-mode (hook &rest modes)
+(defmacro defmacro+ (name args &rest body)
+  "Like `defmacro*', but also attempts to figure out the indenting"
+  (let ((body-index (position-if (lambda (arg) (member arg '(&body &rest)))
+                                 (remove '&optional args))))
+    `(progn
+       (setf (get ',name 'lisp-indent-function) ,body-index)
+       (defmacro* ,name ,args ,@body))))
+
+(defmacro+ hook-minor-mode (hook &body modes)
   "Hook each minor mode MODE on HOOK."
   (let ((accum '()))
     (dolist (mode modes)
@@ -9,7 +17,6 @@
                                              `(,mode 1))))
             accum))
     `(progn ,@(nreverse accum) ',hook)))
-(setf (get 'hook-minor-mode 'lisp-indent-function) 1)
 
 (defsetf lookup-key define-key)
 
