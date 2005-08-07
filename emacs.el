@@ -30,7 +30,8 @@
 
 (when (require-noerror 'fringe)
   (set-fringe-mode nil)
-  (set-fringe-indicators-1 nil 'empty))
+  (when (fboundp 'set-fringe-indicators-1)
+    (set-fringe-indicators-1 nil 'empty)))
 
 (setf (face-background 'show-paren-match-face) (if window-system "light gray" "blue")
       (face-background 'show-paren-mismatch-face) "red"
