@@ -15,6 +15,9 @@
 (defalias 'read-buffer 'iswitchb-read-buffer)
 (menu-bar-mode (if window-system 1 -1))
 (mouse-wheel-mode 1)
+(column-number-mode 1)
+(iswitchb-mode 1)
+(defalias 'read-buffer 'iswitchb-read-buffer)
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (hook-minor-mode view-mode-hook
@@ -70,8 +73,8 @@
 
 ;; Account for differences in Win32 keycodes
 (setf (global-key-binding (kbd "C-<tab>")) (kbd "M-<tab>")
-      (global-key-binding (kbd "<apps>")) (kbd "<menu>")
-      (global-key-binding (kbd "S-<apps>")) (kbd "S-<menu>"))
+      (global-key-binding (kbd "<apps>")) 'execute-extended-command
+      (global-key-binding (kbd "S-<apps>")) 'eval-expression)
 
 ;; And Xterm differences
 (when (and (null window-system) (string= (getenv "TERM") "xterm"))
@@ -92,7 +95,9 @@
 ;; I'm always mistakenly hitting these
 (setf (global-key-binding (kbd "C-<next>")) nil
       (global-key-binding (kbd "C-<prior>")) nil
-      (global-key-binding (kbd "C-x m")) nil)
+      (global-key-binding (kbd "C-x m")) nil
+      (global-key-binding (kbd "M-<home>")) nil
+      (global-key-binding (kbd "M-<end>")) nil)
 
 ;; Recursive edits
 (defun push-or-pop-excursion (pop?)
