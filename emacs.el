@@ -1,6 +1,7 @@
 (require 'camelCase)
 (require 'compile)
 (require 'dirvars)
+(require 'hrule)
 (require 'tramp)
 
 ;; Global customizations -------------------------------------------------------
@@ -10,18 +11,18 @@
       (lookup-key camelCase-mode-map (kbd "M-<backspace>")) nil)
 (camelCase-mode 1)
 (column-number-mode 1)
+(column-number-mode 1)
 (cua-mode 1)
+(hrule-mode 1)
 (iswitchb-mode 1)
-(defalias 'read-buffer 'iswitchb-read-buffer)
+(iswitchb-mode 1)
 (menu-bar-mode (if window-system 1 -1))
 (mouse-wheel-mode 1)
-(column-number-mode 1)
-(iswitchb-mode 1)
-(defalias 'read-buffer 'iswitchb-read-buffer)
 (show-paren-mode 1)
 (tool-bar-mode -1)
-(hook-minor-mode view-mode-hook
-  hrule-mode)
+(tooltip-mode -1)
+
+(defalias 'read-buffer 'iswitchb-read-buffer)
 
 (setf (default-value 'indent-tabs-mode) nil
       (default-value 'truncate-lines) nil
@@ -72,16 +73,16 @@
 ;(setf (lookup-key minibuffer-local-map (kbd "<tab>")) 'hippie-expand)
 
 ;; Account for differences in Win32 keycodes
-(setf (global-key-binding (kbd "C-<tab>")) (kbd "M-<tab>")
-      (global-key-binding (kbd "<apps>")) 'execute-extended-command
-      (global-key-binding (kbd "S-<apps>")) 'eval-expression)
+(setf (lookup-key key-translation-map (kbd "C-<tab>")) (kbd "M-TAB"))
 
-;; And Xterm differences
+;; Handle different platforms diving differnt names to the same key
+(when (featurep 'dos-w32)
+  (setf (lookup-key function-key-map (kbd "<apps>")) (kbd "<menu>")
+        (lookup-key function-key-map (kbd "S-<apps>")) (kbd "S-<menu>")))
 (when (and (null window-system) (string= (getenv "TERM") "xterm"))
   (xterm-mouse-mode 1)
-  (setf (global-key-binding (kbd "<print>")) 'execute-extended-command
-        (global-key-binding (kbd "S-<print>")) 'eval-expression))
-
+  (setf (lookup-key function-key-map (kbd "<print>")) (kbd "<menu>")
+        (lookup-key function-key-map (kbd "S-<print>")) (kbd "S-<menu>")))
 
 ;; simpler sexp bindings
 (setf (global-key-binding (kbd "M-<right>")) 'forward-sexp
