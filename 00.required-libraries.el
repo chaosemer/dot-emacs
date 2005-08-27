@@ -33,19 +33,25 @@
 ;; Patches for buggy/old emacs code:
 (unless (fboundp 'cua-mode)
   (require 'cua)
-  (message "Using old compatibility mode for CUA-MODE")
+  (message "Using old compatibility mode for `cua-mode'")
   (defalias 'cua-mode 'CUA-mode))
 (unless (fboundp 'grep-tree)
-  (message "Using old compatibility mode for GREP-TREE")
+  (message "Using old compatibility mode for `grep-tree'")
   (defalias 'grep-tree 'grep-find))
 (unless (fboundp 'semantic-default-elisp-setup)
-  (message "Using non-existant function SEMANTIC-DEFAULT-ELISP-SETUP")
+  (message "Using non-existant function `semantic-default-elisp-setup'")
   (defun semantic-default-elisp-setup ()))
+(unless (fboundp 'x-show-tip)
+  (message "Modifying `tooltip-mode' to do nothing or error.")
+  (defun tooltip-mode (&optional arg)
+    (interactive (list (prefix-numeric-value current-prefix-arg)))
+    (when (> arg 0)
+      (error "Sorry, tooltips are not yet available on this system"))))
 
 (defsetf lookup-key define-key)
 
 (defun bar-cursor-set-cursor (&optional frame)
-  "Replacement for buggy `bar-cursor-set-cursor' in 'bar-cursor'."
+  "Replacement for buggy `bar-cursor-set-cursor' in `bar-cursor.el'."
   (message "Using replacement `bar-cursor-set-cursor'.")
   (if (and bar-cursor-mode (not overwrite-mode))
       (bar-cursor-set-cursor-type 'bar frame)
