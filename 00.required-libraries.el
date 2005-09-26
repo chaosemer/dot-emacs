@@ -47,6 +47,9 @@
     (interactive (list (prefix-numeric-value current-prefix-arg)))
     (when (> arg 0)
       (error "Sorry, tooltips are not yet available on this system"))))
+(unless (fboundp 'custom-autoload)
+  (message "Using old compatibility mode for `custom-autoload'")
+  (defalias 'custom-autoload 'custom-add-load))
 
 (defsetf lookup-key define-key)
 

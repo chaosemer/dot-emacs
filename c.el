@@ -1,16 +1,9 @@
 ;; C ---------------------------------------------------------------------------
-(require-noerror 'brew)
-
-(hook-minor-mode c-mode-hook
+(hook-minor-mode c-mode-common-hook
   hide-ifdef-mode
-  
-  (when (boundp 'brew-emulator-run)
-    (setf (local-key-binding (kbd "<f5>") 'brew-emulator-run))))
-(hook-minor-mode c++-mode-hook
-  hide-ifdef-mode
-
-  (when (boundp 'brew-emulator-run)
-    (setf (local-key-binding (kbd "<f5>") 'brew-emulator-run))))
+  (c-set-offset 'case-label '+)
+  (setf comment-start "/* "
+        comment-end " */"))
 
 (setf (default-value 'c-recognize-knr-p) nil
       (default-value 'c-recognize-paren-inits) t

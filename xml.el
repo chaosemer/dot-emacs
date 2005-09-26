@@ -1,6 +1,4 @@
 ;; Configuration for XML files
-(require 'nxml-mode)
-
 (pushnew '("\\.xml\\'" . nxml-mode) auto-mode-alist :test #'equal)
 
 (hook-minor-mode nxml-mode-hook

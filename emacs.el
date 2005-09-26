@@ -1,8 +1,5 @@
-(require 'camelCase)
-(require 'compile)
 (require 'dirvars)
-(require 'hrule)
-(require 'tramp)
+(require-noerror 'gnuserv-compat)
 
 ;; Global customizations -------------------------------------------------------
 (setf (lookup-key camelCase-mode-map (kbd "M-<left>")) nil
@@ -99,6 +96,39 @@
       (global-key-binding (kbd "C-x m")) nil
       (global-key-binding (kbd "M-<home>")) nil
       (global-key-binding (kbd "M-<end>")) nil)
+
+;; Spellcheck on save
+;(add-hook 'before-save-hook #'ispell-buffer)
+;(setf kill-emacs-hook (remove 'ede-save-cache kill-emacs-hook)) ; There seems to be a problem with
+;                                                                ; and spellchecking on save.  So I'm
+;                                                                ; going to remove EDE for now
+
+
+;; DWIM <home> and <end>
+(defun beginning-of-line-dwim (&optional n)
+  "Move point to the first non-whitespace character or the beginning of line."
+  (interactive "p")
+
+  (let ((point (point)))
+    (beginning-of-line n)
+    (skip-chars-forward " \t")
+    (when (= point (point))
+      (beginning-of-line))))
+(put 'beginning-of-line-dwim 'CUA 'move)
+
+(defun end-of-line-dwim (&optional n)
+  "Movie point to the last non-whitespace character or the end of line."
+  (interactive "p")
+
+  (let ((point (point)))
+    (end-of-line n)
+    (skip-chars-backward " \t")             
+    (when (= point (point))
+      (end-of-line))))
+(put 'end-of-line-dwim 'CUA 'move)
+
+(setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim        
+      (global-key-binding (kbd "<end>")) 'end-of-line-dwim)
 
 ;; Recursive edits
 (defun push-or-pop-excursion (pop?)
