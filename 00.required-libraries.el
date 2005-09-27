@@ -31,6 +31,9 @@
   (require feature filename t))
 
 ;; Patches for buggy/old emacs code:
+(unless (fboundp 'warn)
+  (message "Using old compatibility mode for `warn'")
+  (defalias 'warn 'message))
 (unless (fboundp 'cua-mode)
   (require 'cua)
   (warn "Using old compatibility mode for `cua-mode'")
@@ -55,12 +58,12 @@
   (dolist (symbol '(backward-sexp forward-sexp backward-up-list up-list down-list))
     (setf (get symbol 'CUA) 'move)))
 
-
 (defsetf lookup-key define-key)
 
+(require 'bar-cursor)
 (defun bar-cursor-set-cursor (&optional frame)
   "Replacement for buggy `bar-cursor-set-cursor' in `bar-cursor.el'."
-  (message "Using replacement `bar-cursor-set-cursor'.")
+  (warn "Using replacement `bar-cursor-set-cursor'.")
   (if (and bar-cursor-mode (not overwrite-mode))
       (bar-cursor-set-cursor-type 'bar frame)
     (bar-cursor-set-cursor-type 'box frame)))
