@@ -114,7 +114,7 @@
     (skip-chars-forward " \t")
     (when (= point (point))
       (beginning-of-line))))
-(put 'beginning-of-line-dwim 'CUA 'move)
+(setf (get 'beginning-of-line-dwim 'CUA) 'move)
 
 (defun end-of-line-dwim (&optional n)
   "Movie point to the last non-whitespace character or the end of line."
@@ -125,7 +125,7 @@
     (skip-chars-backward " \t")             
     (when (= point (point))
       (end-of-line))))
-(put 'end-of-line-dwim 'CUA 'move)
+(setf (get 'end-of-line-dwim 'CUA) 'move)
 
 (setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim        
       (global-key-binding (kbd "<end>")) 'end-of-line-dwim)

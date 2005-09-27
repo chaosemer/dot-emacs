@@ -50,6 +50,11 @@
 (unless (fboundp 'custom-autoload)
   (message "Using old compatibility mode for `custom-autoload'")
   (defalias 'custom-autoload 'custom-add-load))
+(unless (eq (get 'up-list 'CUA) 'move)
+  (message "Adding CUA property to all symbols that need it.")
+  (dolist (symbol '(backward-sexp forward-sexp backward-up-list up-list down-list))
+    (setf (get symbol 'CUA) 'move)))
+
 
 (defsetf lookup-key define-key)
 
