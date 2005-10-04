@@ -18,6 +18,13 @@
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (tooltip-mode -1)
+(global-font-lock-mode 1)
+(global-semanticdb-minor-mode 1)
+(global-semantic-idle-completions-mode 1)
+(global-semantic-idle-scheduler-mode 1)
+(global-semantic-idle-summary-mode 1)
+(global-semantic-show-parser-state-mode 1)
+(global-semantic-show-unmatched-syntax-mode 1)
 
 (defalias 'read-buffer 'iswitchb-read-buffer)
 
@@ -152,3 +159,41 @@
            filename
            wildcards))
 (setf (global-key-binding (kbd "C-x C-f")) 'find-file-context)
+
+;; Update semantic-show-parser-state-marker
+(require 'semantic-util-modes)
+(setf (get 'semantic-show-parser-state-string 'risky-local-variable) t)
+(defun semantic-show-parser-state-marker (&rest ignore)
+  "Set `semantic-show-parser-state-string' to indicate parser state.
+This marker is one of the following:
+ `-'  ->  The cache is up to date.
+ `!'  ->  The cache requires a full update.
+ `~'  ->  The cache needs to be incrementally parsed.
+ `%'  ->  The cache is not currently parseable.
+ `@'  ->  Auto-parse in progress (not set here.)
+Arguments IGNORE are ignored, and accepted so this can be used as a hook
+in many situations."
+  (labels ((make-state-string (string &optional (help-echo "") func)
+             (if func
+                 (let ((map (make-sparse-keymap)))
+                   (setf (lookup-key map (kbd "<mode-line> <mouse-1>")) func)
+                   (propertize string
+                               'help-echo help-echo
+                               'mouse-face 'mode-line-highlight
+                               'local-map map))
+               (propertize string 'help-echo help-echo))))
+    (setf semantic-show-parser-state-string
+          (cond ((semantic-parse-tree-needs-rebuild-p) 
+                 (make-state-string "!" "Needs a full parse: mouse-1 reparses"
+                                    (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
+                 ((semantic-parse-tree-needs-update-p)
+                  (make-state-string "^" "Needs an incremental parse: mouse-1 reparses"
+                                     (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
+                 ((semantic-parse-tree-unparseable-p)
+                  (make-state-string "%" "Buffer Unparsable: mouse-1 reparses"
+                                     (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
+                 (t
+                  (make-state-string "-" "Semantic is up to date")))
+              ))
+  ;;(message "Setup mode line indicator to [%s]" semantic-show-parser-state-string)
+  (semantic-mode-line-update)) 
