@@ -20,11 +20,13 @@
 (tooltip-mode -1)
 (global-font-lock-mode 1)
 (global-semanticdb-minor-mode 1)
-(global-semantic-idle-completions-mode 1)
 (global-semantic-idle-scheduler-mode 1)
 (global-semantic-idle-summary-mode 1)
 (global-semantic-show-parser-state-mode 1)
 (global-semantic-show-unmatched-syntax-mode 1)
+(hook-minor-mode semantic-init-hooks
+  (setf (local-key-binding (kbd "M-TAB")) 'semantic-ia-complete-symbol
+        (local-key-binding (kbd "M-.")) 'semantic-complete-jump))
 
 (defalias 'read-buffer 'iswitchb-read-buffer)
 
@@ -196,4 +198,4 @@ in many situations."
                   (make-state-string "-" "Semantic is up to date")))
               ))
   ;;(message "Setup mode line indicator to [%s]" semantic-show-parser-state-string)
-  (semantic-mode-line-update)) 
+  (semantic-mode-line-update))
