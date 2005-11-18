@@ -10,6 +10,7 @@
 (column-number-mode 1)
 (column-number-mode 1)
 (cua-mode 1)
+(hi-lock-mode 1)
 (hrule-mode 1)
 (iswitchb-mode 1)
 (iswitchb-mode 1)
@@ -24,10 +25,10 @@
 (global-semantic-idle-summary-mode 1)
 (global-semantic-show-parser-state-mode 1)
 (global-semantic-show-unmatched-syntax-mode 1)
+
 (hook-minor-mode semantic-init-hooks
   (setf (local-key-binding (kbd "M-TAB")) 'semantic-ia-complete-symbol
         (local-key-binding (kbd "M-.")) 'semantic-complete-jump))
-
 (defalias 'read-buffer 'iswitchb-read-buffer)
 
 (setf (default-value 'indent-tabs-mode) nil
@@ -36,7 +37,9 @@
       frame-title-format "%b - Emacs"
       icon-title-format "%b - Emacs"
       x-stretch-cursor t
-      scroll-conservatively most-positive-fixnum)
+      scroll-conservatively most-positive-fixnum
+      (second (assoc 'hi-lock-mode minor-mode-alist)) nil   ; do not display hi-lock in modeline
+      )
 
 (when (require-noerror 'fringe)
   (set-fringe-mode nil)

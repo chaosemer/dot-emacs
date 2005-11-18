@@ -61,9 +61,9 @@
 (defsetf lookup-key define-key)
 
 (require 'bar-cursor)
+(warn "Using replacement `bar-cursor-set-cursor'.")
 (defun bar-cursor-set-cursor (&optional frame)
   "Replacement for buggy `bar-cursor-set-cursor' in `bar-cursor.el'."
-  (warn "Using replacement `bar-cursor-set-cursor'.")
   (if (and bar-cursor-mode (not overwrite-mode))
       (bar-cursor-set-cursor-type 'bar frame)
     (bar-cursor-set-cursor-type 'box frame)))

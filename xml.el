@@ -1,5 +1,5 @@
 ;; Configuration for XML files
-(pushnew '("\\.xml\\'" . nxml-mode) auto-mode-alist :test #'equal)
+(defalias 'xml-mode 'nxml-mode)
 
 (hook-minor-mode nxml-mode-hook
 

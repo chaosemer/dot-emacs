@@ -1,10 +1,6 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
-
-
-(custom-reset-variables
- '(display-battery-mode nil))
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -22,7 +18,6 @@
  '(column-number-mode t)
  '(compilation-ask-about-save nil)
  '(compilation-scroll-output t)
- '(cua-mode t nil (cua-base))
  '(current-language-environment "English")
  '(cursor-in-non-selected-windows nil)
  '(custom-file "~/.emacs.d/custom.el")
@@ -42,6 +37,7 @@
  '(indicate-empty-lines t)
  '(inhibit-startup-message t)
  '(jit-lock-stealth-time 0.2)
+ '(midnight-mode t nil (midnight))
  '(mouse-autoselect-window t)
  '(nxml-sexp-element-flag t)
  '(nxml-slash-auto-complete-flag t)
