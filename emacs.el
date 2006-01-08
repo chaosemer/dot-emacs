@@ -1,4 +1,6 @@
 (require 'dirvars)
+(require 'printing)
+(require 'htmlize-view)
 (require-noerror 'gnuserv-compat)
 
 ;; Global customizations -------------------------------------------------------
@@ -10,7 +12,7 @@
 (column-number-mode 1)
 (column-number-mode 1)
 (cua-mode 1)
-(hi-lock-mode 1)
+(global-hi-lock-mode 1)
 (hrule-mode 1)
 (iswitchb-mode 1)
 (iswitchb-mode 1)
@@ -22,9 +24,11 @@
 (global-font-lock-mode 1)
 (global-semanticdb-minor-mode 1)
 (global-semantic-idle-scheduler-mode 1)
-(global-semantic-idle-summary-mode 1)
 (global-semantic-show-parser-state-mode 1)
-(global-semantic-show-unmatched-syntax-mode 1)
+(global-semantic-idle-summary-mode 1)
+(progn
+  (htmlize-view-add-to-files-menu)
+  (pr-menu-bind))
 
 (hook-minor-mode semantic-init-hooks
   (setf (local-key-binding (kbd "M-TAB")) 'semantic-complete-analyze-inline
@@ -37,9 +41,7 @@
       frame-title-format "%b - Emacs"
       icon-title-format "%b - Emacs"
       x-stretch-cursor t
-      scroll-conservatively most-positive-fixnum
-      (second (assoc 'hi-lock-mode minor-mode-alist)) nil   ; do not display hi-lock in modeline
-      )
+      scroll-conservatively most-positive-fixnum)
 
 (when (require-noerror 'fringe)
   (set-fringe-mode nil)
@@ -152,18 +154,6 @@
     (when (> (recursion-depth) 0)
       (throw 'exit 'nil))))
 (setf (global-key-binding (kbd "C-x C-p")) 'push-or-pop-excursion)
-
-;; simple prefix-arg functions
-(defun find-file-context (filename &optional other-window? wildcards)
-  "Calls `find-file' or `find-file-other-window', depending on the prefix arg."
-  (interactive (list (read-file-name "Find file: ")
-                     current-prefix-arg
-                     t))
-
-  (funcall (if other-window? 'find-file-other-window 'find-file)
-           filename
-           wildcards))
-(setf (global-key-binding (kbd "C-x C-f")) 'find-file-context)
 
 ;; Update semantic-show-parser-state-marker
 (require 'semantic-util-modes)

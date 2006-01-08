@@ -6,6 +6,8 @@
     `(progn
        (setf (get ',name 'lisp-indent-function) ,body-index)
        (defmacro* ,name ,args ,@body))))
+(setf find-function-regexp
+      "^\\s-*(\\(def\\(ine-skeleton\\|ine-generic-mode\\|ine-derived-mode\\|ine\\(?:-global\\)?-minor-mode\\|ine-compilation-mode\\|un-cvs-mode\\|foo\\|[^cfgv]\\w+\\*?\\+?\\)\\|easy-mmode-define-[a-z-]+\\|easy-menu-define\\|menu-bar-make-toggle\\)\\(?:\\s-\\|\n\\|;.*\n\\)+\\('\\|(quote \\)?%s\\(\\s-\\|$\\|(\\|)\\)")
 
 ;; A more useable user-level way to add hooks.
 (defvar hook-minor-mode-*hooks* (make-hash-table :test #'eq))
@@ -44,6 +46,9 @@
 (unless (fboundp 'global-semantic-idle-completions-mode)
   (warn "Using old compatibility mode for `global-semantic-idle-completions-mode'")
   (defalias 'global-semantic-idle-completions-mode 'global-semantic-idle-scheduler-mode))
+(unless (fboundp 'semantic-default-elisp-setup)
+  (warn "Using non-existant function `semantic-default-elisp-setup'")
+  (defun semantic-default-elisp-setup ()))
 (unless (fboundp 'x-show-tip)
   (warn "Modifying `tooltip-mode' to do nothing or error.")
   (defun tooltip-mode (&optional arg)
@@ -53,31 +58,83 @@
 (unless (fboundp 'custom-autoload)
   (warn "Using old compatibility mode for `custom-autoload'")
   (defalias 'custom-autoload 'custom-add-load))
-(let ((movement-functions '(backward-sexp forward-sexp backward-up-list up-list down-list
-                                          c-backward-conditional c-down-conditional
-                                          c-down-conditional-with-else c-forward-conditional
-                                          c-up-conditional c-up-conditional-with-else)))
+(let ((move-fns '(backward-sexp forward-sexp backward-up-list up-list down-list
+                  c-forward-conditional c-backward-conditional
+                  c-down-conditional c-up-conditional
+                  c-down-conditional-with-else
+                  c-up-conditional-with-else)))
   (unless (every (lambda (symbol) (eq 'move (get symbol 'CUA)))
-                 movement-functions)
+                 move-fns)
     (warn "Adding CUA property to all symbols that need it.")
-    (dolist (symbol movement-functions)
+    (dolist (symbol move-fns)
       (setf (get symbol 'CUA) 'move))))
+(unless (fboundp 'semantic-complete-jump-other-window)
+  (warn "Creating missing function `semantic-complete-jump-other-window")
+  (defun semantic-complete-jump-other-window ()
+    "Jump to a semantic symbol."
+    (interactive)
+    (let* ((semanticdb-search-system-databases nil)
+           (tag (semantic-complete-read-tag-project "Symbol: ")))
+      (when (semantic-tag-p tag)
+        (push-mark)
+        (semantic-go-to-tag tag)
+        (switch-to-buffer-other-window (current-buffer))
+        (semantic-momentary-highlight-tag tag)
+        (working-message "%S: %s "
+                         (semantic-tag-class tag)
+                         (semantic-tag-name  tag))))))
+(unless (fboundp 'semantic-complete-jump-other-frame)
+  (defun semantic-complete-jump-other-frame ()
+    "Jump to a semantic symbol."
+    (interactive)
+    (let* ((semanticdb-search-system-databases nil)
+           (tag (semantic-complete-read-tag-project "Symbol: ")))
+      (when (semantic-tag-p tag)
+        (push-mark)
+        (semantic-go-to-tag tag)
+        (switch-to-buffer-other-frame (current-buffer))
+        (semantic-momentary-highlight-tag tag)
+        (working-message "%S: %s "
+                         (semantic-tag-class tag)
+                         (semantic-tag-name  tag))))))
+(progn
+  (warn "Updating `semantic-show-parser-state-marker' to be more GUItiful.")
+  ;; Update semantic-show-parser-state-marker
+  (require 'semantic-util-modes)
+  (setf (get 'semantic-show-parser-state-string 'risky-local-variable) t)
+  (defun semantic-show-parser-state-marker (&rest ignore)
+    "Set `semantic-show-parser-state-string' to indicate parser state.
+This marker is one of the following:
+ `-'  ->  The cache is up to date.
+ `!'  ->  The cache requires a full update.
+ `~'  ->  The cache needs to be incrementally parsed.
+ `%'  ->  The cache is not currently parseable.
+ `@'  ->  Auto-parse in progress (not set here.)
+Arguments IGNORE are ignored, and accepted so this can be used as a hook
+in many situations."
+    (labels ((make-state-string (string &optional (help-echo "") func)
+                                (if func
+                                    (let ((map (make-sparse-keymap)))
+                                      (setf (lookup-key map (kbd "<mode-line> <mouse-1>")) func)
+                                      (propertize string
+                                                  'help-echo help-echo
+                                                  'mouse-face 'mode-line-highlight
+                                                  'local-map map))
+                                  (propertize string 'help-echo help-echo))))
+      (setf semantic-show-parser-state-string
+            (cond ((semantic-parse-tree-needs-rebuild-p) 
+                   (make-state-string "!" "Needs a full parse: mouse-1 reparses"
+                                      (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
+                  ((semantic-parse-tree-needs-update-p)
+                   (make-state-string "^" "Needs an incremental parse: mouse-1 reparses"
+                                      (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
+                  ((semantic-parse-tree-unparseable-p)
+                   (make-state-string "%" "Buffer Unparsable: mouse-1 reparses"
+                                      (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
+                  (t
+                   (make-state-string "-" "Semantic is up to date")))
+            ))
+    ;;(message "Setup mode line indicator to [%s]" semantic-show-parser-state-string)
+    (semantic-mode-line-update)))
 
 (defsetf lookup-key define-key)
-
-(require 'bar-cursor)
-(warn "Using replacement `bar-cursor-set-cursor'.")
-(defun bar-cursor-set-cursor (&optional frame)
-  "Replacement for buggy `bar-cursor-set-cursor' in `bar-cursor.el'."
-  (if (and bar-cursor-mode (not overwrite-mode))
-      (bar-cursor-set-cursor-type 'bar frame)
-    (bar-cursor-set-cursor-type 'box frame)))
-
-(let ((find-tag-bindings `( (,(kbd "M-.") . find-tag) (,(kbd "C-x 4 M-.") . find-tag-other-window)
-                            (,(kbd "C-x 5 M-.") . find-tag-other-frame))))
-  (unless (every (lambda (binding) (eq (global-key-binding (car binding))
-                                       (cdr binding)))
-                 find-tag-bindings)
-    (warn "Adding extra keybindings for find-tag-keys.")
-    (dolist (binding find-tag-bindings)
-      (setf (global-key-binding (car binding)) (cdr binding)))))
