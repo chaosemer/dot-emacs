@@ -27,7 +27,7 @@
 (global-semantic-show-unmatched-syntax-mode 1)
 
 (hook-minor-mode semantic-init-hooks
-  (setf (local-key-binding (kbd "M-TAB")) 'semantic-ia-complete-symbol
+  (setf (local-key-binding (kbd "M-TAB")) 'semantic-complete-analyze-inline
         (local-key-binding (kbd "M-.")) 'semantic-complete-jump))
 (defalias 'read-buffer 'iswitchb-read-buffer)
 
@@ -202,3 +202,62 @@ in many situations."
               ))
   ;;(message "Setup mode line indicator to [%s]" semantic-show-parser-state-string)
   (semantic-mode-line-update))
+(require 'semantic-complete)
+(defun semantic-complete-read-tag-engine (collector displayor prompt
+						    default-tag initial-input
+						    history)
+  "Read a semantic tag, and return a tag for the selection.
+Argument COLLECTOR is an object which can be used to to calculate
+a list of possible hits.  See `semantic-completion-collector-engine'
+for details on COLLECTOR.
+Argumeng DISPLAYOR is an object used to display a list of possible
+completions for a given prefix.  See`semantic-completion-display-engine'
+for details on DISPLAYOR.
+PROMPT is a string to prompt with.
+DEFAULT-TAG is a semantic tag or string to use as the default value.
+If INITIAL-INPUT is non-nil, insert it in the minibuffer initially.
+HISTORY is a symbol representing a variable to story the history in."
+  (let* ((semantic-completion-collector-engine collector)
+	 (semantic-completion-display-engine displayor)
+	 (semantic-complete-active-default nil)
+	 (semantic-complete-current-matched-tag nil)
+	 (ans nil)
+	 (tag nil)
+	 (default-as-tag (semantic-complete-default-to-tag default-tag))
+	 (default-as-string (when (semantic-tag-p default-as-tag)
+			      (semantic-tag-name default-as-tag)))
+	 )
+
+    (when (and (null initial-input) default-as-string)
+      (psetf initial-input default-as-string
+             default-as-string nil))
+    (when default-as-string
+      ;; Add this to the prompt.
+      ;;
+      ;; I really want to add a lookup of the symbol in those
+      ;; tags available to the collector and only add it if it
+      ;; is available as a possibility, but I'm too lazy right
+      ;; now.
+      ;;
+      (if (string-match ":" prompt)
+	  (setq prompt (concat
+			(substring prompt 0 (match-beginning 0))
+			" (" default-as-string ")"
+			(substring prompt (match-beginning 0))))
+	(setq prompt (concat prompt " (" default-as-string "): "))))
+    ;;
+    ;; Perform the Completion
+    ;;
+    (setq ans
+	  (read-from-minibuffer prompt
+				initial-input
+				semantic-complete-key-map
+				nil
+				(or history
+				    'semantic-completion-default-history)
+				default-tag))
+    ;;
+    ;; Extract the tag from the completion machinery.
+    ;;
+    semantic-complete-current-matched-tag
+    ))

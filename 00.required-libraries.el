@@ -53,7 +53,10 @@
 (unless (fboundp 'custom-autoload)
   (warn "Using old compatibility mode for `custom-autoload'")
   (defalias 'custom-autoload 'custom-add-load))
-(let ((movement-functions '(backward-sexp forward-sexp backward-up-list up-list down-list)))
+(let ((movement-functions '(backward-sexp forward-sexp backward-up-list up-list down-list
+                                          c-backward-conditional c-down-conditional
+                                          c-down-conditional-with-else c-forward-conditional
+                                          c-up-conditional c-up-conditional-with-else)))
   (unless (every (lambda (symbol) (eq 'move (get symbol 'CUA)))
                  movement-functions)
     (warn "Adding CUA property to all symbols that need it.")
@@ -69,3 +72,12 @@
   (if (and bar-cursor-mode (not overwrite-mode))
       (bar-cursor-set-cursor-type 'bar frame)
     (bar-cursor-set-cursor-type 'box frame)))
+
+(let ((find-tag-bindings `( (,(kbd "M-.") . find-tag) (,(kbd "C-x 4 M-.") . find-tag-other-window)
+                            (,(kbd "C-x 5 M-.") . find-tag-other-frame))))
+  (unless (every (lambda (binding) (eq (global-key-binding (car binding))
+                                       (cdr binding)))
+                 find-tag-bindings)
+    (warn "Adding extra keybindings for find-tag-keys.")
+    (dolist (binding find-tag-bindings)
+      (setf (global-key-binding (car binding)) (cdr binding)))))

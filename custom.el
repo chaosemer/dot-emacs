@@ -10,7 +10,6 @@
  '(CUA-mode-overwrite-cursor-color "black")
  '(CUA-mode-read-only-cursor-color "red")
  '(bar-cursor-mode t nil (bar-cursor))
- '(browse-url-browser-function (quote browse-url-default-browser))
  '(c-basic-offset 4)
  '(c-default-style "stroustrup")
  '(calculator-electric-mode t)
