@@ -32,7 +32,9 @@
 
 (hook-minor-mode semantic-init-hooks
   (setf (local-key-binding (kbd "M-TAB")) 'semantic-complete-analyze-inline
-        (local-key-binding (kbd "M-.")) 'semantic-complete-jump))
+        (local-key-binding (kbd "M-.")) 'semantic-complete-jump
+        (local-key-binding (kbd "C-x 4 .")) 'semantic-complete-jump-other-window
+        (local-key-binding (kbd "C-x 5 .")) 'semantic-complete-jump-other-frame))
 (defalias 'read-buffer 'iswitchb-read-buffer)
 
 (setf (default-value 'indent-tabs-mode) nil

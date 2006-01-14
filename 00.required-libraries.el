@@ -97,6 +97,9 @@
         (working-message "%S: %s "
                          (semantic-tag-class tag)
                          (semantic-tag-name  tag))))))
+(unless (fboundp 'global-hi-lock-mode)
+  (warn "Using old compatibility mode for GLOBAL-HI-LOCK-MODE")
+  (defalias 'global-hi-lock-mode 'hi-lock-mode))
 (progn
   (warn "Updating `semantic-show-parser-state-marker' to be more GUItiful.")
   ;; Update semantic-show-parser-state-marker
