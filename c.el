@@ -22,7 +22,7 @@
   "*Alist of extensions mapped to potential pair extensions.")
 
 (defun pair-file-list (filename)
-  (let ((extensions (cdr (assoc* (file-name-extension filename) file-extension-pair-alist
+  (let ((extensions (cdr (assoc* (file-name-extension filename) pair-file-extension-alist
                                  :test #'string=))))
     (loop for extension in extensions
           collect (format "%s.%s"
