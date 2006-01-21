@@ -1,3 +1,4 @@
+;;;; Diff mode customizations
 (defun hexl-find-file-noselect (file)
   "Find a file and put it into hexl-mode."
     (let ((buffer (find-file-noselect file nil t)))

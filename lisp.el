@@ -1,4 +1,4 @@
-;; Lisp ------------------------------------------------------------------------
+;;;; (Common) Lisp customizations
 (require 'slime)
 
 (setf inferior-lisp-program "sbcl")
@@ -7,9 +7,11 @@
 (push (lambda () (eq major-mode 'lisp-mode)) semantic-inhibit-functions)
 
 (hook-mode lisp-mode-hook
+  (make-variable-buffer-local 'browse-url-browser-function)
   (setf browse-url-browser-function 'w3m)
-    ;; Key bindings
+  (font-lock-add-keywords nil '(("^\\s *;;;.*$" (0 'section-comment-face t))
+                                ("^;;;;.*$" (0 'file-comment-face t))))
+  ;;; Key bindings
   (setf (local-key-binding (kbd "C-<down-mouse-3>")) (lambda () (interactive)
-                                                       (popup-menu slime-easy-menu)))
-  (make-variable-buffer-local 'browse-url-browser-function))
+                                                       (popup-menu slime-easy-menu))))
 

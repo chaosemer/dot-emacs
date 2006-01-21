@@ -1,3 +1,6 @@
+;;;; Global Emacs customizations.
+;;;;
+;;;; Put stuff here if you have nowhere else to put them
 (require 'dirvars)
 (require 'htmlize-view)
 (require-noerror 'gnuserv-compat)
@@ -246,3 +249,9 @@ Pair files are determined by `pair-file-list'."
       (global-key-binding (kbd "C-x 4 h")) #'switch-to-pair-file-other-window
       (global-key-binding (kbd "C-x 5 C-h")) #'switch-to-pair-file-other-frame
       (global-key-binding (kbd "C-x 5 h")) #'switch-to-pair-file-other-frame)
+
+;;; Other misc stuff
+(defun scratch ()
+  "Switch to the scratch buffer."
+  (interactive)
+  (display-buffer (get-buffer-create "*scratch*") nil t))

@@ -1,9 +1,11 @@
-;; Emacs Lisp ------------------------------------------------------------------
+;;;; Emacs Lisp customizations
 (push (lambda () (eq major-mode 'emacs-lisp-mode)) semantic-inhibit-functions)
 (hook-mode emacs-lisp-mode-hook
   (setf (local-key-binding (kbd "M-.")) 'find-thing
         (local-key-binding (kbd "C-x 4 .")) 'find-thing-other-window
-        (local-key-binding (kbd "C-x 5 .")) 'find-thing-other-frame))
+        (local-key-binding (kbd "C-x 5 .")) 'find-thing-other-frame)
+  (font-lock-add-keywords nil '(("^\\s *;;;.*$" (0 'section-comment-face t))
+                                ("^;;;;.*$" (0 'file-comment-face t)))))
 
 ;; NOTE:
 ;; this function should be added to cl.el

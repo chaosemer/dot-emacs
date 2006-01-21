@@ -1,5 +1,4 @@
 ;;;; Misc utilities that I like to use throughout my init file.
-
 (require 'cl)
 
 ;;; A new and improved DEFMACRO.
@@ -14,8 +13,8 @@
       "^\\s-*(\\(def\\(ine-skeleton\\|ine-generic-mode\\|ine-derived-mode\\|ine\\(?:-global\\)?-minor-mode\\|ine-compilation-mode\\|un-cvs-mode\\|foo\\|[^cfgv]\\w+\\*?\\+?\\)\\|easy-mmode-define-[a-z-]+\\|easy-menu-define\\|menu-bar-make-toggle\\)\\(?:\\s-\\|\n\\|;.*\n\\)+\\('\\|(quote \\)?%s\\(\\s-\\|$\\|(\\|)\\)")
 (font-lock-add-keywords 'emacs-lisp-mode
                         '(("(\\(defmacro\\+\\) \\s *\\(\\(?:\\sw\\|\\s_\\)*\\)"
-                           (1 font-lock-keyword-face)
-                           (2 font-lock-function-name-face))))
+                           (1 'font-lock-keyword-face)
+                           (2 'font-lock-function-name-face))))
 
 ;;; Allow me to declaratively hook things, automatically removing the hook when redefined.
 (defmacro+ hook-mode (hook &body modes)
