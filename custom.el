@@ -36,7 +36,7 @@
  '(ilisp-*use-fsf-compliant-keybindings* t)
  '(ilisp-bindings-*bind-right-bracket-p* t)
  '(indicate-empty-lines t)
- '(inhibit-splash-screen t)
+ '(inhibit-startup-message t)
  '(jit-lock-stealth-time 0.2)
  '(midnight-mode t nil (midnight))
  '(mouse-autoselect-window t)
@@ -45,7 +45,7 @@
  '(nxml-slash-auto-complete-flag t)
  '(scroll-bar-mode (quote right))
  '(semantic-idle-scheduler-idle-time 0.5)
- '(show-paren-mode t)
+ '(show-paren-mode t nil (paren))
  '(show-paren-style (quote expression))
  '(speedbar-supported-extension-expressions (quote (".[ch]\\(\\+\\+\\|pp\\|c\\|h\\|xx\\)?" ".tex\\(i\\(nfo\\)?\\)?" ".el" ".emacs" ".l" ".lsp" ".lisp" ".lml" ".p" ".java" ".f\\(90\\|77\\|or\\)?" ".ada" ".p[lm]" ".tcl" ".m" ".scm" ".pm" ".py" ".g" ".s?html" "[Mm]akefile\\(\\.in\\)?" ".xml")))
  '(tab-stop-list (quote (4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100)))
@@ -62,4 +62,6 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(mode-line-highlight ((((class color) (min-colors 88)) (:background "royal blue" :foreground "white" :box (:line-width 2 :color "steel blue" :style released-button))))))
+ '(mode-line-highlight ((((class color) (min-colors 88)) (:background "royal blue" :foreground "white" :box (:line-width 2 :color "steel blue" :style released-button)))))
+ '(nxml-comment-content-face ((t (:inherit font-lock-comment-face))))
+ '(nxml-comment-delimiter-face ((t (:inherit font-lock-comment-delimiter-face)))))
