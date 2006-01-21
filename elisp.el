@@ -1,6 +1,6 @@
 ;; Emacs Lisp ------------------------------------------------------------------
 (push (lambda () (eq major-mode 'emacs-lisp-mode)) semantic-inhibit-functions)
-(hook-minor-mode emacs-lisp-mode-hook
+(hook-mode emacs-lisp-mode-hook
   (setf (local-key-binding (kbd "M-.")) 'find-thing
         (local-key-binding (kbd "C-x 4 .")) 'find-thing-other-window
         (local-key-binding (kbd "C-x 5 .")) 'find-thing-other-frame))

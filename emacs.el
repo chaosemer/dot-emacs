@@ -1,5 +1,4 @@
 (require 'dirvars)
-(require 'printing)
 (require 'htmlize-view)
 (require-noerror 'gnuserv-compat)
 
@@ -26,11 +25,9 @@
 (global-semantic-idle-scheduler-mode 1)
 (global-semantic-show-parser-state-mode 1)
 (global-semantic-idle-summary-mode 1)
-(progn
-  (htmlize-view-add-to-files-menu)
-  (pr-menu-bind))
+(htmlize-view-add-to-files-menu)
 
-(hook-minor-mode semantic-init-hooks
+(hook-mode semantic-init-hooks
   (setf (local-key-binding (kbd "M-TAB")) 'semantic-complete-analyze-inline
         (local-key-binding (kbd "M-.")) 'semantic-complete-jump
         (local-key-binding (kbd "C-x 4 .")) 'semantic-complete-jump-other-window
@@ -113,14 +110,7 @@
       (global-key-binding (kbd "M-<home>")) nil
       (global-key-binding (kbd "M-<end>")) nil)
 
-;; Spellcheck on save
-;(add-hook 'before-save-hook #'ispell-buffer)
-;(setf kill-emacs-hook (remove 'ede-save-cache kill-emacs-hook)) ; There seems to be a problem with
-;                                                                ; and spellchecking on save.  So I'm
-;                                                                ; going to remove EDE for now
-
-
-;; DWIM <home> and <end>
+;;; DWIM <home> and <end>
 (defun beginning-of-line-dwim (&optional n)
   "Move point to the first non-whitespace character or the beginning of line."
   (interactive "p")
@@ -146,7 +136,7 @@
 (setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim        
       (global-key-binding (kbd "<end>")) 'end-of-line-dwim)
 
-;; Recursive edits
+;;; Recursive edits
 (defun push-or-pop-excursion (pop?)
   "Pushes or pops an excursion, depending on the prefix arg."
   (interactive (list current-prefix-arg))
@@ -157,99 +147,102 @@
       (throw 'exit 'nil))))
 (setf (global-key-binding (kbd "C-x C-p")) 'push-or-pop-excursion)
 
-;; Update semantic-show-parser-state-marker
-(require 'semantic-util-modes)
-(setf (get 'semantic-show-parser-state-string 'risky-local-variable) t)
-(defun semantic-show-parser-state-marker (&rest ignore)
-  "Set `semantic-show-parser-state-string' to indicate parser state.
-This marker is one of the following:
- `-'  ->  The cache is up to date.
- `!'  ->  The cache requires a full update.
- `~'  ->  The cache needs to be incrementally parsed.
- `%'  ->  The cache is not currently parseable.
- `@'  ->  Auto-parse in progress (not set here.)
-Arguments IGNORE are ignored, and accepted so this can be used as a hook
-in many situations."
-  (labels ((make-state-string (string &optional (help-echo "") func)
-             (if func
-                 (let ((map (make-sparse-keymap)))
-                   (setf (lookup-key map (kbd "<mode-line> <mouse-1>")) func)
-                   (propertize string
-                               'help-echo help-echo
-                               'mouse-face 'mode-line-highlight
-                               'local-map map))
-               (propertize string 'help-echo help-echo))))
-    (setf semantic-show-parser-state-string
-          (cond ((semantic-parse-tree-needs-rebuild-p) 
-                 (make-state-string "!" "Needs a full parse: mouse-1 reparses"
-                                    (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
-                 ((semantic-parse-tree-needs-update-p)
-                  (make-state-string "^" "Needs an incremental parse: mouse-1 reparses"
-                                     (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
-                 ((semantic-parse-tree-unparseable-p)
-                  (make-state-string "%" "Buffer Unparsable: mouse-1 reparses"
-                                     (lambda () (interactive) (semantic-refresh-tags-safe) nil)))
-                 (t
-                  (make-state-string "-" "Semantic is up to date")))
-              ))
-  ;;(message "Setup mode line indicator to [%s]" semantic-show-parser-state-string)
-  (semantic-mode-line-update))
-(require 'semantic-complete)
-(defun semantic-complete-read-tag-engine (collector displayor prompt
-						    default-tag initial-input
-						    history)
-  "Read a semantic tag, and return a tag for the selection.
-Argument COLLECTOR is an object which can be used to to calculate
-a list of possible hits.  See `semantic-completion-collector-engine'
-for details on COLLECTOR.
-Argumeng DISPLAYOR is an object used to display a list of possible
-completions for a given prefix.  See`semantic-completion-display-engine'
-for details on DISPLAYOR.
-PROMPT is a string to prompt with.
-DEFAULT-TAG is a semantic tag or string to use as the default value.
-If INITIAL-INPUT is non-nil, insert it in the minibuffer initially.
-HISTORY is a symbol representing a variable to story the history in."
-  (let* ((semantic-completion-collector-engine collector)
-	 (semantic-completion-display-engine displayor)
-	 (semantic-complete-active-default nil)
-	 (semantic-complete-current-matched-tag nil)
-	 (ans nil)
-	 (tag nil)
-	 (default-as-tag (semantic-complete-default-to-tag default-tag))
-	 (default-as-string (when (semantic-tag-p default-as-tag)
-			      (semantic-tag-name default-as-tag)))
-	 )
+;;; Section and File level comment functionality.
+;;;
+;;; This allows for section and file level comments to be rendered bigger than normal text, so they
+;;; stand out a bit more.
+(defgroup jared
+  nil
+  "Places to customize things added by me"
+  :group 'emacs)
 
-    (when (and (null initial-input) default-as-string)
-      (psetf initial-input default-as-string
-             default-as-string nil))
-    (when default-as-string
-      ;; Add this to the prompt.
-      ;;
-      ;; I really want to add a lookup of the symbol in those
-      ;; tags available to the collector and only add it if it
-      ;; is available as a possibility, but I'm too lazy right
-      ;; now.
-      ;;
-      (if (string-match ":" prompt)
-	  (setq prompt (concat
-			(substring prompt 0 (match-beginning 0))
-			" (" default-as-string ")"
-			(substring prompt (match-beginning 0))))
-	(setq prompt (concat prompt " (" default-as-string "): "))))
-    ;;
-    ;; Perform the Completion
-    ;;
-    (setq ans
-	  (read-from-minibuffer prompt
-				initial-input
-				semantic-complete-key-map
-				nil
-				(or history
-				    'semantic-completion-default-history)
-				default-tag))
-    ;;
-    ;; Extract the tag from the completion machinery.
-    ;;
-    semantic-complete-current-matched-tag
-    ))
+(defface section-comment-face
+  '((t (:height 1.2 :inherit font-lock-comment-face)))
+  "Face for section level comments"
+  :group 'jared)
+(defface file-comment-face
+  '((t (:height 1.5 :weight bold :inherit font-lock-comment-face)))
+  "Face for file level comments"
+  :group 'jared)
+
+;;; Pair file navigation
+;;;
+;;; Many programming languages have the concept of two related files, like C's source and header
+;;; files.  This allows you to navigate between two pair files with the press of a key.
+(defvar pair-file-extension-alist
+  ;; Can't allow literal data to be modified...
+  (copy-tree '(("c" "h")
+               ("h" "c" "cpp")
+               ("cpp" "hpp" "h")
+               ("hpp" "cpp")))
+  "*Alist of extensions mapped to potential pair extensions.")
+
+(defun pair-file-list (filename)
+  "Return a list of all potential pair files for filename,
+ordered by preference
+
+Pair files are determined by replacing the extension of FILENAME
+with each extension listed in `pair-file-extension-alist' for
+that extension."
+  (let ((extensions (cdr (assoc* (file-name-extension filename) pair-file-extension-alist
+                                 :test #'string=))))
+    (loop for extension in extensions
+          collect (format "%s.%s"
+                          (file-name-sans-extension filename)
+                          extension))))
+
+(defun* find-pair-file-1 (filename switch-fn)
+  (let ((files (pair-file-list filename)))
+    (when files
+      (dolist (file files)
+        (when (file-exists-p file)
+          (return-from find-pair-file-1
+            (funcall switch-fn (find-file-noselect file))))))
+    (error "No known pair for file %s" filename)))
+
+(defun find-pair-file-read-args (prompt)
+  (list (read-file-name prompt nil buffer-file-name)))
+
+(defun find-pair-file (filename)
+  "Edit the pair file of FILENAME.
+
+Pair files are determined by `pair-file-list'."
+  (interactive (find-pair-file-read-args "Find pair file of: "))
+  (find-pair-file-1 filename #'switch-to-buffer))
+(defun find-pair-file-other-window (filename)
+  "Edit the pair file of FILENAME in another window.
+
+Pair files are determined by `pair-file-list'."
+  (interactive (find-pair-file-read-args "Find pair file in other window of: "))
+  (find-pair-file-1 filename #'switch-to-buffer-other-window))
+(defun find-pair-file-other-frame (filename)
+  "Edit the pair file of FILENAME in another frame.
+
+Pair files are determined by `pair-file-list'."
+  (interactive (find-pair-file-read-args "Find pair file in other frame of: "))
+  (find-pair-file-1 filename #'switch-to-buffer-other-frame))
+
+(defun switch-to-pair-file ()
+  "Display the pair file of the current file in the same window.
+
+Pair files are determined by `pair-file-list'."
+  (interactive)
+  (find-pair-file buffer-file-name))
+(defun switch-to-pair-file-other-window ()
+  "Display the pair file of the current file in another window.
+
+Pair files are determined by `pair-file-list'."
+  (interactive)
+  (find-pair-file-other-window buffer-file-name))
+(defun switch-to-pair-file-other-frame ()
+  "Display the pair file of the current file in another frame.
+
+Pair files are determined by `pair-file-list'."
+  (interactive)
+  (find-pair-file-other-frame buffer-file-name))
+
+(setf (global-key-binding (kbd "C-x C-h")) #'switch-to-pair-file
+      (global-key-binding (kbd "C-x 4 C-h")) #'switch-to-pair-file-other-window
+      (global-key-binding (kbd "C-x 4 h")) #'switch-to-pair-file-other-window
+      (global-key-binding (kbd "C-x 5 C-h")) #'switch-to-pair-file-other-frame
+      (global-key-binding (kbd "C-x 5 h")) #'switch-to-pair-file-other-frame)

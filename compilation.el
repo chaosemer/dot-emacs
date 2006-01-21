@@ -1,2 +1,2 @@
-(hook-minor-mode compilation-mode-hook
+(hook-mode compilation-mode-hook
   next-error-follow-minor-mode)

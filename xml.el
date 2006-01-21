@@ -1,7 +1,7 @@
 ;; Configuration for XML files
 (defalias 'xml-mode 'nxml-mode)
 
-(hook-minor-mode nxml-mode-hook
+(hook-mode nxml-mode-hook
 
   ;;key bindings 
   (setf (local-key-binding (kbd "M-<up>")) 'nxml-backward-up-element

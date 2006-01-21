@@ -30,7 +30,7 @@
  '(focus-follows-mouse t)
  '(gdb-many-windows t)
  '(global-font-lock-mode t nil (font-lock))
- '(hi-lock-mode t nil (hi-lock))
+ '(hi-lock-mode t t (hi-lock))
  '(hide-ifdef-initially t)
  '(ielm-mode-hook (quote ((lambda nil (eldoc-mode 1)))))
  '(ilisp-*use-fsf-compliant-keybindings* t)
