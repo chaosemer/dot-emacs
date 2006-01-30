@@ -9,6 +9,10 @@
   (message "Using old compatibility mode for `warn'")
   (defalias 'warn 'message))
 
+(unless (fboundp 'next-error-follow-minor-mode)
+  (message "Using old compatibility mode for `next-error-follow-minor-mode")
+  (defun next-error-follow-minor-mode (arg)))
+
 (unless (fboundp 'cua-mode)
   (require 'cua)
   (warn "Using old compatibility mode for `cua-mode'")
@@ -188,3 +192,14 @@ HISTORY is a symbol representing a variable to story the history in."
 (progn
   (warn "Adding setf expansion for `define-key'")
   (defsetf lookup-key define-key))
+
+(progn
+  (warn "Disabling backups on remote files.  TRAMP has issues with smb backups files.")
+  (require 'tramp)
+  (pushnew (lambda ()
+             (when (and (tramp-tramp-file-p buffer-file-name)
+                        (tramp-smb-file-name-p buffer-file-name))
+               (make-local-variable 'backup-inhibited)
+               (setf backup-inhibited t)))
+           find-file-hook
+           :test #'equal))

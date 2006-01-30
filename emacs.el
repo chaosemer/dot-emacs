@@ -154,24 +154,22 @@
 ;;;
 ;;; This allows for section and file level comments to be rendered bigger than normal text, so they
 ;;; stand out a bit more.
-(defgroup jared
-  nil
-  "Places to customize things added by me"
-  :group 'emacs)
-
 (defface section-comment-face
   '((t (:height 1.2 :inherit font-lock-comment-face)))
   "Face for section level comments"
-  :group 'jared)
+  :group 'local)
 (defface file-comment-face
   '((t (:height 1.5 :weight bold :inherit font-lock-comment-face)))
   "Face for file level comments"
-  :group 'jared)
+  :group 'local)
 
 ;;; Pair file navigation
 ;;;
 ;;; Many programming languages have the concept of two related files, like C's source and header
 ;;; files.  This allows you to navigate between two pair files with the press of a key.
+;;;
+;;; NOTE: This is somewhat duplicate functionality to ff-find-other-file.  Mine supports finding in
+;;; other frames and other windows, for convience, while ff-find-other-file does not.
 (defvar pair-file-extension-alist
   ;; Can't allow literal data to be modified...
   (copy-tree '(("c" "h")
