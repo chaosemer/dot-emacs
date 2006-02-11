@@ -111,7 +111,9 @@
       (global-key-binding (kbd "C-<prior>")) nil
       (global-key-binding (kbd "C-x m")) nil
       (global-key-binding (kbd "M-<home>")) nil
-      (global-key-binding (kbd "M-<end>")) nil)
+      (global-key-binding (kbd "M-<end>")) nil
+      (global-key-binding (kbd "C-x <left>")) nil
+      (global-key-binding (kbd "C-x <right>")) nil)
 
 ;;; DWIM <home> and <end>
 (defun beginning-of-line-dwim (&optional n)
