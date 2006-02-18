@@ -107,13 +107,10 @@
       (global-key-binding (kbd "M-<backspace>")) 'backward-kill-sexp)
 
 ;; I'm always mistakenly hitting these
-(setf (global-key-binding (kbd "C-<next>")) nil
-      (global-key-binding (kbd "C-<prior>")) nil
-      (global-key-binding (kbd "C-x m")) nil
-      (global-key-binding (kbd "M-<home>")) nil
-      (global-key-binding (kbd "M-<end>")) nil
-      (global-key-binding (kbd "C-x <left>")) nil
-      (global-key-binding (kbd "C-x <right>")) nil)
+(dolist (key '("C-<next>" "C-<prior>" "C-x m" "M-<home>" "M-<end>" "M-<begin>" "C-x <left>"
+               "C-x <right>" "M-<begin>" "M-<next>" "M-<prior>" "C-M-v" "C-M-S-v" "ESC <begin>"
+               "ESC <end>" "ESC <home>" "ESC <next>" "ESC <prior>"))
+  (setf (global-key-binding (read-kbd-macro key)) nil))
 
 ;;; DWIM <home> and <end>
 (defun beginning-of-line-dwim (&optional n)

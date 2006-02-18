@@ -22,6 +22,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-file "~/.emacs.d/custom.el")
  '(default-frame-alist (quote ((vertical-scroll-bars . right) (tool-bar-lines . 0) (menu-bar-lines . 1) (width . 131) (height . 58))))
+ '(ediff-keep-variants nil)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(emacs-lisp-mode-hook (quote (turn-on-eldoc-mode semantic-default-elisp-setup)))
