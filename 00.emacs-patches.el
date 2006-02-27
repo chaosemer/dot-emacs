@@ -193,13 +193,64 @@ HISTORY is a symbol representing a variable to story the history in."
   (warn "Adding setf expansion for `define-key'")
   (defsetf lookup-key define-key))
 
+(when (require 'tramp nil t)
+  (unless (string< "2.0.52" tramp-version)
+    (require 'tramp-smb)
+    (warn "Disabling backups on remote files.  TRAMP has issues with smb backups files.")
+    (defun tramp-smb-wait-for-output (user host)
+      "Wait for output from smbclient command.
+Returns nil if an error message has appeared."
+      (let ((proc (get-buffer-process (current-buffer)))
+	    (found (progn (goto-char (point-min))
+			  (re-search-forward tramp-smb-prompt nil t)))
+	    (err   (progn (goto-char (point-min))
+			  (re-search-forward tramp-smb-errors nil t))))
+
+	;; Algorithm: get waiting output.  See if last line contains
+	;; tramp-smb-prompt sentinel or tramp-smb-errors strings.
+	;; If not, wait a bit and again get waiting output.
+	(while (and (not found) (not err))
+
+	  ;; Accept pending output.
+	  (tramp-accept-process-output proc)
+
+	  ;; Search for prompt.
+	  (goto-char (point-min))
+	  (setq found (re-search-forward tramp-smb-prompt nil t))
+
+	  ;; Search for errors.
+	  (goto-char (point-min))
+	  (setq err (re-search-forward tramp-smb-errors nil t)))
+
+	;; Add output to debug buffer if appropriate.
+	(when tramp-debug-buffer
+	  (append-to-buffer
+	   (tramp-get-debug-buffer nil tramp-smb-method user host)
+	   (point-min) (point-max)))
+
+	;; Return value is whether no error message has appeared.
+	(not err)))))
+
+(unless (fboundp 'define-global-minor-mode)
+  (warn "Using old compatibiltily mode for `define-global-minor-mode'.")
+  (defmacro define-global-minor-mode (&rest ignored)))
+
 (progn
-  (warn "Disabling backups on remote files.  TRAMP has issues with smb backups files.")
-  (require 'tramp)
-  (pushnew (lambda ()
-             (when (and (tramp-tramp-file-p buffer-file-name)
-                        (tramp-smb-file-name-p buffer-file-name))
-               (make-local-variable 'backup-inhibited)
-               (setf backup-inhibited t)))
-           find-file-hook
-           :test #'equal))
+  (warn "Cleaning up file menu bar")
+  (define-key menu-bar-file-menu [new-file]
+    '(menu-item "New File"
+                (lambda ()
+                  (interactive)
+                  (switch-to-buffer (generate-new-buffer "untitled")))
+                :enable (menu-bar-non-minibuffer-window-p)
+                :help "Create a new buffer"))
+  (define-key menu-bar-file-menu [open-file]
+    '(menu-item "Open File..." find-file
+                :enable (menu-bar-non-minibuffer-window-p)
+                :help "Open an existing file"))
+  (define-key menu-bar-file-menu [print-buffer] nil)
+  (define-key menu-bar-file-menu [print-region] nil)
+  (define-key menu-bar-file-menu [ps-print-buffer-faces] nil)
+  (define-key menu-bar-file-menu [ps-print-region-faces] nil)
+  (define-key menu-bar-file-menu [ps-print-buffer] nil)
+  (define-key menu-bar-file-menu [ps-print-region] nil))

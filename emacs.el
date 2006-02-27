@@ -28,6 +28,7 @@
 (global-semantic-idle-scheduler-mode 1)
 (global-semantic-show-parser-state-mode 1)
 (global-semantic-idle-summary-mode 1)
+(global-balanced-mode 1)
 (htmlize-view-add-to-files-menu)
 
 (hook-mode semantic-init-hooks
@@ -43,7 +44,8 @@
       frame-title-format "%b - Emacs"
       icon-title-format "%b - Emacs"
       x-stretch-cursor t
-      scroll-conservatively most-positive-fixnum)
+      scroll-conservatively most-positive-fixnum
+      parse-sexp-lookup-properties t)
 
 (when (require-noerror 'fringe)
   (set-fringe-mode nil)
