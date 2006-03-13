@@ -6,18 +6,13 @@
 (require-noerror 'gnuserv-compat)
 
 ;; Global customizations -------------------------------------------------------
-(setf (lookup-key camelCase-mode-map (kbd "M-<left>")) nil
-      (lookup-key camelCase-mode-map (kbd "M-<right>")) nil
-      (lookup-key camelCase-mode-map (kbd "M-<delete>")) nil
-      (lookup-key camelCase-mode-map (kbd "M-<backspace>")) nil)
 (camelCase-mode 1)
 (column-number-mode 1)
 (column-number-mode 1)
 (cua-mode 1)
 (global-hi-lock-mode 1)
 (hrule-mode 1)
-(iswitchb-mode 1)
-(iswitchb-mode 1)
+(ido-mode 1)
 (menu-bar-mode (if window-system 1 -1))
 (mouse-wheel-mode 1)
 (show-paren-mode 1)

@@ -254,3 +254,15 @@ Returns nil if an error message has appeared."
   (define-key menu-bar-file-menu [ps-print-region-faces] nil)
   (define-key menu-bar-file-menu [ps-print-buffer] nil)
   (define-key menu-bar-file-menu [ps-print-region] nil))
+
+(progn
+  (warn "Cleaning up camelCase map")
+  (setf camelCase-keybindings-list
+        '(([remap forward-word]       camelCase-forward-word)
+          ([remap backward-word]      camelCase-backward-word)
+          ([remap kill-word]          camelCase-forward-kill-word)
+          ([remap backward-kill-word] camelCase-backward-kill-word)
+          ([remap transpose-words]    camelCase-transpose-words)
+          ([remap capitalize-word]    camelCase-capitalize-word)
+          ([remap upcase-word]        camelCase-upcase-word)
+          ([remap downcase-word]      camelCase-downcase-word))))
