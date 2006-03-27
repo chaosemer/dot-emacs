@@ -8,7 +8,6 @@
 ;; Global customizations -------------------------------------------------------
 (camelCase-mode 1)
 (column-number-mode 1)
-(column-number-mode 1)
 (cua-mode 1)
 (global-hi-lock-mode 1)
 (hrule-mode 1)
@@ -17,7 +16,6 @@
 (mouse-wheel-mode 1)
 (show-paren-mode 1)
 (tool-bar-mode -1)
-(tooltip-mode -1)
 (global-font-lock-mode 1)
 (global-semanticdb-minor-mode 1)
 (global-semantic-idle-scheduler-mode 1)
