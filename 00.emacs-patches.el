@@ -233,7 +233,7 @@ Returns nil if an error message has appeared."
 
 (unless (fboundp 'define-global-minor-mode)
   (warn "Using old compatibiltily mode for `define-global-minor-mode'.")
-  (defmacro define-global-minor-mode (&rest ignored)))
+  (defalias 'define-global-minor-mode 'easy-mmode-define-global-mode))
 
 (progn
   (warn "Cleaning up file menu bar")

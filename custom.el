@@ -9,6 +9,7 @@
   ;; If there is more than one, they won't work right.
  '(CUA-mode-overwrite-cursor-color "black")
  '(CUA-mode-read-only-cursor-color "red")
+ '(Man-section-translations-alist (quote (("3C++" . "3") ("3X11" . "3") ("1-UCB" . "") ("3G" . "3"))))
  '(bar-cursor-mode t nil (bar-cursor))
  '(c-basic-offset 4)
  '(c-default-style "stroustrup")
@@ -48,6 +49,7 @@
  '(jit-lock-stealth-time 0.2)
  '(load-home-init-file t t)
  '(midnight-mode t nil (midnight))
+ '(minibuffer-prompt-properties (quote (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
  '(mouse-autoselect-window t)
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount (quote (3 ((control)))))
