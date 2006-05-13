@@ -6,7 +6,7 @@
 (require-noerror 'gnuserv-compat)
 
 ;; Global customizations -------------------------------------------------------
-(camelCase-mode 1)
+(global-c-subword-mode 1)
 (column-number-mode 1)
 (cua-mode 1)
 (global-hi-lock-mode 1)
@@ -23,13 +23,15 @@
 (global-semantic-idle-summary-mode 1)
 (global-balanced-mode 1)
 (htmlize-view-add-to-files-menu)
+(hook-mode emacs-startup-hook
+  (with-current-buffer (get-buffer "*scratch*")
+    (setf buffer-offer-save t)))
 
 (hook-mode semantic-init-hooks
   (setf (local-key-binding (kbd "M-TAB")) 'semantic-complete-analyze-inline
         (local-key-binding (kbd "M-.")) 'semantic-complete-jump
         (local-key-binding (kbd "C-x 4 .")) 'semantic-complete-jump-other-window
         (local-key-binding (kbd "C-x 5 .")) 'semantic-complete-jump-other-frame))
-(defalias 'read-buffer 'iswitchb-read-buffer)
 
 (setf (default-value 'indent-tabs-mode) nil
       (default-value 'truncate-lines) nil
@@ -55,11 +57,14 @@
 
 ;; usual editor bindings
 (setf (global-key-binding (kbd "C-f")) 'occur
-      (global-key-binding (kbd "C-S-f")) 'grep-tree
+      (global-key-binding (kbd "C-S-f")) 'rgrep
       (global-key-binding (kbd "C-g")) 'goto-line
       (global-key-binding (kbd "<f7>")) 'recompile
       (global-key-binding (kbd "C-<f7>")) 'compile
-      (global-key-binding (kbd "S-<f7>")) 'kill-compilation)
+      (global-key-binding (kbd "S-<f7>")) 'kill-compilation
+      (global-key-binding (kbd "C-a")) 'mark-whole-buffer      
+      (global-key-binding (kbd "M-<home>")) 'beginning-of-defun
+      (global-key-binding (kbd "M-<end>")) 'end-of-defun)
 
 ;; Window system integration
 (when window-system
