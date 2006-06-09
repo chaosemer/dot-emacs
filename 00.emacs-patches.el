@@ -20,7 +20,7 @@
 
 (unless (fboundp 'rgrep)
   (warn "Using old compatibility mode for `rgrep'")
-  (defalias 'rgrep 'grep-find))
+  (defalias 'rgrep (if (fboundp 'grep-tree) 'grep-tree 'grep-find)))
 
 (unless (fboundp 'global-semantic-idle-completions-mode)
   (warn "Using old compatibility mode for `global-semantic-idle-completions-mode'")
@@ -255,6 +255,62 @@ Returns nil if an error message has appeared."
   (define-key menu-bar-file-menu [ps-print-region-faces] nil)
   (define-key menu-bar-file-menu [ps-print-buffer] nil)
   (define-key menu-bar-file-menu [ps-print-region] nil))
+
+(progn
+  (warn "Fixing bug where Semantic does not respect `tooltip-use-echo-area'.")
+  (require 'semantic-complete)
+  (defmethod semantic-displayor-show-request ((obj semantic-displayor-tooltip))
+    "A request to show the current tags table."
+    (if (or (not (featurep 'tooltip)) (not tooltip-mode) tooltip-use-echo-area)
+        ;; If we cannot use tooltips, then go to the normal mode with
+        ;; a traditional completion buffer.
+        (call-next-method)
+      (let* ((tablelong (semanticdb-strip-find-results (oref obj table)))
+             (table (semantic-unique-tag-table-by-name tablelong))
+             (l (mapcar semantic-completion-displayor-format-tag-function table))
+             (ll (length l))
+             (typing-count (oref obj typing-count))
+             (force-show (oref obj force-show))
+             (matchtxt (semantic-completion-text))
+             msg)
+        (if (or (oref obj shown)
+                (< ll (oref obj max-tags))
+                (and (<= 0 force-show)
+                     (< (1- force-show) typing-count)))
+            (progn
+              (oset obj typing-count 0)
+              (oset obj shown t)
+              (if (eq 1 ll)
+                  ;; We Have only one possible match.  There could be two cases.
+                  ;; 1) input text != single match.
+                  ;;    --> Show it!
+                  ;; 2) input text == single match.
+                  ;;   --> Complain about it, but still show the match.
+                  (if (string= matchtxt (semantic-tag-name (car table)))
+                      (setq msg (concat "[COMPLETE]\n" (car l)))
+                    (setq msg (car l)))
+                ;; Create the long message.
+                (setq msg (mapconcat 'identity l "\n"))
+                ;; If there is nothing, say so!
+                (if (eq 0 (length msg))
+                    (setq msg "[NO MATCH]")))
+              (semantic-displayor-tooltip-show msg))
+          ;; The typing count determines if the user REALLY REALLY
+          ;; wanted to show that much stuff.  Only increment
+          ;; if the current command is a completion command.
+          (if (and (stringp (this-command-keys))
+                   (string= (this-command-keys) "\C-i"))
+              (oset obj typing-count (1+ typing-count)))
+          ;; At this point, we know we have too many items.
+          ;; Lets be brave, and truncate l
+          (setcdr (nthcdr (oref obj max-tags) l) nil)
+          (setq msg (mapconcat 'identity l "\n"))
+          (cond
+           ((= force-show -1)
+            (semantic-displayor-tooltip-show (concat msg "\n...")))
+           ((= force-show 1)
+            (semantic-displayor-tooltip-show (concat msg "\n(TAB for more)")))
+           ))))))
 
 (unless (fboundp 'global-c-subword-mode)
   (warn "Defining global-c-subword-mode")
