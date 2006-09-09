@@ -46,7 +46,8 @@
                   c-down-conditional c-up-conditional
                   c-down-conditional-with-else
                   c-up-conditional-with-else
-                  c-forward-subword c-backward-subword)))
+                  c-forward-subword c-backward-subword
+                  c-beginning-of-statement c-end-of-statement)))
   (unless (every (lambda (symbol) (eq 'move (get symbol 'CUA)))
                  move-fns)
     (warn "Adding CUA property to all symbols that need it.")

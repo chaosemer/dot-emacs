@@ -26,12 +26,24 @@
 (hook-mode emacs-startup-hook
   (with-current-buffer (get-buffer "*scratch*")
     (setf buffer-offer-save t)))
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (hook-mode semantic-init-hooks
-  (setf (local-key-binding (kbd "M-TAB")) 'semantic-complete-analyze-inline
-        (local-key-binding (kbd "M-.")) 'semantic-complete-jump
-        (local-key-binding (kbd "C-x 4 .")) 'semantic-complete-jump-other-window
-        (local-key-binding (kbd "C-x 5 .")) 'semantic-complete-jump-other-frame))
+  (psetf (local-key-binding (kbd "M-TAB")) 'semantic-complete-analyze-inline
+         (local-key-binding (kbd "M-.")) 'semantic-complete-jump
+         (local-key-binding (kbd "C-x 4 .")) 'semantic-complete-jump-other-window
+         (local-key-binding (kbd "C-x 5 .")) 'semantic-complete-jump-other-frame
+         
+         ;; And keep backups of the old bindings -- they're designed to be similar to the EBrowse
+         ;; binding of "C-c C" set in c.el
+         (local-key-binding (kbd "C-c T TAB")) 'complete-tag
+         (local-key-binding (kbd "C-c T %")) 'tags-query-replace
+         (local-key-binding (kbd "C-c T .")) 'find-tag
+         (local-key-binding (kbd "C-c T ,")) 'tags-loop-continue
+         (local-key-binding (kbd "C-c T 4 .")) 'find-tag-other-window
+         (local-key-binding (kbd "C-c T 5 .")) 'find-tag-other-frame
+         (local-key-binding (kbd "C-c T a")) 'tags-apropos
+         (local-key-binding (kbd "C-c T s")) 'tags-search))
 
 (setf (default-value 'indent-tabs-mode) nil
       (default-value 'truncate-lines) nil
@@ -65,6 +77,10 @@
       (global-key-binding (kbd "C-a")) 'mark-whole-buffer      
       (global-key-binding (kbd "M-<home>")) 'beginning-of-defun
       (global-key-binding (kbd "M-<end>")) 'end-of-defun)
+
+;; some more consistant key bindings
+(setf (global-key-binding (kbd "C-x 4 <next>")) 'scroll-other-window
+      (global-key-binding (kbd "C-x 4 <prior>")) 'scroll-other-window-down)
 
 ;; Window system integration
 (when window-system
@@ -191,13 +207,16 @@ that extension."
                           (file-name-sans-extension filename)
                           extension))))
 
-(defun* find-pair-file-1 (filename switch-fn)
+(defun* find-pair-file-noselect (filename)
+  "Read the pair file of FILENAME into a buffer and return that
+buffer.  See also `find-file-noselect'."
   (let ((files (pair-file-list filename)))
     (when files
       (dolist (file files)
-        (when (file-exists-p file)
-          (return-from find-pair-file-1
-            (funcall switch-fn (find-file-noselect file))))))
+        (when (or (file-exists-p file)
+                  (find-buffer-visiting file))
+          (return-from find-pair-file-noselect
+            (find-file-noselect file)))))
     (error "No known pair for file %s" filename)))
 
 (defun find-pair-file-read-args (prompt)
@@ -208,22 +227,22 @@ that extension."
 
 Pair files are determined by `pair-file-list'."
   (interactive (find-pair-file-read-args "Find pair file of: "))
-  (find-pair-file-1 filename #'switch-to-buffer))
+  (switch-to-buffer (find-pair-file-noselect filename)))
 (defun find-pair-file-other-window (filename)
   "Edit the pair file of FILENAME in another window.
 
 Pair files are determined by `pair-file-list'."
   (interactive (find-pair-file-read-args "Find pair file in other window of: "))
-  (find-pair-file-1 filename #'switch-to-buffer-other-window))
+  (switch-to-buffer-other-window (find-pair-file-noselect filename)))
 (defun find-pair-file-other-frame (filename)
   "Edit the pair file of FILENAME in another frame.
 
 Pair files are determined by `pair-file-list'."
   (interactive (find-pair-file-read-args "Find pair file in other frame of: "))
-  (find-pair-file-1 filename #'switch-to-buffer-other-frame))
+  (switch-to-buffer-other-frame (find-pair-file-noselect filename)))
 
-(defun switch-to-pair-file ()
-  "Display the pair file of the current file in the same window.
+(defun switch-to-pair-file (&optional createp)
+  "Display the pair file of the current file in the same window.  If CREATEP is 
 
 Pair files are determined by `pair-file-list'."
   (interactive)

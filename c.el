@@ -1,6 +1,8 @@
 ;;;; C customizations.
 ;;;;
 ;;;; Also applied to other C-like languages (really anything that uses CC-mode)
+(require 'ebrowse)
+
 (hook-mode c-mode-common-hook
   hide-ifdef-mode
   (c-set-offset 'case-label '+)
@@ -17,3 +19,14 @@
 (setf (default-value 'c-recognize-knr-p) nil
       (default-value 'c-recognize-paren-inits) t
       (default-value 'c-recognize-<>-arglists) t)
+
+;; Mode hooks, such as `c-mode-commmon-hook' get called before hide-ifdef-env is set (via dirvars).
+;; Hiding should be delayed until after dirvars have been processed.
+(add-hook 'find-file-hook
+          (lambda () (when (and hide-ifdef-mode hide-ifdef-hiding)
+                       (hide-ifdefs t)))
+          t)
+
+;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY inconvenient.  Nothing else uses
+;; C-c C, so I'm moving it to that.
+(setf (global-key-binding (kbd "C-c C")) ebrowse-global-map)
