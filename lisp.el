@@ -1,4 +1,5 @@
 ;;;; (Common) Lisp customizations
+(require 'hideif)
 (require 'slime)
 
 (setf inferior-lisp-program "sbcl")

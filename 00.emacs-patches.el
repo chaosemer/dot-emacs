@@ -1,9 +1,9 @@
-;;;; Patches for ggy/old emacs code
+;;;; Patches for buggy/old emacs code
 ;;;;
 ;;;; This allows me to use one init file across multiple versions of Emacs.
 ;;;;
 ;;;; Currently tested against:
-;;;; * GNU Emacs 22.0.50.1, 2006-01-14
+;;;; * GNU Emacs 22.1
 
 (unless (fboundp 'warn)
   (message "Using old compatibility mode for `warn'")
@@ -51,13 +51,11 @@
   (display-warning 'emacs "Using old compatibility mode for `custom-autoload'")
   (defalias 'custom-autoload 'custom-add-load))
 
-(let ((move-fns '(backward-sexp forward-sexp backward-up-list up-list down-list
-				c-forward-conditional c-backward-conditional
-				c-down-conditional c-up-conditional
-				c-down-conditional-with-else
-				c-up-conditional-with-else
-				c-forward-subword c-backward-subword
-                                c-beginning-of-statement c-end-of-statement)))
+(let ((move-fns '(c-forward-conditional c-backward-conditional
+                  c-down-conditional c-up-conditional
+                  c-down-conditional-with-else
+                  c-up-conditional-with-else
+                  c-beginning-of-statement c-end-of-statement)))
   (require 'cua-base)
   (dolist (symbol move-fns)
     (unless (eq 'move (get symbol 'CUA))
