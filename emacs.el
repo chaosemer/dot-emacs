@@ -3,6 +3,8 @@
 ;;;; Put stuff here if you have nowhere else to put them
 (require 'dirvars)
 (require 'htmlize-view)
+(require 'hideif)
+(require 'ido)
 (require-noerror 'gnuserv-compat)
 
 ;; Global customizations -------------------------------------------------------
@@ -11,6 +13,7 @@
 (cua-mode 1)
 (global-hi-lock-mode 1)
 (hrule-mode 1)
+(ido-everywhere 1)
 (ido-mode 1)
 (menu-bar-mode (if window-system 1 -1))
 (mouse-wheel-mode 1)
