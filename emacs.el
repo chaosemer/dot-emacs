@@ -15,6 +15,7 @@
 (hrule-mode 1)
 (ido-everywhere 1)
 (ido-mode 1)
+(bar-cursor-mode 1)
 (menu-bar-mode (if window-system 1 -1))
 (mouse-wheel-mode 1)
 (show-paren-mode 1)
