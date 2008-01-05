@@ -276,13 +276,22 @@ Pair files are determined by `pair-file-list'."
   (interactive)
   (display-buffer (get-buffer-create "*scratch*") nil t))
 
-(defun indent-dwim ()
-  "Try to do what a human would mean when indenting."
-  (interactive)
+(defun indent-dwim (arg)
+  "Try to do what a human would mean when indenting.
 
-  (if mark-active
-      (indent-region (region-beginning) (region-end))
-    (indent-according-to-mode)))
+The prefix argument, if given, indents to that column"
+  (interactive (list current-prefix-arg))
+
+  (cond (mark-active
+         (indent-region (region-beginning) (region-end) arg))
+        (arg
+         (save-excursion
+           (beginning-of-line)
+           (delete-horizontal-space)
+           (indent-to (prefix-numeric-value arg))))
+        (t
+         (indent-according-to-mode))))
+(setf (global-key-binding (kbd "TAB")) 'indent-dwim)
 
 ;;; ETags/ido integration
 (defun ido-read-file-in-tags (prompt &optional require-match initial-input)
