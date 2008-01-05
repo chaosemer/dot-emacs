@@ -68,6 +68,7 @@
  '(recentf-mode t)
  '(recentf-save-file "~/.emacs.d/recentf")
  '(safe-local-eval-forms (quote ((hide-body))))
+ '(safe-local-variable-values (quote ((hide-ifdef-initially))))
  '(scroll-bar-mode (quote right))
  '(semantic-idle-scheduler-idle-time 0.5)
  '(server-window (quote switch-to-buffer-other-frame))
