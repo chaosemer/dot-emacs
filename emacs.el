@@ -275,3 +275,43 @@ Pair files are determined by `pair-file-list'."
   "Switch to the scratch buffer."
   (interactive)
   (display-buffer (get-buffer-create "*scratch*") nil t))
+
+(defun indent-dwim ()
+  "Try to do what a human would mean when indenting."
+  (interactive)
+
+  (if mark-active
+      (indent-region (region-beginning) (region-end))
+    (indent-according-to-mode)))
+
+;;; ETags/ido integration
+(defun ido-read-file-in-tags (prompt &optional require-match initial-input)
+  "Return the name of a file in the current tags table.
+
+Parameters have same meaning as in `ido-completing-read'."
+
+  (let ((enable-recursive-minibuffers t))
+    (visit-tags-table-buffer)
+    (ido-completing-read prompt (tags-table-files) nil require-match initial-input)))
+
+(defun ido-read-tag (prompt &optional require-match initial-input)
+  "Return the name of a tag in the current tags table."
+
+  (let ((enable-recursive-minibuffers t))
+    (visit-tags-table-buffer)
+    (ido-completing-read prompt
+                         (let ((accum (list)))
+                           (mapatoms (lambda (arg) (push (symbol-name arg) accum))
+                                     (tags-completion-table))
+                           accum)
+                         nil require-match initial-input)))
+
+(defun ido-find-file-in-tags (file)
+  (interactive (list (ido-read-file-in-tags "File: " t)))
+  (find-tag file))
+
+(defun ido-find-tag (tag)
+  (interactive (list (ido-read-tag "Find tag: " t)))
+  (find-tag tag))
+
+(setf (global-key-binding (kbd "<remap> <find-tag>")) 'ido-find-tag)

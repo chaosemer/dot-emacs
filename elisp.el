@@ -64,9 +64,6 @@ See `find-thing'."
                         (read-symbol-name (format "%s: " prompt-header)))))
     (multiple-value-bind (interned accesable?) (find-symbol symbol-name)
       (and accesable? interned))))
-    
-
-
 
 (defun find-thing-do-it (symbol switch-fn)
   (find-function-do-it symbol
@@ -75,3 +72,6 @@ See `find-thing'."
                              ((and symbol (boundp symbol)) 'defvar)
                              (t (error "`%s' is not a face, function, or variable" symbol)))
                        switch-fn))
+
+;; emacs-lisp-mode defines the tab key in its map.  It shouldn't
+(define-key emacs-lisp-mode-map (kbd "TAB") nil)
