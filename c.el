@@ -34,5 +34,6 @@
 (setf (global-key-binding (kbd "C-c C")) ebrowse-global-map)
 
 ;; C defines the tab key in its map.  It shouldn't
+(require 'cc-mode)
 (define-key c-mode-map (kbd "TAB") nil)
 (define-key c++-mode-map (kbd "TAB") nil)
