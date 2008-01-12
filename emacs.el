@@ -13,8 +13,6 @@
 (cua-mode 1)
 (global-hi-lock-mode 1)
 (hrule-mode 1)
-(ido-everywhere 1)
-(ido-mode 1)
 (bar-cursor-mode 1)
 (menu-bar-mode (if window-system 1 -1))
 (mouse-wheel-mode 1)
@@ -292,35 +290,3 @@ The prefix argument, if given, indents to that column"
         (t
          (indent-according-to-mode))))
 (setf (global-key-binding (kbd "TAB")) 'indent-dwim)
-
-;;; ETags/ido integration
-(defun ido-read-file-in-tags (prompt &optional require-match initial-input)
-  "Return the name of a file in the current tags table.
-
-Parameters have same meaning as in `ido-completing-read'."
-
-  (let ((enable-recursive-minibuffers t))
-    (visit-tags-table-buffer)
-    (ido-completing-read prompt (tags-table-files) nil require-match initial-input)))
-
-(defun ido-read-tag (prompt &optional require-match initial-input)
-  "Return the name of a tag in the current tags table."
-
-  (let ((enable-recursive-minibuffers t))
-    (visit-tags-table-buffer)
-    (ido-completing-read prompt
-                         (let ((accum (list)))
-                           (mapatoms (lambda (arg) (push (symbol-name arg) accum))
-                                     (tags-completion-table))
-                           accum)
-                         nil require-match initial-input)))
-
-(defun ido-find-file-in-tags (file)
-  (interactive (list (ido-read-file-in-tags "File: " t)))
-  (find-tag file))
-
-(defun ido-find-tag (tag)
-  (interactive (list (ido-read-tag "Find tag: " t)))
-  (find-tag tag))
-
-(setf (global-key-binding (kbd "<remap> <find-tag>")) 'ido-find-tag)

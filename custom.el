@@ -33,6 +33,7 @@
  '(focus-follows-mouse t)
  '(gdb-many-windows t)
  '(gdb-use-separate-io-buffer t)
+ '(global-reveal-mode t)
  '(gnuserv-mode-line-string nil)
  '(goto-address-mail-face (quote link))
  '(goto-address-mail-mouse-face (quote highlight))
