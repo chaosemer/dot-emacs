@@ -16,3 +16,4 @@
   (setf (local-key-binding (kbd "C-<down-mouse-3>")) (lambda () (interactive)
                                                        (popup-menu slime-easy-menu))))
 
+(define-key lisp-mode-map (kbd "TAB") nil)
