@@ -16,7 +16,8 @@
         (local-key-binding (kbd "C-c M-<down>")) 'c-down-conditional)
   (when (featurep 'cscope) (cscope-bind-keys-3deep))
   (font-lock-add-keywords nil '(("^\\s *\\(///.*$\\)" (1 'section-comment-face t))
-                                ("^////.*$" (0 'file-comment-face t)))))
+                                ("^////.*$" (0 'file-comment-face t))))
+  (setf beginning-of-defun-function 'my-c-beginning-of-defun))
 
 (setf (default-value 'c-recognize-knr-p) nil
       (default-value 'c-recognize-paren-inits) t
@@ -28,6 +29,16 @@
           (lambda () (when (member major-mode '(c-mode c++-mode))
                          (hide-ifdef-mode 1)))
           t)
+
+;; Make CC-Mode's defun finding include any function comments that
+;; immediately preceede it.
+(defun my-c-beginning-of-defun (&optional arg)
+  "Move backward to the beginning of a defun, and any function
+comment right before it."
+
+  (c-beginning-of-defun arg)
+  (while (c-backward-single-comment))
+  (re-search-forward "\\(?:\\s \\|[\n\r]\\)*" nil t))
 
 ;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY inconvenient.  Nothing else uses
 ;; C-c C, so I'm moving it to that.

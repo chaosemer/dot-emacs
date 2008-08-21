@@ -62,6 +62,7 @@
       (display-warning 'emacs (format "Adding CUA property to `%s'." symbol))
       (setf (get symbol 'CUA) 'move))))
 
+
 (unless (fboundp 'semantic-complete-jump-other-window)
   (display-warning 'semantic "Creating missing function `semantic-complete-jump-other-window'.")
   (defun semantic-complete-jump-other-window ()
@@ -326,3 +327,9 @@ Returns nil if an error message has appeared."
   (display-warning 'emacs "Defining global-c-subword-mode")
   (define-global-minor-mode global-c-subword-mode c-subword-mode
     (lambda () (c-subword-mode 1))))
+
+;; Fix buggy regexp in Emacs
+(let ((correct-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) : \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) C[0-9]+:\\)"))
+  (unless (equal (second (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)
+    (display-warning 'emacs "Fixing buggy Microsoft regexp")
+    (setf (second (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)))

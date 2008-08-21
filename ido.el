@@ -30,13 +30,13 @@ Parameters have same meaning as in `ido-completing-read'."
                         (and default (symbol-name default))))))
 
 (defun ido-find-file-in-tags (file)
-  (interactive (list (ido-read-file-in-tags "File: " t)))
+  (interactive (list (ido-read-file-in-tags "Find file: " t)))
   (find-tag file))
 (defun ido-find-file-in-tags-other-window (file)
-  (interactive (list (ido-read-file-in-tags "File: " t)))
+  (interactive (list (ido-read-file-in-tags "Find file: " t)))
   (find-tag-other-window file))
 (defun ido-find-file-in-tags-other-frame (file)
-  (interactive (list (ido-read-file-in-tags "File: " t)))
+  (interactive (list (ido-read-file-in-tags "Find file: " t)))
   (find-tag-other-frame file))
 
 (defun ido-find-tag (tag)
