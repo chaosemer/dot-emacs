@@ -212,6 +212,8 @@ that extension."
 (defun* find-pair-file-noselect (filename)
   "Read the pair file of FILENAME into a buffer and return that
 buffer.  See also `find-file-noselect'."
+  (unless filename
+    (error "Buffer is not visiting a file"))
   (let ((files (pair-file-list filename)))
     (when files
       (dolist (file files)
