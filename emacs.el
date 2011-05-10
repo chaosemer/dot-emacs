@@ -1,14 +1,15 @@
 ;;;; Global Emacs customizations.
 ;;;;
 ;;;; Put stuff here if you have nowhere else to put them
-(require 'dirvars)
-(require 'htmlize-view)
+(require 'hfyview)
 (require 'hideif)
 (require 'ido)
+(require 'hrule)
+(require 'balanced+)
 (require-noerror 'gnuserv-compat)
 
 ;; Global customizations -------------------------------------------------------
-(global-c-subword-mode 1)
+(global-subword-mode 1)
 (column-number-mode 1)
 (cua-mode 1)
 (global-hi-lock-mode 1)
@@ -24,7 +25,7 @@
 (global-semantic-show-parser-state-mode 1)
 (global-semantic-idle-summary-mode 1)
 (global-balanced-mode 1)
-(htmlize-view-add-to-files-menu)
+(hfyview-add-to-files-menu)
 (hook-mode emacs-startup-hook
   (with-current-buffer (get-buffer "*scratch*")
     (setf buffer-offer-save t)))

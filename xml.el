@@ -1,5 +1,6 @@
 ;;;; Configuration for XML files
 (defalias 'xml-mode 'nxml-mode)
+(defalias 'html-mode 'nxml-mode)
 
 (hook-mode nxml-mode-hook
   ;;key bindings 
