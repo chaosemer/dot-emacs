@@ -2,4 +2,5 @@
 ;;;;
 ;;;; Why not use Emacs for editting plain old text?
 (hook-mode text-mode-hook
-  longlines-mode)
+  (unless (member major-mode '(mail-mode org-mode))
+	longlines-mode))

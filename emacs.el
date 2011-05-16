@@ -5,6 +5,7 @@
 (require 'hideif)
 (require 'ido)
 (require 'hrule)
+(require 'bar-cursor)
 (require 'balanced+)
 (require-noerror 'gnuserv-compat)
 
@@ -20,33 +21,12 @@
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (global-font-lock-mode 1)
-(global-semanticdb-minor-mode 1)
-(global-semantic-idle-scheduler-mode 1)
-(global-semantic-show-parser-state-mode 1)
-(global-semantic-idle-summary-mode 1)
 (global-balanced-mode 1)
 (hfyview-add-to-files-menu)
 (hook-mode emacs-startup-hook
   (with-current-buffer (get-buffer "*scratch*")
     (setf buffer-offer-save t)))
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-(hook-mode semantic-init-hooks
-  (psetf (local-key-binding (kbd "M-TAB")) 'semantic-complete-analyze-inline
-         (local-key-binding (kbd "M-.")) 'semantic-complete-jump
-         (local-key-binding (kbd "C-x 4 .")) 'semantic-complete-jump-other-window
-         (local-key-binding (kbd "C-x 5 .")) 'semantic-complete-jump-other-frame
-
-         ;; And keep backups of the old bindings -- they're designed to be similar to the EBrowse
-         ;; binding of "C-c C" set in c.el
-         (local-key-binding (kbd "C-c T TAB")) 'complete-tag
-         (local-key-binding (kbd "C-c T %")) 'tags-query-replace
-         (local-key-binding (kbd "C-c T .")) 'find-tag
-         (local-key-binding (kbd "C-c T ,")) 'tags-loop-continue
-         (local-key-binding (kbd "C-c T 4 .")) 'find-tag-other-window
-         (local-key-binding (kbd "C-c T 5 .")) 'find-tag-other-frame
-         (local-key-binding (kbd "C-c T a")) 'tags-apropos
-         (local-key-binding (kbd "C-c T s")) 'tags-search))
 
 (setf (default-value 'indent-tabs-mode) nil
       (default-value 'truncate-lines) nil
@@ -77,7 +57,7 @@
       (global-key-binding (kbd "<f7>")) 'recompile
       (global-key-binding (kbd "C-<f7>")) 'compile
       (global-key-binding (kbd "S-<f7>")) 'kill-compilation
-      (global-key-binding (kbd "C-a")) 'mark-whole-buffer
+      (global-key-binding (kbd "C-a")) 'mark-whole-buffer      
       (global-key-binding (kbd "M-<home>")) 'beginning-of-defun
       (global-key-binding (kbd "M-<end>")) 'end-of-defun)
 
@@ -98,7 +78,8 @@
                                                 (if (> (length (frame-list)) 1)
                                                     (delete-frame)
                                                   (when (y-or-n-p "Last frame, kill emacs? ")
-                                                    (call-interactively #'save-buffers-kill-emacs )))))))
+                                                    (call-interactively #'save-buffers-kill-emacs )))))
+	(setenv "CYGWIN" "nodosfilewarning")))
 
 ;; Completions in other places
 ; This doesn't work on every other Emacs other than 21.4, debian.  hmmm...
@@ -149,12 +130,12 @@
 
   (let ((point (point)))
     (end-of-line n)
-    (skip-chars-backward " \t")
+    (skip-chars-backward " \t")             
     (when (= point (point))
       (end-of-line))))
 (setf (get 'end-of-line-dwim 'CUA) 'move)
 
-(setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim
+(setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim        
       (global-key-binding (kbd "<end>")) 'end-of-line-dwim)
 
 ;;; Recursive edits
@@ -247,7 +228,7 @@ Pair files are determined by `pair-file-list'."
   (switch-to-buffer-other-frame (find-pair-file-noselect filename)))
 
 (defun switch-to-pair-file (&optional createp)
-  "Display the pair file of the current file in the same window.  If CREATEP is
+  "Display the pair file of the current file in the same window.  If CREATEP is 
 
 Pair files are determined by `pair-file-list'."
   (interactive)

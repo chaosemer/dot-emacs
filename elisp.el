@@ -6,8 +6,8 @@
   (setf (local-key-binding (kbd "M-.")) 'find-thing
         (local-key-binding (kbd "C-x 4 .")) 'find-thing-other-window
         (local-key-binding (kbd "C-x 5 .")) 'find-thing-other-frame)
-  (font-lock-add-keywords nil '(("^\\s *;;;.*$" (0 'section-comment-face t))
-                                ("^;;;;.*$" (0 'file-comment-face t)))))
+  (font-lock-add-keywords nil '(("^\\s *;;;.*\n?" (0 'section-comment-face t))
+                                ("^;;;;.*\n?" (0 'file-comment-face t)))))
 
 ;; NOTE:
 ;; this function should be added to cl.el
