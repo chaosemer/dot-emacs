@@ -5,7 +5,6 @@
 (setf inferior-lisp-program "sbcl")
 (slime-setup)
 (pushnew '("\\.asd\\'" . lisp-mode) auto-mode-alist :test #'equal)
-(push (lambda () (eq major-mode 'lisp-mode)) semantic-inhibit-functions)
 
 (hook-mode lisp-mode-hook
   (make-variable-buffer-local 'browse-url-browser-function)

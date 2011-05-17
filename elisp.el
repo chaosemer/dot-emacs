@@ -1,7 +1,6 @@
 ;;;; Emacs Lisp customizations
 (require 'find-func)
 
-(push (lambda () (eq major-mode 'emacs-lisp-mode)) semantic-inhibit-functions)
 (hook-mode emacs-lisp-mode-hook
   (setf (local-key-binding (kbd "M-.")) 'find-thing
         (local-key-binding (kbd "C-x 4 .")) 'find-thing-other-window
