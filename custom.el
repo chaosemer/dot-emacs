@@ -7,8 +7,6 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(CUA-mode-overwrite-cursor-color "black")
- '(CUA-mode-read-only-cursor-color "red")
  '(Man-section-translations-alist (quote (("3C++" . "3") ("3X11" . "3") ("1-UCB" . "") ("3G" . "3"))))
  '(battery-mode-line-format "[%b%p%%]")
  '(c-basic-offset 4)
@@ -85,7 +83,7 @@
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(url-handler-mode t)
  '(url-privacy-level (quote paranoid))
- '(vc-cvs-stay-local nil)
+ '(vc-handled-backends (quote (CVS SVN Git)))
  '(w3m-favicon-use-cache-file t)
  '(w3m-use-tab nil)
  '(w3m-use-tab-menubar nil)
