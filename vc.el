@@ -1,9 +1,9 @@
 ;;;; Customizing Version Control menus and such
 (require 'vc-git)
-(define-key vc-git-extra-menu-map [git-svn-rebase]
-  '(menu-item "Git SVN Update" vc-git-svn-rebase))
 (define-key vc-git-extra-menu-map [git-svn-dcommit]
   '(menu-item "Git SVN Commit" vc-git-svn-dcommit))
+(define-key vc-git-extra-menu-map [git-svn-rebase]
+  '(menu-item "Git SVN Update" vc-git-svn-rebase))
 
 (defun vc-git-svn-rebase ()
   "Get lastest changes from SVN to Git."
