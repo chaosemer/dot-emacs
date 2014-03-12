@@ -11,7 +11,7 @@
 
 (progn
   (display-warning 'emacs "Loading legacy support for `vc-svn'")
-  (require 'vc-svn17))
+  (require 'vc-svn17 nil t))
 
 (progn
   (display-warning 'emacs "Making git annotate faster")
