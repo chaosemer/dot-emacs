@@ -10,6 +10,17 @@
   (defsetf lookup-key define-key))
 
 (progn
+  (display-warning 'emacs "Loading legacy support for `vc-svn'")
+  (require 'vc-svn17))
+
+(progn
+  (display-warning 'emacs "Making git annotate faster")
+  (require 'vc-git)
+  (defun vc-git-annotate-command (file buf &optional rev)
+	(let ((name (file-relative-name file)))
+	  (vc-git-command buf 'async nil "blame" "--date=iso" rev "--" name))))
+
+(progn
   (display-warning 'emacs "Cleaning up file menu bar")
   (define-key menu-bar-file-menu [new-file]
     '(menu-item "New File"
