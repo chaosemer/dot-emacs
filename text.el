@@ -5,4 +5,4 @@
 
 (hook-mode text-mode-hook
   (unless (member major-mode '(mail-mode org-mode))
-	longlines-mode))
+    (longlines-mode 1)))
