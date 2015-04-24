@@ -7,10 +7,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(Man-section-translations-alist (quote (("3C++" . "3") ("3X11" . "3") ("1-UCB" . "") ("3G" . "3"))))
+ '(Man-section-translations-alist
+   (quote
+	(("3C++" . "3")
+	 ("3X11" . "3")
+	 ("1-UCB" . "")
+	 ("3G" . "3"))))
  '(battery-mode-line-format "[%b%p%%]")
  '(c-basic-offset 4)
- '(c-comment-prefix-regexp (quote ((pike-mode . "//+!?\\|\\**") (awk-mode . "#+") (other . "//+<?\\|\\**"))))
+ '(c-comment-prefix-regexp
+   (quote
+	((pike-mode . "//+!?\\|\\**")
+	 (awk-mode . "#+")
+	 (other . "//+<?\\|\\**"))))
  '(c-default-style "stroustrup")
  '(calculator-electric-mode t)
  '(calculator-number-digits 10)
@@ -21,7 +30,11 @@
  '(current-language-environment "English")
  '(cursor-in-non-selected-windows nil)
  '(custom-file "~/.emacs.d/custom.el")
- '(default-frame-alist (quote ((vertical-scroll-bars . right) (tool-bar-lines . 0) (menu-bar-lines . 1))))
+ '(default-frame-alist
+	(quote
+	 ((vertical-scroll-bars . right)
+	  (tool-bar-lines . 0)
+	  (menu-bar-lines . 1))))
  '(double-click-time 200)
  '(ediff-keep-variants nil)
  '(ediff-split-window-function (quote split-window-horizontally))
@@ -38,11 +51,22 @@
  '(goto-address-mail-face (quote link))
  '(goto-address-mail-mouse-face (quote highlight))
  '(goto-address-url-face (quote link))
- '(grep-files-aliases (quote (("el" . "*.el") ("ch" . "*.[ch]") ("c" . "*.c") ("h" . "*.h") ("asm" . "*.[sS]") ("m" . "[Mm]akefile*") ("l" . "[Cc]hange[Ll]og*") ("c++" . "*.[ch] *.[ch]pp"))))
+ '(grep-files-aliases
+   (quote
+	(("el" . "*.el")
+	 ("ch" . "*.[ch]")
+	 ("c" . "*.c")
+	 ("h" . "*.h")
+	 ("asm" . "*.[sS]")
+	 ("m" . "[Mm]akefile*")
+	 ("l" . "[Cc]hange[Ll]og*")
+	 ("c++" . "*.[ch] *.[ch]pp"))))
  '(gud-tooltip-echo-area t)
  '(gud-tooltip-mode t)
  '(haskell-program-name "ghci")
- '(hide-comments-faces (quote (font-lock-comment-face font-lock-comment-delimiter-face section-comment-face file-comment-face)) t)
+ '(hide-comments-faces
+   (quote
+	(font-lock-comment-face font-lock-comment-delimiter-face section-comment-face file-comment-face)) t)
  '(hide-ifdef-initially t)
  '(hscroll-step 1)
  '(ido-enable-regexp t)
@@ -55,7 +79,9 @@
  '(initial-major-mode (quote fundamental-mode))
  '(jit-lock-stealth-time 0.2)
  '(load-home-init-file t t)
- '(minibuffer-prompt-properties (quote (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
+ '(minibuffer-prompt-properties
+   (quote
+	(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
  '(mouse-autoselect-window t)
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount (quote (3 ((control)))))
@@ -73,8 +99,12 @@
  '(server-window (quote switch-to-buffer-other-frame))
  '(show-paren-mode t)
  '(show-paren-style (quote expression))
- '(speedbar-supported-extension-expressions (quote (".[ch]\\(\\+\\+\\|pp\\|c\\|h\\|xx\\)?" ".tex\\(i\\(nfo\\)?\\)?" ".el" ".emacs" ".l" ".lsp" ".lisp" ".lml" ".p" ".java" ".f\\(90\\|77\\|or\\)?" ".ada" ".p[lm]" ".tcl" ".m" ".scm" ".pm" ".py" ".g" ".s?html" "[Mm]akefile\\(\\.in\\)?" ".xml")))
- '(tab-stop-list (quote (4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100)))
+ '(speedbar-supported-extension-expressions
+   (quote
+	(".[ch]\\(\\+\\+\\|pp\\|c\\|h\\|xx\\)?" ".tex\\(i\\(nfo\\)?\\)?" ".el" ".emacs" ".l" ".lsp" ".lisp" ".lml" ".p" ".java" ".f\\(90\\|77\\|or\\)?" ".ada" ".p[lm]" ".tcl" ".m" ".scm" ".pm" ".py" ".g" ".s?html" "[Mm]akefile\\(\\.in\\)?" ".xml")))
+ '(tab-stop-list
+   (quote
+	(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100)))
  '(tmm-completion-prompt nil)
  '(tooltip-delay 0)
  '(tooltip-mode t)
@@ -93,7 +123,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :stipple nil :background "SystemWindow" :foreground "SystemWindowText" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Source Code Pro"))))
  '(mode-line-highlight ((((class color) (min-colors 88)) (:background "royal blue" :foreground "white" :box (:line-width 2 :color "steel blue" :style released-button)))))
  '(nxml-comment-content-face ((t (:inherit font-lock-comment-face))))
  '(nxml-comment-delimiter-face ((t (:inherit font-lock-comment-delimiter-face)))))
