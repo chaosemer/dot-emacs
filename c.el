@@ -5,6 +5,7 @@
 (load "xcscope" t)
 
 (hook-mode c-mode-common-hook
+  visual-line-mode
   (c-set-offset 'case-label '+)
   (c-set-offset 'innamespace 0)
   (c-set-offset 'arglist-intro '++)
