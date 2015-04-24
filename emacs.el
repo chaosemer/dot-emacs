@@ -5,7 +5,6 @@
 (require 'hideif)
 (require 'ido)
 (require 'bar-cursor)
-(require 'balanced+)
 (require-noerror 'gnuserv-compat)
 
 ;; Global customizations -------------------------------------------------------
@@ -19,7 +18,7 @@
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (global-font-lock-mode 1)
-(global-balanced-mode 1)
+(electric-pair-mode 1)
 (hfyview-add-to-files-menu)
 (hook-mode emacs-startup-hook
   (with-current-buffer (get-buffer "*scratch*")

@@ -3,10 +3,10 @@
 (put 'narrow-to-region 'disabled nil)
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(Man-section-translations-alist (quote (("3C++" . "3") ("3X11" . "3") ("1-UCB" . "") ("3G" . "3"))))
  '(battery-mode-line-format "[%b%p%%]")
  '(c-basic-offset 4)
@@ -89,10 +89,11 @@
  '(w3m-use-tab-menubar nil)
  '(x-select-enable-clipboard t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "Source Code Pro"))))
  '(mode-line-highlight ((((class color) (min-colors 88)) (:background "royal blue" :foreground "white" :box (:line-width 2 :color "steel blue" :style released-button)))))
  '(nxml-comment-content-face ((t (:inherit font-lock-comment-face))))
  '(nxml-comment-delimiter-face ((t (:inherit font-lock-comment-delimiter-face)))))
