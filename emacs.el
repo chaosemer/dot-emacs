@@ -335,16 +335,6 @@ listed.")
   "A list of major modes that are not automatically detected by `list-major-modes'.")
 
 
-
-;; (defun menu-minor-modes (&optional menu)
-;;   (mapcar (lambda (mode) (vector (symbol-name mode) mode
-;;                                  :button (:toggle . t)))
-;;           minor-mode-list))
-
 (define-key menu-bar-options-menu [sep] '(menu-item "---"))
-;; (define-key menu-bar-tools-menu [minor-modes-list]
-;;   '(menu-item "Minor Modes" nil
-;;               :filter (lambda (menu)
-;;                         (easy-menu-filter-return (menu-minor-modes menu)))))
 (define-key menu-bar-options-menu [major-modes-list]
   '(menu-item "Major Mode" nil :filter (lambda (menu) (menu-major-modes))))
