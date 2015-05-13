@@ -6,7 +6,7 @@
 ;;;; * GNU Emacs 24.4
 
 (progn
-  (display-warning 'emacs "Adding setf expansion for `define-key'")
+  (display-warning 'emacs "Adding setf expansions for missing things")
   (defsetf lookup-key define-key))
 
 (progn
@@ -35,6 +35,12 @@
   (define-key menu-bar-file-menu [ps-print-region-faces] nil)
   (define-key menu-bar-file-menu [ps-print-buffer] nil)
   (define-key menu-bar-file-menu [ps-print-region] nil))
+
+;; Disallow navigating to the minibuffer
+(unless (eq (plist-get minibuffer-prompt-properties 'point-entered) 'minibuffer-avoid-prompt)
+  (display-warning 'emacs "Disallowing navigation into the minibuffer prompt")
+  (setf minibuffer-prompt-properties
+		(plist-put minibuffer-prompt-properties 'point-entered 'minibuffer-avoid-prompt)))
 
 ;; Fix buggy regexp in Emacs
 (let ((correct-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) [A-Z][0-9]+:\\)"))
