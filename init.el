@@ -9,7 +9,7 @@
 Files in this directory, and in subdirectories of this directory
 will be added to the load path.")
 
-(defvar *init-file-directory* (expand-file-name "~/.emacs.d/")
+(defvar *init-file-directory* (expand-file-name "~/.emacs.d/init/")
   "Directory where user initialization files are.
 
 At Emacs initialization, all files in this directory will be
@@ -22,7 +22,8 @@ variable after Emacs startup has no effect.")
 (defun file-init-loadable? (file)
   "Tests if FILE should be loaded at Emacs initialization."
   (and (file-regular-p file)
-       (member (file-name-extension file t) load-suffixes)))
+       (member (file-name-extension file t) load-suffixes)
+       (not (string= (file-name-nondirectory file) "init.el"))))
 
 (defun push-load-path! (directory)
   "Adds DIRECTORY to `load-path'"
