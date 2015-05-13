@@ -14,7 +14,7 @@
  '(compilation-scroll-output t)
  '(cscope-option-do-not-update-database t)
  '(cursor-in-non-selected-windows nil)
- '(custom-file "~/.emacs.d/custom.el")
+ '(custom-file "~/.emacs.d/init/custom.el")
  '(default-frame-alist
     (quote
      ((tool-bar-lines . 0)
@@ -31,7 +31,6 @@
     (font-lock-comment-face font-lock-comment-delimiter-face section-comment-face file-comment-face)) t)
  '(hscroll-step 1)
  '(ido-enable-regexp t)
- '(ido-save-directory-list-file "~/.emacs.d/ido.last")
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote fundamental-mode))
