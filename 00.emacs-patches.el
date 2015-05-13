@@ -47,3 +47,10 @@
   (unless (equal (second (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)
     (display-warning 'emacs "Fixing buggy Microsoft regexp")
     (setf (second (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)))
+
+;; Making C-a in log-edit-mode not be there
+(when (lookup-key log-edit-mode-map (kbd "C-a"))
+  (display-warning 'emacs "Cleaning up log-edit-mode-map")
+  (setf (lookup-key log-edit-mode-map (kbd "<remap> <beginning-of-line>"))
+		(lookup-key log-edit-mode-map (kbd "C-a")))
+  (setf (lookup-key log-edit-mode-map (kbd "C-a")) nil))
