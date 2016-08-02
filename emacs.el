@@ -5,9 +5,15 @@
 (require 'hideif)
 (require 'ido)
 (require 'bar-cursor)
+(require 'package)
 (require-noerror 'gnuserv-compat)
 
-;; Global customizations -------------------------------------------------------
+;; Access to the melpa.org packages.
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
+
+;; Global customizations -----------------------------------------------
 (global-subword-mode 1)
 (column-number-mode 1)
 (cua-mode 1)

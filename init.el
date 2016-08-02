@@ -42,6 +42,7 @@ variable after Emacs startup has no effect.")
     "This variable was added by version 21.3.50."))
 
 ;; add the directories in *LOCAL-LOAD-PATH* to LOAD-PATH
+(when (file-exists-p *local-load-path*)
 (let ((save-abbrevs nil))
   (byte-recompile-directory *local-load-path*))
 (push-load-path! *local-load-path*)
@@ -49,7 +50,7 @@ variable after Emacs startup has no effect.")
   (let ((full-path (expand-file-name file *local-load-path*)))
     (when (and (file-directory-p full-path)
                (not (member file '("." ".."))))
-      (push-load-path! full-path))))
+      (push-load-path! full-path)))))
 
 ; load each FILE-INIT-LOADABLE? file in *INIT-FILE-DIRECTORY* once
 (let ((debug-ignored-errors '())

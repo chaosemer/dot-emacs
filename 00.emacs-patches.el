@@ -5,6 +5,7 @@
 ;;;; Currently tested against:
 ;;;; * GNU Emacs 24.4
 (require 'log-edit)
+(require 'compile)
 
 (progn
   (display-warning 'emacs "Adding setf expansions for missing things")

@@ -1,5 +1,6 @@
 ;;;; Misc utilities that I like to use throughout my init file.
 (require 'cl)
+(require 'package)
 
 ;;; A new and improved DEFMACRO.
 (defmacro defmacro+ (name args &rest body)
