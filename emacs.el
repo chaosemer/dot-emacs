@@ -1,7 +1,6 @@
 ;;;; Global Emacs customizations.
 ;;;;
 ;;;; Put stuff here if you have nowhere else to put them
-(require 'hfyview)
 (require 'hideif)
 (require 'ido)
 (require 'bar-cursor)
@@ -25,7 +24,8 @@
 (tool-bar-mode -1)
 (global-font-lock-mode 1)
 (electric-pair-mode 1)
-(hfyview-add-to-files-menu)
+(when (require-noerror 'hfyview)
+  (hfyview-add-to-files-menu))
 (hook-mode emacs-startup-hook
   (with-current-buffer (get-buffer "*scratch*")
     (setf buffer-offer-save t)))
