@@ -19,7 +19,9 @@
 (global-hi-lock-mode 1)
 (bar-cursor-mode 1)
 (menu-bar-mode (if window-system 1 -1))
-(mouse-wheel-mode 1)
+(if window-system
+    (mouse-wheel-mode 1)
+  (xterm-mouse-mode 1))
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (global-font-lock-mode 1)
