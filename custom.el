@@ -15,10 +15,7 @@
  '(cscope-option-do-not-update-database t)
  '(cursor-in-non-selected-windows nil)
  '(custom-file "~/.emacs.d/init/custom.el")
- '(default-frame-alist
-    (quote
-     ((tool-bar-lines . 0)
-      (menu-bar-lines . 1))))
+ '(default-frame-alist (quote ((tool-bar-lines . 0))))
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(electric-pair-skip-whitespace (quote chomp))
@@ -45,13 +42,11 @@
  '(server-window (quote switch-to-buffer-other-frame))
  '(show-paren-mode t)
  '(show-paren-style (quote expression))
- '(tab-stop-list
-   (quote
-    (4 8 12)))
+ '(tab-stop-list (quote (4 8 12)))
  '(tmm-completion-prompt nil)
  '(tooltip-mode nil)
  '(url-handler-mode t)
- '(vc-handled-backends (quote (CVS SVN Git))))
+ '(vc-handled-backends (quote (CVS SVN Git Hg))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
