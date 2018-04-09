@@ -18,7 +18,7 @@
 (cua-mode 1)
 (global-hi-lock-mode 1)
 (bar-cursor-mode 1)
-(menu-bar-mode (if window-system 1 -1))
+(menu-bar-mode 1)
 (if window-system
     (mouse-wheel-mode 1)
   (xterm-mouse-mode 1))
