@@ -47,9 +47,9 @@
   (when (fboundp 'set-fringe-indicators-1)
     (set-fringe-indicators-1 nil 'empty)))
 
-(setf (face-background 'show-paren-match-face) (if window-system "light gray" "blue")
-      (face-background 'show-paren-mismatch-face) "red"
-      (face-foreground 'show-paren-mismatch-face) "white")
+(setf (face-background 'show-paren-match) (if window-system "light gray" "blue")
+      (face-background 'show-paren-mismatch) "red"
+      (face-foreground 'show-paren-mismatch) "white")
 
 ;; indent on newline
 (setf (global-key-binding (kbd "C-j")) 'newline
@@ -62,7 +62,7 @@
       (global-key-binding (kbd "<f7>")) 'recompile
       (global-key-binding (kbd "C-<f7>")) 'compile
       (global-key-binding (kbd "S-<f7>")) 'kill-compilation
-      (global-key-binding (kbd "C-a")) 'mark-whole-buffer      
+      (global-key-binding (kbd "C-a")) 'mark-whole-buffer
       (global-key-binding (kbd "M-<home>")) 'beginning-of-defun
       (global-key-binding (kbd "M-<end>")) 'end-of-defun)
 
@@ -134,11 +134,11 @@
 
   (let ((point (point)))
     (end-of-line n)
-    (skip-chars-backward " \t")             
+    (skip-chars-backward " \t")
     (when (= point (point))
       (end-of-line))))
 
-(setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim        
+(setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim
       (global-key-binding (kbd "<end>")) 'end-of-line-dwim)
 
 ;;; Recursive edits
@@ -231,7 +231,7 @@ Pair files are determined by `pair-file-list'."
   (switch-to-buffer-other-frame (find-pair-file-noselect filename)))
 
 (defun switch-to-pair-file (&optional createp)
-  "Display the pair file of the current file in the same window.  If CREATEP is 
+  "Display the pair file of the current file in the same window.  If CREATEP is
 
 Pair files are determined by `pair-file-list'."
   (interactive)
@@ -288,8 +288,8 @@ The prefix argument, if given, indents to that column"
 (defun list-major-modes ()
   "Returns a list of major modes"
 
-  (flet ((alist-mode (val)
-                     (if (consp (cdr val)) (cadr val) (cdr val))))
+  (cl-flet ((alist-mode (val)
+                        (if (consp (cdr val)) (cadr val) (cdr val))))
     (let ((modes (nconc (mapcar 'alist-mode auto-mode-alist)
                         (mapcar 'alist-mode interpreter-mode-alist)
                         (mapcar 'alist-mode magic-mode-alist))))
@@ -303,9 +303,9 @@ The prefix argument, if given, indents to that column"
       (remove-duplicates (sort modes 'string-lessp)))))
 
 (defun menu-major-modes ()
-  (flet ((doc-summary (fn)
-            (let ((doc (documentation fn)))
-              (substring doc 0 (position ?\n doc)))))
+  (cl-flet ((doc-summary (fn)
+                         (let ((doc (documentation fn)))
+                           (substring doc 0 (position ?\n doc)))))
     (let ((menu (make-sparse-keymap "Major Modes"))
           (major-mode-list (list-major-modes)))
       ;; Remove modes we don't want to normally list.
@@ -314,11 +314,11 @@ The prefix argument, if given, indents to that column"
                                          (memq elt unimportant-major-modes)))
                        major-mode-list))
 
-      (flet ((make-menu-item (mode)
-               (ignore-errors
-                 `(,mode menu-item ,(symbol-name mode) ,mode
-                         :button (:toggle . (eq major-mode ',mode))
-                         :help ,(doc-summary mode)))))
+      (cl-flet ((make-menu-item (mode)
+                                (ignore-errors
+                                  `(,mode menu-item ,(symbol-name mode) ,mode
+                                          :button (:toggle . (eq major-mode ',mode))
+                                          :help ,(doc-summary mode)))))
         (setq menu (nconc menu
                           (mapcar 'make-menu-item important-major-modes)
                           (list '(sep1 menu-item "---"))

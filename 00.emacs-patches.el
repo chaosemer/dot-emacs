@@ -3,7 +3,8 @@
 ;;;; This allows me to use one init file across multiple versions of Emacs.
 ;;;;
 ;;;; Currently tested against:
-;;;; * GNU Emacs 24.4
+;;;; * GNU Emacs 25.3
+;;;; * GNU Emacs 26.1
 (require 'log-edit)
 (require 'compile)
 
