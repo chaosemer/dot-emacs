@@ -75,8 +75,8 @@
   (setf (global-key-binding (kbd "<menu>")) 'execute-extended-command
         (global-key-binding (kbd "S-<menu>")) 'eval-expression
         (global-key-binding (kbd "<mouse-3>")) (lambda (event prefix)
-												 (interactive "@e\np")
-												 (popup-menu menu-bar-edit-menu event prefix)))
+                                                 (interactive "@e\np")
+                                                 (popup-menu menu-bar-edit-menu event prefix)))
   (when (featurep 'dos-w32)
     (setf (global-key-binding (kbd "M-<f4>")) (lambda ()
                                                 (interactive)
