@@ -26,6 +26,8 @@
 (tool-bar-mode -1)
 (global-font-lock-mode 1)
 (electric-pair-mode 1)
+(url-handler-mode 1)
+(recentf-mode 1)
 (when (require-noerror 'hfyview)
   (hfyview-add-to-files-menu))
 (hook-mode emacs-startup-hook
