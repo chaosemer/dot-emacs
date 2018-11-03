@@ -57,3 +57,17 @@
   (setf (lookup-key log-edit-mode-map (kbd "<remap> <beginning-of-line>"))
 		(lookup-key log-edit-mode-map (kbd "C-a")))
   (setf (lookup-key log-edit-mode-map (kbd "C-a")) nil))
+
+;; Make the tty face look better
+(defface my-menu
+  '((t :inherit mode-line))
+  "My replacement for the face `menu'.")
+(unless (face-equal 'my-menu 'menu)
+  (display-warning 'emacs "Making the menu face look better.")
+  (copy-face 'my-menu 'menu))
+
+;(setf inhibit-frame-set-background-mode t)
+;; (require 'term/xterm)
+;; (display-warning 'emacs (format "%s" (face-background 'show-paren-match)))
+;; (terminal-init-xterm)
+;; (display-warning 'emacs (format "%s" (face-background 'show-paren-match)))
