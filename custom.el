@@ -33,7 +33,7 @@
  '(nxml-slash-auto-complete-flag t)
  '(server-window (quote switch-to-buffer-other-frame))
  '(show-paren-style (quote expression))
- '(vc-handled-backends (quote (CVS SVN Git Hg)))
+ '(vc-handled-backends (quote (SVN Git Hg)))
  '(visible-cursor nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
