@@ -3,21 +3,14 @@
 ;;;; This allows me to use one init file across multiple versions of Emacs.
 ;;;;
 ;;;; Currently tested against:
-;;;; * GNU Emacs 25.3
 ;;;; * GNU Emacs 26.1
+;;;; * GNU Emacs 27.1
 (require 'log-edit)
 (require 'compile)
 
 (progn
   (display-warning 'emacs "Adding setf expansions for missing things")
   (defsetf lookup-key define-key))
-
-(progn
-  (display-warning 'emacs "Making git annotate faster")
-  (require 'vc-git)
-  (defun vc-git-annotate-command (file buf &optional rev)
-	(let ((name (file-relative-name file)))
-	  (vc-git-command buf 'async nil "blame" "--date=iso" rev "--" name))))
 
 (progn
   (display-warning 'emacs "Cleaning up file menu")
@@ -65,9 +58,3 @@
 (unless (face-equal 'my-menu 'menu)
   (display-warning 'emacs "Making the menu face look better.")
   (copy-face 'my-menu 'menu))
-
-;(setf inhibit-frame-set-background-mode t)
-;; (require 'term/xterm)
-;; (display-warning 'emacs (format "%s" (face-background 'show-paren-match)))
-;; (terminal-init-xterm)
-;; (display-warning 'emacs (format "%s" (face-background 'show-paren-match)))
