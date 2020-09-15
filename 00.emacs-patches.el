@@ -33,10 +33,11 @@
   (define-key menu-bar-file-menu [ps-print-region] nil))
 
 ;; Disallow navigating to the minibuffer
-(unless (eq (plist-get minibuffer-prompt-properties 'point-entered) 'minibuffer-avoid-prompt)
+(unless (eq (plist-get minibuffer-prompt-properties 'cursor-intangible) t)
   (display-warning 'emacs "Disallowing navigation into the minibuffer prompt")
   (setf minibuffer-prompt-properties
-		(plist-put minibuffer-prompt-properties 'point-entered 'minibuffer-avoid-prompt)))
+	(plist-put minibuffer-prompt-properties 'cursor-intangible t))
+  (add-hook 'minibuffer-setup-hook 'cursor-intangible-mode))
 
 ;; Fix buggy regexp in Emacs
 (let ((correct-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) [A-Z][0-9]+:\\)"))
@@ -50,11 +51,3 @@
   (setf (lookup-key log-edit-mode-map (kbd "<remap> <beginning-of-line>"))
 		(lookup-key log-edit-mode-map (kbd "C-a")))
   (setf (lookup-key log-edit-mode-map (kbd "C-a")) nil))
-
-;; Make the tty face look better
-(defface my-menu
-  '((t :inherit mode-line))
-  "My replacement for the face `menu'.")
-(unless (face-equal 'my-menu 'menu)
-  (display-warning 'emacs "Making the menu face look better.")
-  (copy-face 'my-menu 'menu))

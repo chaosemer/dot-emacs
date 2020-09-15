@@ -1,11 +1,11 @@
 ;;;; Global Emacs customizations.
 ;;;;
 ;;;; Put stuff here if you have nowhere else to put them
+(require 'bar-cursor)
+(require 'fringe)
 (require 'hideif)
 (require 'ido)
-(require 'bar-cursor)
 (require 'package)
-(require-noerror 'gnuserv-compat)
 
 ;; Access to the melpa.org packages.
 (add-to-list 'package-archives
@@ -33,21 +33,15 @@
 (hook-mode emacs-startup-hook
   (with-current-buffer (get-buffer "*scratch*")
     (setf buffer-offer-save t)))
-(defalias 'yes-or-no-p 'y-or-n-p)
 
 (setf (default-value 'indent-tabs-mode) nil
-      (default-value 'truncate-lines) nil
       truncate-partial-width-windows nil
       frame-title-format "%b - Emacs"
       icon-title-format "%b - Emacs"
       x-stretch-cursor t
       scroll-conservatively most-positive-fixnum
-      parse-sexp-lookup-properties t)
-
-(when (require-noerror 'fringe)
-  (set-fringe-mode nil)
-  (when (fboundp 'set-fringe-indicators-1)
-    (set-fringe-indicators-1 nil 'empty)))
+      parse-sexp-lookup-properties t
+      narrow-to-defun-include-comments t)
 
 (setf (face-background 'show-paren-match) (if window-system "light gray" "blue")
       (face-background 'show-paren-mismatch) "red"
@@ -85,12 +79,7 @@
                                                 (if (> (length (frame-list)) 1)
                                                     (delete-frame)
                                                   (when (y-or-n-p "Last frame, kill emacs? ")
-                                                    (call-interactively #'save-buffers-kill-emacs )))))
-	(setenv "CYGWIN" "nodosfilewarning")))
-
-;; Completions in other places
-; This doesn't work on every other Emacs other than 21.4, debian.  hmmm...
-;(setf (lookup-key minibuffer-local-map (kbd "<tab>")) 'hippie-expand)
+                                                    (call-interactively #'save-buffers-kill-emacs )))))))
 
 ;; Account for differences in Win32 keycodes
 (setf (lookup-key key-translation-map (kbd "C-<tab>")) (kbd "M-TAB"))
@@ -280,18 +269,13 @@ The prefix argument, if given, indents to that column"
          (indent-according-to-mode))))
 (setf (global-key-binding (kbd "TAB")) 'indent-dwim)
 
-(hook-mode hexl-mode-hook
-  (hexl-follow-line)
-  (hexl-activate-ruler)
-  (turn-on-eldoc-mode)
-  (setf truncate-lines t))
 
 ;;; Major mode list in tools menu
 (defun list-major-modes ()
   "Returns a list of major modes"
 
-  (cl-flet ((alist-mode (val)
-                        (if (consp (cdr val)) (cadr val) (cdr val))))
+  (flet ((alist-mode (val)
+                     (if (consp (cdr val)) (cadr val) (cdr val))))
     (let ((modes (nconc (mapcar 'alist-mode auto-mode-alist)
                         (mapcar 'alist-mode interpreter-mode-alist)
                         (mapcar 'alist-mode magic-mode-alist))))
@@ -305,9 +289,9 @@ The prefix argument, if given, indents to that column"
       (remove-duplicates (sort modes 'string-lessp)))))
 
 (defun menu-major-modes ()
-  (cl-flet ((doc-summary (fn)
-                         (let ((doc (documentation fn)))
-                           (substring doc 0 (position ?\n doc)))))
+  (flet ((doc-summary (fn)
+                      (let ((doc (documentation fn)))
+                        (substring doc 0 (position ?\n doc)))))
     (let ((menu (make-sparse-keymap "Major Modes"))
           (major-mode-list (list-major-modes)))
       ;; Remove modes we don't want to normally list.
@@ -316,11 +300,11 @@ The prefix argument, if given, indents to that column"
                                          (memq elt unimportant-major-modes)))
                        major-mode-list))
 
-      (cl-flet ((make-menu-item (mode)
-                                (ignore-errors
-                                  `(,mode menu-item ,(symbol-name mode) ,mode
-                                          :button (:toggle . (eq major-mode ',mode))
-                                          :help ,(doc-summary mode)))))
+      (flet ((make-menu-item (mode)
+                             (ignore-errors
+                               `(,mode menu-item ,(symbol-name mode) ,mode
+                                       :button (:toggle . (eq major-mode ',mode))
+                                       :help ,(doc-summary mode)))))
         (setq menu (nconc menu
                           (mapcar 'make-menu-item important-major-modes)
                           (list '(sep1 menu-item "---"))

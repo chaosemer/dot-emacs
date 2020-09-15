@@ -1,6 +1,12 @@
 ;;;; Hexl (hex editor) customizations.
 (require 'hexl)
 
+(hook-mode hexl-mode-hook
+  (hexl-follow-line)
+  (hexl-activate-ruler)
+  (turn-on-eldoc-mode)
+  (setf truncate-lines t))
+
 (defun hexl-insert-nybble (ch arg)
   "Insert nybble for character ch arg times."
   (when (not (or (<= ?0 last-command-event ?9)
