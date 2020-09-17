@@ -69,10 +69,7 @@
 ;; Window system integration
 (when window-system
   (setf (global-key-binding (kbd "<menu>")) 'execute-extended-command
-        (global-key-binding (kbd "S-<menu>")) 'eval-expression
-        (global-key-binding (kbd "<mouse-3>")) (lambda (event prefix)
-                                                 (interactive "@e\np")
-                                                 (popup-menu menu-bar-edit-menu event prefix)))
+        (global-key-binding (kbd "S-<menu>")) 'eval-expression)
   (when (featurep 'dos-w32)
     (setf (global-key-binding (kbd "M-<f4>"))
           (lambda ()
@@ -269,65 +266,3 @@ The prefix argument, if given, indents to that column"
         (t
          (indent-according-to-mode))))
 (setf (global-key-binding (kbd "TAB")) 'indent-dwim)
-
-
-;;; Major mode list in tools menu
-(defun list-major-modes ()
-  "Returns a list of major modes"
-
-  (flet ((alist-mode (val)
-                     (if (consp (cdr val)) (cadr val) (cdr val))))
-    (let ((modes (nconc (mapcar 'alist-mode auto-mode-alist)
-                        (mapcar 'alist-mode interpreter-mode-alist)
-                        (mapcar 'alist-mode magic-mode-alist))))
-      ;; the alists allow nil and t to mean special things
-      (setf modes (delete-if (lambda (mode) (memq mode '(t nil))) modes))
-
-      ;; shouldn't display modes that require special text setup
-      (setf modes (delete-if (lambda (mode) (eq (get mode 'mode-class) 'special)) modes))
-
-      ;; return list sorted
-      (remove-duplicates (sort modes 'string-lessp)))))
-
-(defun menu-major-modes ()
-  (flet ((doc-summary (fn)
-                      (let ((doc (documentation fn)))
-                        (substring doc 0 (position ?\n doc)))))
-    (let ((menu (make-sparse-keymap "Major Modes"))
-          (major-mode-list (list-major-modes)))
-      ;; Remove modes we don't want to normally list.
-      (setq major-mode-list
-            (delete-if (lambda (elt) (or (memq elt important-major-modes)
-                                         (memq elt unimportant-major-modes)))
-                       major-mode-list))
-
-      (flet ((make-menu-item (mode)
-                             (ignore-errors
-                               `(,mode menu-item ,(symbol-name mode) ,mode
-                                       :button (:toggle . (eq major-mode ',mode))
-                                       :help ,(doc-summary mode)))))
-        (setq menu (nconc menu
-                          (mapcar 'make-menu-item important-major-modes)
-                          (list '(sep1 menu-item "---"))
-                          (mapcar 'make-menu-item major-mode-list))))
-    menu)))
-
-(defvar important-major-modes
-  '(fundamental-mode c-mode c++-mode emacs-lisp-mode)
-  "A list of important major modes to display seperately.
-
-These modes will be displayed in a separate area in the order
-listed.")
-(setf unimportant-major-modes
-  '(conf-javaprop-mode conf-unix-mode conf-windows-mode
-    conf-mode-maybe conf-space-mode conf-xdefaults-mode
-    conf-colon-mode conf-ppd-mode
-    ebrowse-tree-mode image-mode-maybe mail-mode))
-(defvar other-major-modes
-  '()
-  "A list of major modes that are not automatically detected by `list-major-modes'.")
-
-
-(define-key menu-bar-options-menu [sep] '(menu-item "---"))
-(define-key menu-bar-options-menu [major-modes-list]
-  '(menu-item "Major Mode" nil :filter (lambda (menu) (menu-major-modes))))

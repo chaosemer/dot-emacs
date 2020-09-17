@@ -12,26 +12,6 @@
   (display-warning 'emacs "Adding setf expansions for missing things")
   (defsetf lookup-key define-key))
 
-(progn
-  (display-warning 'emacs "Cleaning up file menu")
-  (define-key menu-bar-file-menu [new-file]
-    '(menu-item "New File"
-                (lambda ()
-                  (interactive)
-                  (switch-to-buffer (generate-new-buffer "untitled")))
-                :enable (menu-bar-non-minibuffer-window-p)
-                :help "Create a new buffer"))
-  (define-key menu-bar-file-menu [open-file]
-    '(menu-item "Open File..." find-file
-                :enable (menu-bar-non-minibuffer-window-p)
-                :help "Open an existing file"))
-  (define-key menu-bar-file-menu [print-buffer] nil)
-  (define-key menu-bar-file-menu [print-region] nil)
-  (define-key menu-bar-file-menu [ps-print-buffer-faces] nil)
-  (define-key menu-bar-file-menu [ps-print-region-faces] nil)
-  (define-key menu-bar-file-menu [ps-print-buffer] nil)
-  (define-key menu-bar-file-menu [ps-print-region] nil))
-
 ;; Disallow navigating to the minibuffer
 (unless (eq (plist-get minibuffer-prompt-properties 'cursor-intangible) t)
   (display-warning 'emacs "Disallowing navigation into the minibuffer prompt")
