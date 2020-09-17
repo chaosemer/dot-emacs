@@ -19,7 +19,9 @@
   (interactive "e")
   (let ((x (car (posn-x-y (event-start event)))))
     (let ((tty-menu--initial-menu-x (my-menu-bar-discretize-x x)))
-      (menu-bar-open))))
+      (if (>= emacs-major-version 27)
+          (menu-bar-open nil 0)
+        (menu-bar-open)))))
 
 (defun my-menu-bar-discretize-x (x)
   "Given X, convert to the left-most position for the associated
