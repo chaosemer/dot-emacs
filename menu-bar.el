@@ -14,59 +14,63 @@
         (interactive "@e\np")
         (popup-menu menu-bar-edit-menu event prefix)))
 
-;; On TTYs, clicking the menu bar pops up the TTY menu - WIP
-(defun my-menu-bar-open (event)
-  (interactive "e")
-  (let ((x (car (posn-x-y (event-start event)))))
-    (let ((tty-menu--initial-menu-x (my-menu-bar-discretize-x x)))
-      (if (>= emacs-major-version 27)
-          (menu-bar-open nil 0)
-        (menu-bar-open)))))
+;; Upstreaming, make clicking on the menu bar pop up the right TTY menu.
+(if emacs-repository-version
+    (setf (global-key-binding (kbd "<menu-bar> <mouse-1>"))
+          'menu-bar-open-mouse)
+  (setf (global-key-binding (kbd "<menu-bar> <mouse-1>"))
+        'my-menu-bar-open)
 
-(defun my-menu-bar-discretize-x (x)
-  "Given X, convert to the left-most position for the associated
-  menu entry. Returns nil if no such value exists."
-  (let ((menu-x 0))
-    (dolist (string (menu-bar-item-strings))
-      (let ((next-menu-x (+ menu-x (length string) 1)))
-        (when (< x next-menu-x)
-          (return menu-x))
-        (setf menu-x next-menu-x)))))
+  (defun my-menu-bar-open (event)
+    (interactive "e")
+    (let ((x (car (posn-x-y (event-start event)))))
+      (let ((tty-menu--initial-menu-x (my-menu-bar-discretize-x x)))
+        (if (>= emacs-major-version 27)
+            (menu-bar-open nil 0)
+          (menu-bar-open)))))
 
-(defun menu-bar-item-strings ()
-  "Return a list of strings for the active menu-bar."
-  (mapcar (lambda (item)
-            (cond
-             ;; Simple menu item
-             ((stringp (car item)) (car item))
-             ;; Extended menu item
-             ((eq (car item) 'menu-item) (cadr item))))
-          (menu-bar-items)))
+  (defun my-menu-bar-discretize-x (x)
+    "Given X, convert to the left-most position for the associated
+menu entry. Returns nil if no such value exists."
+    (let ((menu-x 0))
+      (dolist (string (menu-bar-item-strings))
+        (let ((next-menu-x (+ menu-x (length string) 1)))
+          (when (< x next-menu-x)
+            (return menu-x))
+          (setf menu-x next-menu-x)))))
 
-(defun menu-bar-items ()
-  "Return a list of active menu-bar keymap entries."
-  (let ((items '())
-        (final-items '()))
-    (dolist (keymap (reverse (current-active-maps)))
-      (let ((item (lookup-key keymap (kbd "<menu-bar>"))))
-        ;; The menu bar contains only the keymaps bound to
-        ;; <menu-bar>. Other entries are for mouse input.
-        (when (keymapp item)
-          (map-keymap
-           (lambda (e i)
-             (when (or
-                    ;; Simple menu item
-                    (and (listp i) (stringp (car i)))
-                    ;; Extended menu item
-                    (and (listp i) (eq (car i) 'menu-item)))
-               (if (member e menu-bar-final-items)
-                   (push i final-items)
-                 (push i items))))
-           item))))
-    (concatenate 'list (reverse items) final-items)))
+  (defun menu-bar-item-strings ()
+    "Return a list of strings for the active menu-bar."
+    (mapcar (lambda (item)
+              (cond
+               ;; Simple menu item
+               ((stringp (car item)) (car item))
+               ;; Extended menu item
+               ((eq (car item) 'menu-item) (cadr item))))
+            (menu-bar-items)))
 
-(setf (global-key-binding (kbd "<menu-bar> <mouse-1>"))
-      'my-menu-bar-open)
+  (defun menu-bar-items ()
+    "Return a list of active menu-bar keymap entries."
+    (let ((items '())
+          (final-items '()))
+      (dolist (keymap (reverse (current-active-maps)))
+        (let ((item (lookup-key keymap (kbd "<menu-bar>"))))
+          ;; The menu bar contains only the keymaps bound to
+          ;; <menu-bar>. Other entries are for mouse input.
+          (when (keymapp item)
+            (map-keymap
+             (lambda (e i)
+               (when (or
+                      ;; Simple menu item
+                      (and (listp i) (stringp (car i)))
+                      ;; Extended menu item
+                      (and (listp i) (eq (car i) 'menu-item)))
+                 (if (member e menu-bar-final-items)
+                     (push i final-items)
+                   (push i items))))
+             item))))
+      (concatenate 'list (reverse items) final-items)))
+  )
 
 ;; Clean up the file menu
 (define-key menu-bar-file-menu [new-file]
