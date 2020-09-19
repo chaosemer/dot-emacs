@@ -130,7 +130,7 @@ menu entry. Returns nil if no such value exists."
                           (mapcar 'make-menu-item important-major-modes)
                           (list '(sep1 menu-item "---"))
                           (mapcar 'make-menu-item major-mode-list))))
-    menu)))
+      menu)))
 
 (defvar important-major-modes
   '(fundamental-mode c-mode c++-mode emacs-lisp-mode)
@@ -139,10 +139,10 @@ menu entry. Returns nil if no such value exists."
 These modes will be displayed in a separate area in the order
 listed.")
 (setf unimportant-major-modes
-  '(conf-javaprop-mode conf-unix-mode conf-windows-mode
-    conf-mode-maybe conf-space-mode conf-xdefaults-mode
-    conf-colon-mode conf-ppd-mode
-    ebrowse-tree-mode image-mode-maybe mail-mode))
+      '(conf-javaprop-mode conf-unix-mode conf-windows-mode
+                           conf-mode-maybe conf-space-mode conf-xdefaults-mode
+                           conf-colon-mode conf-ppd-mode
+                           ebrowse-tree-mode image-mode-maybe mail-mode))
 (defvar other-major-modes
   '()
   "A list of major modes that are not automatically detected by `list-major-modes'.")
