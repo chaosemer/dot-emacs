@@ -106,6 +106,11 @@ menu entry. Returns nil if no such value exists."
       ;; shouldn't display modes that require special text setup
       (setf modes (delete-if (lambda (mode) (eq (get mode 'mode-class) 'special)) modes))
 
+      ;; some "modes" are -maybe modes that aren't real modes
+      (setf modes
+            (delete-if (lambda (mode) (string-suffix-p "-maybe" (symbol-name mode)))
+                       modes))
+
       ;; return list sorted
       (remove-duplicates (sort modes 'string-lessp)))))
 
@@ -123,7 +128,7 @@ menu entry. Returns nil if no such value exists."
 
       (flet ((make-menu-item (mode)
                              (ignore-errors
-                               `(,mode menu-item ,(symbol-name mode) ,mode
+                               `(,mode menu-item ,(major-mode-name mode) ,mode
                                        :button (:toggle . (eq major-mode ',mode))
                                        :help ,(doc-summary mode)))))
         (setq menu (nconc menu
@@ -131,6 +136,48 @@ menu entry. Returns nil if no such value exists."
                           (list '(sep1 menu-item "---"))
                           (mapcar 'make-menu-item major-mode-list))))
       menu)))
+
+(defvar major-mode-name-overrides
+  '(bat-mode "Bat"
+    c-or-c++-mode "C or C++"
+    conf-toml-mode "Conf TOML"
+    conf-ppd-mode "Conf PPD"
+    dsssl-mode "DSSSL"
+    gdb-script-mode "GDB Script"
+    idlwave-mode "IDLWAVE"
+    ld-script-mode "LD Script"
+    less-css-mode "Less CSS"
+    makefile-bsdmake-mode "Makefile BSDmake"
+    makefile-gmake-mode "Makefile GNUmake"
+    mhtml-mode "HTML+"
+    objc-mode "ObjC"
+    org-mode "Org"
+    rst-mode "ReST"
+    scss-mode "SCSS"
+    sgml-mode "SGML"
+    snmp-mode "SNMP"
+    snmpv2-mode "SNMPv2"
+    tar-mode "Tar"
+    vhdl-mode "VHDL")
+  "List of mode name overrides.")
+
+(defun major-mode-name (sym)
+  "Get the major mode name for a specific mode symbol."
+  (or (plist-get major-mode-name-overrides sym)
+      (let ((name (symbol-name sym)))
+        ;; '-mode' is at the end by convention, but not strictly required.
+        (setf name (string-remove-suffix "-mode" name))
+        ;; Hypens should become spaces
+        (setf name (replace-regexp-in-string "-" " " name))    
+        ;; Three or less letter modes are usually acronyms. Otherwise, multi-word
+        (setf name
+              (if (<= (length name) 3)
+                  (upcase name)
+                (capitalize name)))
+        ;; Capitalize TeX modes correctly
+        (setf name (replace-regexp-in-string "tex\\>" "TeX" name))
+
+        name)))
 
 (defvar important-major-modes
   '(fundamental-mode c-mode c++-mode emacs-lisp-mode)
@@ -146,7 +193,6 @@ listed.")
 (defvar other-major-modes
   '()
   "A list of major modes that are not automatically detected by `list-major-modes'.")
-
 
 (define-key menu-bar-options-menu [sep] '(menu-item "---"))
 (define-key menu-bar-options-menu [major-modes-list]
