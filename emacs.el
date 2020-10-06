@@ -9,7 +9,7 @@
 
 ;; Access to the melpa.org packages.
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
+             '("melpa" . "http://stable.melpa.org/packages/"))
 (package-initialize)
 
 ;; Global customizations -----------------------------------------------

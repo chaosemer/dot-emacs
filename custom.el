@@ -31,6 +31,7 @@
  '(mouse-wheel-progressive-speed nil)
  '(nxml-sexp-element-flag t)
  '(nxml-slash-auto-complete-flag t)
+ '(package-selected-packages (quote (bar-cursor slime)))
  '(server-window (quote switch-to-buffer-other-frame))
  '(show-paren-style (quote expression))
  '(vc-handled-backends (quote (SVN Git Hg)))
