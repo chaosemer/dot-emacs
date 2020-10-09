@@ -43,7 +43,8 @@
       parse-sexp-lookup-properties t
       narrow-to-defun-include-comments t)
 
-(setf (face-background 'show-paren-match) (if window-system "light gray" "blue")
+(setf (face-background 'show-paren-match)
+      (if (> (display-color-cells) 256) "light gray" "blue")
       (face-background 'show-paren-mismatch) "red"
       (face-foreground 'show-paren-mismatch) "white")
 
