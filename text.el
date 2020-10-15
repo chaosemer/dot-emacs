@@ -1,4 +1,4 @@
-;;;; Text mode customizations.
+;;;; Text mode customizations.  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; Why not use Emacs for editting plain old text?
 (hook-mode text-mode-hook

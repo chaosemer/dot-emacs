@@ -1,4 +1,4 @@
-;;;; Customizing Version Control menus and such
+;;;; Customizing Version Control menus and such  -*- lexical-binding: t; -*-
 (require 'vc-git)
 (define-key vc-git-extra-menu-map [git-svn-dcommit]
   '(menu-item "Git SVN Commit" vc-git-svn-dcommit))

@@ -1,4 +1,4 @@
-;;;; Patches for buggy/old emacs code
+;;;; Patches for buggy/old emacs code  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; This allows me to use one init file across multiple versions of Emacs.
 ;;;;

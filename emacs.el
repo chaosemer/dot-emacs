@@ -1,4 +1,4 @@
-;;;; Global Emacs customizations.
+;;;; Global Emacs customizations.  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; Put stuff here if you have nowhere else to put them
 (require 'bar-cursor)

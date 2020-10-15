@@ -1,4 +1,4 @@
-;;;; C customizations.
+;;;; C customizations.  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; Also applied to other C-like languages (really anything that uses CC-mode)
 (require 'ebrowse)

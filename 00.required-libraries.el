@@ -1,4 +1,4 @@
-;;;; Misc utilities that I like to use throughout my init file.
+;;;; Misc utilities that I like to use throughout my init file.  -*- lexical-binding: t; -*-
 (require 'cl)
 (require 'package)
 

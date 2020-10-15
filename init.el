@@ -1,4 +1,4 @@
-;;;; -*- Mode: emacs-lisp -*-
+;;;; -*- Mode: emacs-lisp; lexical-binding: t; -*-
 ;;;; MJF Emacs customizations
 
 ;; Added by Package.el.  This must come before configurations of

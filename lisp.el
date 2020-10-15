@@ -1,4 +1,4 @@
-;;;; (Common) Lisp customizations
+;;;; (Common) Lisp customizations  -*- lexical-binding: t; -*-
 (require 'hideif)
 (require 'slime)
 

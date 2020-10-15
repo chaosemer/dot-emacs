@@ -1,4 +1,4 @@
-;;;; Menu bar customizations
+;;;; Menu bar customizations  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; Customizing the Emacs menu-bar. Mostly for TTYs (that's what I
 ;;;; used on Windows), but there's some GUI customizations here too.

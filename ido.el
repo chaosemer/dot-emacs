@@ -1,4 +1,4 @@
-;;;; IDO customizations.
+;;;; IDO customizations.  -*- lexical-binding: t; -*-
 (ido-everywhere 1)
 (ido-mode 1)
 

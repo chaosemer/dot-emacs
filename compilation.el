@@ -1,4 +1,4 @@
-;;;; Compilation mode customizations
+;;;; Compilation mode customizations  -*- lexical-binding: t; -*-
 (hook-mode compilation-mode-hook
   next-error-follow-minor-mode)
 (hook-mode occur-mode-hook
