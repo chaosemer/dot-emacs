@@ -77,7 +77,7 @@ comment right before it."
 ;; C-c C, so I'm moving it to that.
 (setf (global-key-binding (kbd "C-c C")) ebrowse-global-map)
 
-;; cc-mode defines the tab key in its map.  It shouldn't
+;; cc-mode defines the tab key in its map.  It shouldn't TODO(upstream)
 (require 'cc-mode)
 (define-key c-mode-map (kbd "TAB") nil)
 (define-key c++-mode-map (kbd "TAB") nil)

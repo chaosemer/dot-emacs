@@ -91,7 +91,7 @@ menu entry. Returns nil if no such value exists."
 (define-key menu-bar-file-menu [ps-print-buffer] nil)
 (define-key menu-bar-file-menu [ps-print-region] nil)
 
-;;; Major mode list in tools menu
+;;; Major mode list in tools menu TODO(upstream)
 (defun list-major-modes ()
   "Returns a list of major modes"
 

@@ -2,7 +2,7 @@
 (require 'cl)
 (require 'package)
 
-;;; A new and improved DEFMACRO.
+;;; A new and improved DEFMACRO. TODO(upstream)
 (defmacro defmacro+ (name args &rest body)
   "Like `defmacro*', but also attempts to figure out the indenting."
   (let ((body-index (position-if (lambda (arg) (member arg '(&body &rest)))

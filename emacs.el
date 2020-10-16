@@ -107,7 +107,7 @@
                "ESC <end>" "ESC <home>" "ESC <next>" "ESC <prior>"))
   (setf (global-key-binding (read-kbd-macro key)) nil))
 
-;;; DWIM <home> and <end>
+;;; DWIM <home> and <end> TODO(package)
 (defun beginning-of-line-dwim (&optional n)
   "Move point to the first non-whitespace character or the beginning of line."
   (interactive "^p")
@@ -131,7 +131,7 @@
 (setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim
       (global-key-binding (kbd "<end>")) 'end-of-line-dwim)
 
-;;; Recursive edits
+;;; Recursive edits TODO(package)
 (defun push-or-pop-excursion (pop?)
   "Pushes or pops an excursion, depending on the prefix arg."
   (interactive (list current-prefix-arg))
@@ -155,7 +155,7 @@
   "Face for file level comments"
   :group 'local)
 
-;;; Pair file navigation
+;;; Pair file navigation TODO(package)
 ;;;
 ;;; Many programming languages have the concept of two related files, like C's source and header
 ;;; files.  This allows you to navigate between two pair files with the press of a key.
@@ -245,7 +245,7 @@ Pair files are determined by `pair-file-list'."
       (global-key-binding (kbd "C-x 5 C-h")) #'switch-to-pair-file-other-frame
       (global-key-binding (kbd "C-x 5 h")) #'switch-to-pair-file-other-frame)
 
-;;; Other misc stuff
+;;; Other misc stuff TODO(package)
 (defun scratch ()
   "Switch to the scratch buffer."
   (interactive)

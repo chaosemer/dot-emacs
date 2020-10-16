@@ -7,6 +7,7 @@
   (turn-on-eldoc-mode)
   (setf truncate-lines t))
 
+;; TODO(upstream)
 (defun hexl-insert-nybble (ch arg)
   "Insert nybble for character ch arg times."
   (when (not (or (<= ?0 last-command-event ?9)

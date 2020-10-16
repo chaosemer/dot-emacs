@@ -6,5 +6,5 @@
 (hook-mode ielm-mode-hook
   eldoc-mode)
 
-;; emacs-lisp-mode defines the tab key in its map.  It shouldn't
+;; emacs-lisp-mode defines the tab key in its map.  It shouldn't TODO(upstream)
 (define-key emacs-lisp-mode-map (kbd "TAB") nil)

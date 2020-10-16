@@ -8,6 +8,7 @@
 (require 'log-edit)
 (require 'compile)
 
+;; TODO(upstream)
 (progn
   (display-warning 'emacs "Adding setf expansions for missing things")
   (defsetf lookup-key define-key))
@@ -19,13 +20,13 @@
 	(plist-put minibuffer-prompt-properties 'cursor-intangible t))
   (add-hook 'minibuffer-setup-hook 'cursor-intangible-mode))
 
-;; Fix buggy regexp in Emacs
+;; Fix buggy regexp in Emacs TODO(upstream)
 (let ((correct-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) [A-Z][0-9]+:\\)"))
   (unless (equal (second (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)
     (display-warning 'emacs "Fixing buggy Microsoft regexp")
     (setf (second (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)))
 
-;; Making C-a in log-edit-mode not be there
+;; Making C-a in log-edit-mode not be there TODO(upstream)
 (when (lookup-key log-edit-mode-map (kbd "C-a"))
   (display-warning 'emacs "Cleaning up log-edit-mode-map")
   (setf (lookup-key log-edit-mode-map (kbd "<remap> <beginning-of-line>"))
