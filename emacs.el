@@ -184,7 +184,7 @@ that extension."
                           (file-name-sans-extension filename)
                           extension))))
 
-(defun* find-pair-file-noselect (filename)
+(cl-defun find-pair-file-noselect (filename)
   "Read the pair file of FILENAME into a buffer and return that
 buffer.  See also `find-file-noselect'."
   (unless filename

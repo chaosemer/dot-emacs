@@ -25,7 +25,7 @@ loaded (via `load') in alphabetical order.  Setting this
 variable after Emacs startup has no effect.")
 
 ;;; Helper functions and required functionality
-(require 'cl)
+(require 'cl-lib)
 
 (defun file-init-loadable? (file)
   "Tests if FILE should be loaded at Emacs initialization."
@@ -64,7 +64,7 @@ variable after Emacs startup has no effect.")
 (let ((debug-ignored-errors '())
       (debug-on-error t)
       (debug-on-quit t))
-  (mapc #'load (remove-duplicates
+  (mapc #'load (cl-remove-duplicates
 		(mapcar #'file-name-sans-extension
 			(directory-files-filter *init-file-directory*
 						#'file-init-loadable?

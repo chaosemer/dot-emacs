@@ -95,7 +95,7 @@ menu entry. Returns nil if no such value exists."
 (defun list-major-modes ()
   "Returns a list of major modes"
 
-  (flet ((alist-mode (val)
+  (cl-flet ((alist-mode (val)
                      (if (consp (cdr val)) (cadr val) (cdr val))))
     (let ((modes (nconc (mapcar 'alist-mode auto-mode-alist)
                         (mapcar 'alist-mode interpreter-mode-alist)
@@ -115,7 +115,7 @@ menu entry. Returns nil if no such value exists."
       (remove-duplicates (sort modes 'string-lessp)))))
 
 (defun menu-major-modes ()
-  (flet ((doc-summary (fn)
+  (cl-flet ((doc-summary (fn)
                       (let ((doc (documentation fn)))
                         (substring doc 0 (position ?\n doc)))))
     (let ((menu (make-sparse-keymap "Major Modes"))
@@ -126,7 +126,7 @@ menu entry. Returns nil if no such value exists."
                                          (memq elt unimportant-major-modes)))
                        major-mode-list))
 
-      (flet ((make-menu-item (mode)
+      (cl-flet ((make-menu-item (mode)
                              (ignore-errors
                                `(,mode menu-item ,(major-mode-name mode) ,mode
                                        :button (:toggle . (eq major-mode ',mode))
