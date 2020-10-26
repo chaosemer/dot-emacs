@@ -2,22 +2,20 @@
 ;;;;
 ;;;; Put stuff here if you have nowhere else to put them
 (require 'bar-cursor)
-(require 'fringe)
-(require 'hideif)
-(require 'ido)
-(require 'package)
 
 ;; Access to the melpa.org packages.
 (add-to-list 'package-archives
              '("melpa" . "http://stable.melpa.org/packages/"))
-(package-initialize)
 
 ;; Global customizations -----------------------------------------------
 (global-subword-mode 1)
+(assoc-delete-all 'subword-mode minor-mode-alist)
+(bar-cursor-mode 1)
+(assoc-delete-all 'bar-cursor-mode minor-mode-alist)
+
 (column-number-mode 1)
 (cua-mode 1)
 (global-hi-lock-mode 1)
-(bar-cursor-mode 1)
 (menu-bar-mode 1)
 (if window-system
     (mouse-wheel-mode 1)

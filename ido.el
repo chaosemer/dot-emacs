@@ -1,4 +1,6 @@
 ;;;; IDO customizations.  -*- lexical-binding: t; -*-
+(require 'ido)
+
 (ido-everywhere 1)
 (ido-mode 1)
 

@@ -63,10 +63,25 @@ variable after Emacs startup has no effect.")
 ; load each FILE-INIT-LOADABLE? file in *INIT-FILE-DIRECTORY* once
 (let ((debug-ignored-errors '())
       (debug-on-error t)
-      (debug-on-quit t))
-  (mapc #'load (cl-remove-duplicates
-		(mapcar #'file-name-sans-extension
-			(directory-files-filter *init-file-directory*
-						#'file-init-loadable?
-						t))
-		:test #'string=)))
+      (debug-on-quit t)
+      (prev-time (time-convert nil 'list))
+      (timing-messages '()))
+  (dolist (file (cl-remove-duplicates
+		 (mapcar #'file-name-sans-extension
+			 (directory-files-filter *init-file-directory*
+						 #'file-init-loadable?
+						 t))
+		 :test #'string=))
+    (load file)
+    (let* ((cur-time (time-convert nil 'list))
+           (delta-time (float-time (time-subtract cur-time prev-time))))
+      (when (> delta-time 0.05)
+        (push (format "Loading `%s' took %f seconds."
+                      file delta-time)
+              timing-messages))
+      (setf prev-time cur-time)))
+
+  ;; Helpful debugging for init files.
+  (when timing-messages
+    (dolist (message (nreverse timing-messages))
+      (display-warning 'init message))))

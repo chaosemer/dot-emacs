@@ -1,9 +1,6 @@
 ;;;; C customizations.  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; Also applied to other C-like languages (really anything that uses CC-mode)
-(require 'ebrowse)
-(load "xcscope" t)
-
 (hook-mode c-mode-common-hook
   visual-line-mode
   (c-set-offset 'case-label '+)
@@ -26,7 +23,16 @@
   (setf font-lock-multiline t)
   (add-hook 'font-lock-extend-region-functions 'my-c-section-comment-extend-region t)
   
-  (setf beginning-of-defun-function 'my-c-beginning-of-defun))
+  (setf beginning-of-defun-function 'my-c-beginning-of-defun)
+
+  ;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY
+  ;; inconvenient.  Nothing else uses C-c C, so I'm moving it to that.
+  (require 'ebrowse)
+  (setf (global-key-binding (kbd "C-c C")) ebrowse-global-map)
+
+  ;; cc-mode defines the tab key in its map.  It shouldn't TODO(upstream)
+  (define-key c-mode-map (kbd "TAB") nil)
+  (define-key c++-mode-map (kbd "TAB") nil))
 
 (defun my-c-section-comment-extend-region ()
   "Function to extend the font lock region to support section comments."
@@ -72,15 +78,6 @@ comment right before it."
 	(c-beginning-of-defun arg)
 	(while (c-backward-single-comment))
 	(re-search-forward "\\(?:\\s \\|[\n\r]\\)*" nil t)))
-
-;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY inconvenient.  Nothing else uses
-;; C-c C, so I'm moving it to that.
-(setf (global-key-binding (kbd "C-c C")) ebrowse-global-map)
-
-;; cc-mode defines the tab key in its map.  It shouldn't TODO(upstream)
-(require 'cc-mode)
-(define-key c-mode-map (kbd "TAB") nil)
-(define-key c++-mode-map (kbd "TAB") nil)
 
 ;; Make CScope use next-error functionality, so "C-x `" works correctly
 (defun cscope-next-error (n &optional reset)
