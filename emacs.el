@@ -177,12 +177,13 @@ ordered by preference
 Pair files are determined by replacing the extension of FILENAME
 with each extension listed in `pair-file-extension-alist' for
 that extension."
-  (let ((extensions (cdr (assoc* (file-name-extension filename) pair-file-extension-alist
-                                 :test #'string=))))
-    (loop for extension in extensions
-          collect (format "%s.%s"
-                          (file-name-sans-extension filename)
-                          extension))))
+  (let ((extensions (cdr (assoc (file-name-extension filename)
+                                pair-file-extension-alist
+                                #'string=))))
+    (cl-loop for extension in extensions
+             collect (format "%s.%s"
+                             (file-name-sans-extension filename)
+                             extension))))
 
 (cl-defun find-pair-file-noselect (filename)
   "Read the pair file of FILENAME into a buffer and return that
@@ -194,7 +195,7 @@ buffer.  See also `find-file-noselect'."
       (dolist (file files)
         (when (or (file-exists-p file)
                   (find-buffer-visiting file))
-          (return-from find-pair-file-noselect
+          (cl-return-from find-pair-file-noselect
             (find-file-noselect file)))))
     (error "No known pair for file %s" filename)))
 
