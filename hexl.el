@@ -10,10 +10,10 @@
 ;; TODO(upstream)
 (defun hexl-insert-nybble (ch arg)
   "Insert nybble for character ch arg times."
-  (when (not (or (<= ?0 last-command-event ?9)
-                 (<= ?a last-command-event ?f)
-                 (<= ?A last-command-event ?F)))
-    (error "Invalid nybble %c" last-command-event))
+  (when (not (or (<= ?0 ch ?9)
+                 (<= ?a ch ?f)
+                 (<= ?A ch ?F)))
+    (error "Invalid nybble %c" ch))
 
   (dotimes (_ arg)
     (let* ((hex-position (hexl-address-to-marker (hexl-current-address)))
@@ -22,7 +22,7 @@
            ;; nybble index
            (index (if (= (point) (1+ hex-position))
                        1 0)))
-      (setf (aref byte-str index) last-command-event)
+      (setf (aref byte-str index) ch)
 
       (save-excursion (hexl-insert-hex-string byte-str 1))
       (goto-char (+ hex-position index 1)))))
