@@ -34,13 +34,7 @@
       (hexl-insert-nybble last-command-event arg)
     (hexl-insert-multibyte-char last-command-event arg)))
 
-(defun hexl-my-backward-char (arg)
-  "Move to left ARG bytes (right if ARG negative) in Hexl mode."
-  (interactive "p")
-  (hexl-my-forward-char (- arg)))
-
-
-(defun hexl-my-forward-char (arg)
+(defun hexl-my-forward-char-internal (arg)
   "Move to right ARG bytes (left if ARG negative) in Hexl mode."
   (interactive "p")
   (let* ((hex-position (hexl-address-to-marker (hexl-current-address)))
@@ -51,11 +45,102 @@
                           (if (and (< arg 0) (/= index 0))
                               1 0)))))
 
+(defun hexl-my-ascii-position (addr)
+  (+ (* (/ addr 16) (hexl-line-displen))
+     (hexl-ascii-start-column)
+     (point-min)
+     (% addr 16)))
+
+(defun hexl-my-movement (f arg)
+  (let ((at-ascii-position (>= (current-column) (hexl-ascii-start-column))))
+    (funcall f arg)
+    (when at-ascii-position
+      (goto-char (hexl-my-ascii-position (hexl-current-address t))))))
+
+(defun hexl-my-movement0 (f)
+  (let ((at-ascii-position (>= (current-column) (hexl-ascii-start-column))))
+    (funcall f)
+    (when at-ascii-position
+      (goto-char (hexl-my-ascii-position (hexl-current-address t))))))
+
+(defun hexl-my-backward-char (arg)
+  "Replacement for `hexl-backward-char'."
+  (interactive "p")
+  (hexl-my-forward-char (- arg)))
+
+(defun hexl-my-forward-char (arg)
+  "Replacement for `hexl-forward-char'."
+  (interactive "p")
+  (hexl-my-movement 'hexl-my-forward-char-internal arg))
+
+(defun hexl-my-previous-line (arg)
+  "Replacement for `hexl-previous-line'."
+  (interactive "p")
+  (hexl-my-movement 'hexl-previous-line arg))
+
+(defun hexl-my-next-line (arg)
+  "Replacement for `hexl-next-line'."
+  (interactive "p")
+  (hexl-my-movement 'hexl-next-line arg))
+
+(defun hexl-my-beginning-of-buffer (arg)
+  "Replacement for `hexl-beginning-of-buffer'."
+  (interactive "p")
+  (hexl-my-movement 'hexl-beginning-of-buffer arg))
+
+(defun hexl-my-end-of-buffer (arg)
+  "Replcaement for `hexl-end-of-buffer'."
+  (interactive "p")
+  (hexl-my-movement 'hexl-end-of-buffer arg))
+
+(defun hexl-my-beginning-of-line ()
+  "Replacement for `hexl-beginning-of-line'."
+  (interactive)
+  (hexl-my-movement0 'hexl-beginning-of-line))
+
+(defun hexl-my-end-of-line ()
+  "Replacement for `hexl-end-of-line'."
+  (interactive)
+  (hexl-my-movement0 'hexl-end-of-line))
+
+(defun hexl-my-max-data-address ()
+  "Return the maximum data address available.
+
+Unlike `hexl-max-address', this is not rounded up to a whole
+number of lines."
+  (save-excursion
+    (hexl-goto-address hexl-max-address)
+
+    (if (= (point-min) (point-max))
+        0
+      ;; Actual calculation.
+      (beginning-of-line)
+      (forward-char 10)
+
+      ;; Look for the end of the binary buffer.
+      (while (and (< (hexl-current-address) hexl-max-address)
+                  (/= (char-after) ?\s))
+        (hexl-forward-char 1))
+      (when (= (char-after) ?\s)
+        (hexl-backward-char 1))
+      (hexl-current-address))))
 
 (define-key hexl-mode-map (kbd "<remap> <self-insert-command>")
   'hexl-my-self-insert-command)
 (define-key hexl-mode-map (kbd "\C-m") 'hexl-my-self-insert-command)
-(define-key hexl-mode-map (kbd "<left>") 'hexl-my-backward-char)
-(define-key hexl-mode-map (kbd "<right>") 'hexl-my-forward-char)
-(define-key hexl-mode-map (kbd "\C-f") 'hexl-my-backward-char)
-(define-key hexl-mode-map (kbd "\C-b") 'hexl-my-forward-char)
+(define-key hexl-mode-map (kbd "<remap> <hexl-backward-char>")
+  'hexl-my-backward-char)
+(define-key hexl-mode-map (kbd "<remap> <hexl-forward-char>")
+  'hexl-my-forward-char)
+(define-key hexl-mode-map (kbd "<remap> <hexl-previous-line>")
+  'hexl-my-previous-line)
+(define-key hexl-mode-map (kbd "<remap> <hexl-next-line>")
+  'hexl-my-next-line)
+(define-key hexl-mode-map (kbd "<remap> <hexl-beginning-of-buffer>")
+  'hexl-my-beginning-of-buffer)
+(define-key hexl-mode-map (kbd "<remap> <hexl-end-of-buffer>")
+  'hexl-my-end-of-buffer)
+(define-key hexl-mode-map (kbd "<remap> <hexl-beginning-of-line>")
+  'hexl-my-beginning-of-line)
+(define-key hexl-mode-map (kbd "<remap> <hexl-end-of-line>")
+  'hexl-my-end-of-line)
