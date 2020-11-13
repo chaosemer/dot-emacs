@@ -90,6 +90,14 @@
   (setf (lookup-key function-key-map (kbd "<print>")) (kbd "<menu>")
         (lookup-key function-key-map (kbd "S-<print>")) (kbd "S-<menu>")))
 
+;; Change display for characters not displayable on Windows console.
+(when (string-match "microsoft" (shell-command-to-string "uname -r"))
+  (aset (or standard-display-table
+            (setq standard-display-table (make-display-table)))
+        ?⇒                             ; RIGHTWARDS DOUBLE ARROW
+        (vector (make-glyph-code ?= 'homoglyph)
+                (make-glyph-code ?> 'homoglyph))))
+
 ;; simpler sexp bindings
 (setf (global-key-binding (kbd "M-<right>")) 'forward-sexp
       (global-key-binding (kbd "M-<left>")) 'backward-sexp
