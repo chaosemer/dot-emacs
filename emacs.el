@@ -20,7 +20,11 @@
 (menu-bar-mode 1)
 (if window-system
     (mouse-wheel-mode 1)
-  (xterm-mouse-mode 1))
+  (xterm-mouse-mode 1)
+  (when (string-match "microsoft" (shell-command-to-string "uname -r"))
+    ;; Windows Console does not properly report that it supprots
+    ;; setSelection. It does not support other functionality.
+    (setq xterm-extra-capabilities '(setSelection))))
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (global-font-lock-mode 1)
@@ -87,17 +91,8 @@
   (setf (lookup-key function-key-map (kbd "<apps>")) (kbd "<menu>")
         (lookup-key function-key-map (kbd "S-<apps>")) (kbd "S-<menu>")))
 (when (and (null window-system) (string= (getenv "TERM") "xterm"))
-  (xterm-mouse-mode 1)
   (setf (lookup-key function-key-map (kbd "<print>")) (kbd "<menu>")
         (lookup-key function-key-map (kbd "S-<print>")) (kbd "S-<menu>")))
-
-;; Change display for characters not displayable on Windows console.
-(when (string-match "microsoft" (shell-command-to-string "uname -r"))
-  (aset (or standard-display-table
-            (setq standard-display-table (make-display-table)))
-        ?⇒                             ; RIGHTWARDS DOUBLE ARROW
-        (vector (make-glyph-code ?= 'homoglyph)
-                (make-glyph-code ?> 'homoglyph))))
 
 ;; simpler sexp bindings
 (setf (global-key-binding (kbd "M-<right>")) 'forward-sexp
