@@ -13,7 +13,7 @@
         (local-key-binding (kbd "C-c M-<left>")) 'c-backward-conditional
         (local-key-binding (kbd "C-c M-<up>")) 'c-up-conditional-with-else
         (local-key-binding (kbd "C-c M-<down>")) 'c-down-conditional)
-  (when (featurep 'cscope) (cscope-bind-keys-3deep))
+  (when (fboundp 'cscope-bind-keys-3deep) (cscope-bind-keys-3deep))
 
   ;; Special comment syntax
   (font-lock-add-keywords nil '(("^\\s *\\(///.*\n?\\)" 1 'section-comment-face t)
@@ -21,7 +21,6 @@
 								("^//.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?://.*\n\\)+" 0 'section-comment-face t)
 								("^/\\*.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?:.\\|\n\\)*?\\*/\n?" 0 'section-comment-face t)))
   (setf font-lock-multiline t)
-  (add-hook 'font-lock-extend-region-functions 'my-c-section-comment-extend-region t)
   
   (setf beginning-of-defun-function 'my-c-beginning-of-defun)
 
@@ -33,30 +32,6 @@
   ;; cc-mode defines the tab key in its map.  It shouldn't TODO(upstream)
   (define-key c-mode-map (kbd "TAB") nil)
   (define-key c++-mode-map (kbd "TAB") nil))
-
-(defun my-c-section-comment-extend-region ()
-  "Function to extend the font lock region to support section comments."
-  
-  (let (new-beg new-end)
-  	;; back up to the beginning of this comment block
-  	(goto-char font-lock-beg)
-	(unless (bolp) (forward-line 0))
-
-  	(while (and (not (bobp)) (looking-at "//"))
-  	  (forward-line -1))
-  	(setf new-beg (point))
-
-	;;(setf new-end font-lock-end)
-  	;; advance to the end of this comment block
-  	(goto-char font-lock-end)
-	(unless (bolp) (forward-line 1))  	
-  	(while (and (not (eobp)) (looking-at "//"))
-  	  (forward-line 1))
-  	(setf new-end (point))
-
-  	(prog1 (or (/= new-beg font-lock-beg)
-  			   (/= new-end font-lock-end))
-  	  (setf font-lock-beg new-beg font-lock-end new-end))))
 
 (setf (default-value 'c-recognize-knr-p) nil
       (default-value 'c-recognize-paren-inits) t
