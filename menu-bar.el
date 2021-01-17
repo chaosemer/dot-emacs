@@ -8,11 +8,11 @@
 ;;;; TODO: Make x-popup-menu properly handle mouse input (it treats a
 ;;;; mouse-click as "select current entry")
 
-;; Right-click pops up the edit menu.
-(setf (global-key-binding (kbd "<mouse-3>"))
-      (lambda (event prefix)
-        (interactive "@e\np")
-        (popup-menu menu-bar-edit-menu event prefix)))
+;; Right-click pops up the edit menu w/ some extras.
+(setf (global-key-binding (kbd "<down-mouse-3>"))
+      #'my-popup-right-click-menu
+      (global-key-binding (kbd "<mouse-3>"))
+      nil)
 
 ;; Upstreaming, make clicking on the menu bar pop up the right TTY menu.
 (if emacs-repository-version
@@ -20,6 +20,9 @@
           'menu-bar-open-mouse)
   (setf (global-key-binding (kbd "<menu-bar> <mouse-1>"))
         'my-menu-bar-open)
+(defun my-popup-right-click-menu (event prefix)
+  (interactive "@e\np")
+  (popup-menu (my-right-keymap) event prefix))
 
   (defun my-menu-bar-open (event)
     (interactive "e")
@@ -28,6 +31,19 @@
         (if (>= emacs-major-version 27)
             (menu-bar-open nil 0)
           (menu-bar-open)))))
+(defun my-right-keymap ()
+  "Return the top menu-bar items that should appear in a right click menu."
+  (let ((old-map (current-global-map)))
+    (unwind-protect
+        (progn
+          (use-global-map (make-sparse-keymap))
+          (let  ((map (make-sparse-keymap)))
+            (set-keymap-parent map (copy-keymap menu-bar-edit-menu))
+            (condition-case nil
+                ;; If there is no major mode or minor mode menus,
+                ;; menu-bar-keymap will error internally.
+                (let ((mb-map (menu-bar-keymap)))
+                  (define-key map [sep-modes] '("---"))
 
   (defun my-menu-bar-discretize-x (x)
     "Given X, convert to the left-most position for the associated
@@ -71,6 +87,19 @@ menu entry. Returns nil if no such value exists."
              item))))
       (concatenate 'list (reverse items) final-items)))
   )
+                  ;; Since define-key adds items to the front, they
+                  ;; will appear in reverse order.
+                  (let ((to-add '()))
+                    (map-keymap (lambda (key binding)
+                                  (push (cons key binding) to-add))
+                                mb-map)
+                    (mapc (lambda (key-and-binding)
+                            (define-key map (vector (car key-and-binding))
+                              (cdr key-and-binding)))
+                          to-add)))
+              (wrong-type-argument))
+          (keymap-canonicalize map)))
+    (use-global-map old-map))))
 
 ;; Clean up the file menu
 (define-key menu-bar-file-menu [new-file]
