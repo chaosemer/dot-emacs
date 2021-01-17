@@ -45,6 +45,10 @@
       scroll-conservatively most-positive-fixnum
       parse-sexp-lookup-properties t
       narrow-to-defun-include-comments t)
+
+;; When deugging xterm-mouse issues, having a large buffer is quite
+;; helpful.
+(lossage-size 10000)
 
 (setf (face-background 'show-paren-match)
       (if (> (display-color-cells) 256) "light gray" "blue")
