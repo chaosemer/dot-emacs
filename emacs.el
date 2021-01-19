@@ -24,7 +24,11 @@
   (when (string-match "microsoft" (shell-command-to-string "uname -r"))
     ;; Windows Console does not properly report that it supprots
     ;; setSelection. It does not support other functionality.
-    (setq xterm-extra-capabilities '(setSelection))))
+    (setq xterm-extra-capabilities '(setSelection))
+
+    ;; Use the default Windows browser.
+    (setq browse-url-browser-function (lambda (url &rest args)
+                                        (call-process "explorer.exe" nil nil nil url)))))
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (global-font-lock-mode 1)
