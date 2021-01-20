@@ -15,6 +15,7 @@
  '(compilation-scroll-output t)
  '(cscope-option-do-not-update-database t)
  '(cursor-in-non-selected-windows nil)
+ '(custom-enabled-themes '(modus-vivendi))
  '(custom-file "~/.emacs.d/init/custom.el")
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
