@@ -123,8 +123,7 @@
   (interactive "^p")
 
   (let ((point (point)))
-    (beginning-of-line n)
-    (skip-chars-forward " \t")
+    (back-to-indentation)
     (when (= point (point))
       (beginning-of-line))))
 
