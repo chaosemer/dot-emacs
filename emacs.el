@@ -7,6 +7,10 @@
 (add-to-list 'package-archives
              '("melpa" . "http://stable.melpa.org/packages/"))
 
+;; Some packages I have bugfixes for locally.
+(when (string= system-name "electric-egg")
+  (add-to-list 'load-path "/home/jared/markdown-mode"))
+
 ;; Global customizations -----------------------------------------------
 (global-subword-mode 1)
 (assoc-delete-all 'subword-mode minor-mode-alist)

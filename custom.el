@@ -34,7 +34,7 @@
  '(mouse-wheel-progressive-speed nil)
  '(nxml-sexp-element-flag t)
  '(nxml-slash-auto-complete-flag t)
- '(package-selected-packages '(bar-cursor slime))
+ '(package-selected-packages '(markdown-mode bar-cursor slime))
  '(server-window 'switch-to-buffer-other-frame)
  '(show-paren-style 'expression)
  '(vc-handled-backends '(SVN Git Hg))
