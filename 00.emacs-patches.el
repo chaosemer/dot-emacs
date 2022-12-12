@@ -8,6 +8,17 @@
 (require 'log-edit)
 (require 'compile)
 
+;; Fix SVG issue in 28.2.
+(when (string= emacs-version "28.2")
+  (display-warning 'emacs "Fixing `image-type-available-p' for 28.2.")
+  (defun image-type-available-p (type)
+    "Return t if image type TYPE is available.
+Image types are symbols like `xbm' or `jpeg'."
+    (if (eq 'svg type)
+	nil
+      (and (fboundp 'init-image-library)
+           (init-image-library type)))))
+
 ;; TODO(upstream)
 (progn
   (display-warning 'emacs "Adding setf expansions for missing things")

@@ -1,7 +1,13 @@
 ;;;; Global Emacs customizations.  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; Put stuff here if you have nowhere else to put them
-(require 'bar-cursor)
+(unless (require 'bar-cursor nil t)
+  ;; If this triggers, make sure to install the `bar-cursor' package
+  ;; from melpa unstable.
+  (display-warning 'emacs "SETUP ISSUE: bar-cursor package is not installed.")
+  (defun bar-cursor-mode (&optional arg)
+    ;; Do nothing -- stub
+    ))
 
 ;; Access to the melpa.org packages.
 (add-to-list 'package-archives

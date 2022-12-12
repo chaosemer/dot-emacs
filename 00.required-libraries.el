@@ -39,7 +39,3 @@ This allows you to declaratively hook in minor modes on a major mode."
   (add-hook hook function)
   (setf (gethash hook hook-mode-*hooks*) function))
 
-;;; Convenient shorthand for requiring without an error.
-(defun require-noerror (feature &optional filename)
-  "Like `require', but will return NIL on error."
-  (require feature filename t))

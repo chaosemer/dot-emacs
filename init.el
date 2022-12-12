@@ -17,7 +17,7 @@
 Files in this directory, and in subdirectories of this directory
 will be added to the load path.")
 
-(defvar *init-file-directory* (expand-file-name "~/.emacs.d/init/")
+(defvar *init-file-directory* (expand-file-name "init" user-emacs-directory)
   "Directory where user initialization files are.
 
 At Emacs initialization, all files in this directory will be
