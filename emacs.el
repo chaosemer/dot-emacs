@@ -28,6 +28,7 @@
 (fido-mode 1)
 (global-hi-lock-mode 1)
 (menu-bar-mode 1)
+(context-menu-mode 1)
 (if window-system
     (mouse-wheel-mode 1)
   (xterm-mouse-mode 1)
