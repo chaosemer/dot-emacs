@@ -59,7 +59,10 @@
       x-stretch-cursor t
       scroll-conservatively most-positive-fixnum
       parse-sexp-lookup-properties t
-      narrow-to-defun-include-comments t)
+      narrow-to-defun-include-comments t
+      frame-resize-pixelwise t
+      window-resize-pixelwise t
+      use-short-answers t)
 
 ;; When deugging xterm-mouse issues, having a large buffer is quite
 ;; helpful.

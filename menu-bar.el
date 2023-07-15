@@ -20,9 +20,3 @@
   '(menu-item "Open File..." find-file
               :enable (menu-bar-non-minibuffer-window-p)
               :help "Open an existing file"))
-(define-key menu-bar-file-menu [print-buffer] nil)
-(define-key menu-bar-file-menu [print-region] nil)
-(define-key menu-bar-file-menu [ps-print-buffer-faces] nil)
-(define-key menu-bar-file-menu [ps-print-region-faces] nil)
-(define-key menu-bar-file-menu [ps-print-buffer] nil)
-(define-key menu-bar-file-menu [ps-print-region] nil)
