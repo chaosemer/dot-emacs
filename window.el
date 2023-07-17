@@ -37,8 +37,8 @@
          (:filtered (:window window-side bottom) my-mode-line-inactive-side-window)
          mode-line-inactive)))
 
-(defvar additional-side-window-parameters
-  '(no-other-window . t))
+(defvar my--additional-window-parameters
+  (copy-tree '(window-parameters (no-other-window . t))))
 
 (let ((bottom-windows ; Extremely transient windows
        (list "\\*Apropos\\*"
@@ -46,6 +46,7 @@
              "\\*Buffer List\\*"
              "\\*Completions\\*"
              "\\*Help\\*"
+             "\\*Local Variables\\*"
              "\\*Messages\\*"
              "\\*Occur\\*"
              "\\*Warnings\\*"
@@ -58,10 +59,10 @@
         (append (mapcar (lambda (buffer)
                           `(,buffer display-buffer-in-side-window
                                     (side . bottom)
-                                    (window-parameters (no-other-window . t))))
+                                    ,my--additional-window-parameters))
                         bottom-windows)
                 (mapcar (lambda (buffer)
                           `(,buffer display-buffer-in-side-window
                                     (side . left)
-                                    (window-parameters (no-other-windowq . t))))
+                                    ,my--additional-window-parameters))
                          left-windows))))
