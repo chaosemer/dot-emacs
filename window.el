@@ -5,7 +5,8 @@
 
 ;; Make more switching commands do what I want.
 (setf switch-to-buffer-obey-display-actions t
-      switch-to-buffer-in-dedicated-window 'pop)
+      switch-to-buffer-in-dedicated-window 'pop
+      mouse-autoselect-window t)
 
 (let ((bottom-side '(display-buffer-in-side-window
                      (side . bottom)
@@ -24,6 +25,7 @@
           ("\\*compilation\\*" ,@bottom-side)
           ("\\*Apropos\\*" ,@bottom-side)
           ("\\*Messages\\*" ,@bottom-side)
+          ("\\*Backtrace\\*" ,@bottom-side)
 
           ;; VC prompts
           ("\\*vc-dir\\*" ,@left-side))))

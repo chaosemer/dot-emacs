@@ -30,7 +30,6 @@
  '(inhibit-startup-screen t)
  '(initial-major-mode 'fundamental-mode)
  '(jit-lock-stealth-time 0.2)
- '(mouse-autoselect-window t)
  '(mouse-wheel-progressive-speed nil)
  '(nxml-sexp-element-flag t)
  '(nxml-slash-auto-complete-flag t)
