@@ -8,24 +8,59 @@
       switch-to-buffer-in-dedicated-window 'pop
       mouse-autoselect-window t)
 
-(let ((bottom-side '(display-buffer-in-side-window
-                     (side . bottom)
-                     (window-parameters (no-other-window . t))))
-      (left-side '(display-buffer-in-side-window
-                   (side . left)
-                   (window-parameters (no-other-window . t)))))
-  (setf display-buffer-alist
-        `(;; Extremely transient windows
-          ("\\*Help\\*" ,@bottom-side)
-          ("\\*grep\\*" ,@bottom-side)
-          ("\\*Occur\\*" ,@bottom-side)
-          ("\\*Warnings\\*" ,@bottom-side)
-          ("\\*Completions\\*" ,@bottom-side)
-          ("\\*Buffer List\\*" ,@bottom-side)
-          ("\\*compilation\\*" ,@bottom-side)
-          ("\\*Apropos\\*" ,@bottom-side)
-          ("\\*Messages\\*" ,@bottom-side)
-          ("\\*Backtrace\\*" ,@bottom-side)
+;; Face remappings for side windows
+(defface my-side-window
+  '((t :background "#101018"))
+  "Face applied to all side windows.")
+(defface my-mode-line-side-window
+  '((t :inherit mode-line
+       :background "#202028"
+       :box "#404050"))
+  "Face replacement for `mode-line' in side windows.")
+(defface my-mode-line-inactive-side-window
+  '((t :inherit mode-line-inactive
+       :background "#101018"
+       :box "#202020"))
+  "Face replacement for `mode-line-inactive' in side windows.")
 
-          ;; VC prompts
-          ("\\*vc-dir\\*" ,@left-side))))
+(setf face-remapping-alist
+      '((default
+          (:filtered (:window window-side left) my-side-window)
+          (:filtered (:window window-side bottom) my-side-window)
+          default)
+        (mode-line
+         (:filtered (:window window-side left) my-mode-line-side-window)
+         (:filtered (:window window-side bottom) my-mode-line-side-window)
+         mode-line)
+        (mode-line-inactive
+         (:filtered (:window window-side left) my-mode-line-inactive-side-window)
+         (:filtered (:window window-side bottom) my-mode-line-inactive-side-window)
+         mode-line-inactive)))
+
+(defvar additional-side-window-parameters
+  '(no-other-window . t))
+
+(let ((bottom-windows ; Extremely transient windows
+       (list "\\*Apropos\\*"
+             "\\*Backtrace\\*"
+             "\\*Buffer List\\*"
+             "\\*Completions\\*"
+             "\\*Help\\*"
+             "\\*Messages\\*"
+             "\\*Occur\\*"
+             "\\*Warnings\\*"
+             "\\*compilation\\*"
+             "\\*grep\\*"))
+      (left-windows ; VC prompts
+       (list "\\*vc-dir\\*")))
+  (setf display-buffer-alist
+        (append (mapcar (lambda (buffer)
+                          `(,buffer display-buffer-in-side-window
+                                    (side . bottom)
+                                    (window-parameters (no-other-window . t))))
+                        bottom-windows)
+                (mapcar (lambda (buffer)
+                          `(,buffer display-buffer-in-side-window
+                                    (side . left)
+                                    (window-parameters (no-other-windowq . t))))
+                         left-windows))))
