@@ -274,7 +274,7 @@ Pair files are determined by `pair-file-list'."
 (defun scratch ()
   "Switch to the scratch buffer."
   (interactive)
-  (display-buffer (get-buffer-create "*scratch*") nil t))
+  (pop-to-buffer (get-buffer-create "*scratch*") nil t))
 
 (defun indent-dwim (arg)
   "Try to do what a human would mean when indenting.
