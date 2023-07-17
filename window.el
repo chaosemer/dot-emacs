@@ -50,7 +50,8 @@
              "\\*Occur\\*"
              "\\*Warnings\\*"
              "\\*compilation\\*"
-             "\\*grep\\*"))
+             "\\*grep\\*"
+             "\\*vc-git : "))
       (left-windows ; VC prompts
        (list "\\*vc-dir\\*")))
   (setf display-buffer-alist
