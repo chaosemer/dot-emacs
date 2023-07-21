@@ -16,3 +16,6 @@
                      (read-file-name "File B to compare: ")
                      (read-file-name "File C to compare: ")))
   (apply #'ediff-buffers3 (mapcar #'hexl-find-file-noselect (list file1 file2 file3))))
+
+;; VC should use EDiff, as it provides a better visualization.
+(setf (global-key-binding (kbd "<remap> <vc-diff>")) 'vc-ediff)
