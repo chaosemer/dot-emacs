@@ -42,6 +42,7 @@
 (electric-pair-mode 1)
 (url-handler-mode 1)
 (recentf-mode 1)
+(tooltip-mode -1)
 (when (require 'hfyview nil t)
   (hfyview-add-to-files-menu))
 (hook-mode emacs-startup-hook
