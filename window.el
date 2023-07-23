@@ -46,13 +46,16 @@
 
 (let ((bottom-windows ; Extremely transient windows
        (list "\\*Apropos\\*"
+             "\\*Async Shell Command\\*"
              "\\*Backtrace\\*"
              "\\*Buffer List\\*"
              "\\*Completions\\*"
              "\\*Help\\*"
              "\\*Local Variables\\*"
+             "\\*Message\\*"
              "\\*Messages\\*"
              "\\*Occur\\*"
+             "\\*Shell Command Output\\*"
              "\\*Warnings\\*"
              "\\*compilation\\*"
              "\\*grep\\*"
