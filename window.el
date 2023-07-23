@@ -8,6 +8,10 @@
       switch-to-buffer-in-dedicated-window 'pop
       mouse-autoselect-window t)
 
+;; Visual window dividers
+(setf window-divider-default-places t)
+(window-divider-mode 1)
+
 ;; Face remappings for side windows
 (defface my-side-window
   '((t :background "#101018"))
