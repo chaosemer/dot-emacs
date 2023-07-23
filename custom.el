@@ -21,7 +21,6 @@
  '(ediff-split-window-function 'split-window-horizontally)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(electric-pair-skip-whitespace 'chomp)
- '(gdb-many-windows t)
  '(goto-address-mail-face 'link)
  '(goto-address-mail-mouse-face 'highlight)
  '(hscroll-step 1)
