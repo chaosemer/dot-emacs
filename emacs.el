@@ -61,6 +61,9 @@
       window-resize-pixelwise t
       use-short-answers t)
 
+;; Start maximized.
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
 ;; When deugging xterm-mouse issues, having a large buffer is quite
 ;; helpful.
 (when (fboundp 'lossage-size)
