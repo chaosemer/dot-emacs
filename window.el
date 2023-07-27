@@ -55,6 +55,7 @@
              "\\*Message\\*"
              "\\*Messages\\*"
              "\\*Occur\\*"
+             "\\*RE-Builder\\*"
              "\\*Shell Command Output\\*"
              "\\*Warnings\\*"
              "\\*compilation\\*"
