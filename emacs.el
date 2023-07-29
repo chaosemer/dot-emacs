@@ -14,6 +14,7 @@
              '("melpa" . "http://stable.melpa.org/packages/"))
 
 ;; Global customizations -----------------------------------------------
+(load-theme 'modus-vivendi t)
 (global-subword-mode 1)
 (assoc-delete-all 'subword-mode minor-mode-alist)
 (bar-cursor-mode 1)
