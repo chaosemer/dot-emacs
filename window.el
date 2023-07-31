@@ -55,6 +55,7 @@
              "\\*Buffer List\\*"
              "\\*Completions\\*"
              "\\*Compile-Log\\*"
+             "\\*Deletions\\*"
              "\\*Help\\*"
              "\\*Local Variables\\*"
              "\\*Message\\*"
