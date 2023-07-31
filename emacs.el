@@ -27,7 +27,8 @@
 (menu-bar-mode 1)
 (context-menu-mode 1)
 (when (>= emacs-major-version 29)
-  (pixel-scroll-precision-mode 1))
+  (pixel-scroll-precision-mode 1)
+  (setf pixel-scroll-precision-interpolate-page t))
 (if window-system
     (mouse-wheel-mode 1)
   (xterm-mouse-mode 1)
