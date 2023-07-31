@@ -26,6 +26,8 @@
 (global-hi-lock-mode 1)
 (menu-bar-mode 1)
 (context-menu-mode 1)
+(when (>= emacs-major-version 29)
+  (pixel-scroll-precision-mode 1))
 (if window-system
     (mouse-wheel-mode 1)
   (xterm-mouse-mode 1)
@@ -37,7 +39,6 @@
     ;; Use the default Windows browser.
     (setq browse-url-browser-function (lambda (url &rest args)
                                         (call-process "explorer.exe" nil nil nil url)))))
-(show-paren-mode 1)
 (tool-bar-mode -1)
 (global-font-lock-mode 1)
 (electric-pair-mode 1)
@@ -187,6 +188,17 @@
 ;;;
 ;;; NOTE: This is somewhat duplicate functionality to ff-find-other-file.  Mine supports finding in
 ;;; other frames and other windows, for convience, while ff-find-other-file does not.
+
+;; In Emacs 29, this is no longer needed.
+(when (>= emacs-major-version 29)
+  (setf find-sibling-rules
+        '(("\\([^/]+\\)\\.c$" "\\1.h")
+          ("\\([^/]+\\)\\.cc$" "\\1.h" "\\1.hh")
+          ("\\([^/]+\\)\\.cpp$" "\\1.h" "\\1.hpp")
+          ("\\([^/]+\\)\\.h$" "\\1.c" "\\1.cpp" "\\1.cc")
+          ("\\([^/]+\\)\\.hh$" "\\1.cc")
+          ("\\([^/]+\\)\\.hpp$" "\\1.cpp"))))
+
 (defvar pair-file-extension-alist
   ;; Can't allow literal data to be modified...
   (copy-tree '(("c" "h")
@@ -265,17 +277,47 @@ Pair files are determined by `pair-file-list'."
   (interactive)
   (find-pair-file-other-frame buffer-file-name))
 
-(setf (global-key-binding (kbd "C-x C-h")) #'switch-to-pair-file
-      (global-key-binding (kbd "C-x 4 C-h")) #'switch-to-pair-file-other-window
-      (global-key-binding (kbd "C-x 4 h")) #'switch-to-pair-file-other-window
-      (global-key-binding (kbd "C-x 5 C-h")) #'switch-to-pair-file-other-frame
-      (global-key-binding (kbd "C-x 5 h")) #'switch-to-pair-file-other-frame)
+(if (>= emacs-major-version 29)
+    (progn
+      (defun my-find-sibling-file-other-window (file)
+        (interactive (progn
+                       (unless buffer-file-name
+                         (user-error "Not visiting a file"))
+                       (list buffer-file-name)))
+        (other-window-prefix)
+        (unwind-protect
+            (find-sibling-file file)
+          (message (format "%s" post-command-hook))
+          (let ((this-command t))
+            (run-hooks 'post-command-hook))))
+      (defun my-find-sibling-file-other-frame (file)
+        (interactive (progn
+                       (unless buffer-file-name
+                         (user-error "Not visiting a file"))
+                       (list buffer-file-name)))
+        (other-frame-prefix)
+        (unwind-protect
+            (find-sibling-file file)
+          (message (format "%s" post-command-hook))
+          (let ((this-command t))
+            (run-hooks 'post-command-hook))))
+    (setf (global-key-binding (kbd "C-x C-h")) 'find-sibling-file
+          (global-key-binding (kbd "C-x 4 C-h")) 'my-find-sibling-file-other-window
+          (global-key-binding (kbd "C-x 4 h")) 'my-find-sibling-file-other-window
+          (global-key-binding (kbd "C-x 5 C-h")) 'my-find-sibling-file-other-frame
+          (global-key-binding (kbd "C-x 5 h")) 'my-find-sibling-file-other-frame))
+  (setf (global-key-binding (kbd "C-x C-h")) #'switch-to-pair-file
+        (global-key-binding (kbd "C-x 4 C-h")) #'switch-to-pair-file-other-window
+        (global-key-binding (kbd "C-x 4 h")) #'switch-to-pair-file-other-window
+        (global-key-binding (kbd "C-x 5 C-h")) #'switch-to-pair-file-other-frame
+        (global-key-binding (kbd "C-x 5 h")) #'switch-to-pair-file-other-frame))
 
 ;;; Other misc stuff TODO(package)
-(defun scratch ()
-  "Switch to the scratch buffer."
-  (interactive)
-  (pop-to-buffer (get-buffer-create "*scratch*") nil t))
+(when (< emacs-major-version 29)
+  (defun scratch-buffer ()
+    "Switch to the scratch buffer."
+    (interactive)
+    (pop-to-buffer (get-buffer-create "*scratch*") nil t)))
 
 (defun indent-dwim (arg)
   "Try to do what a human would mean when indenting.

@@ -4,6 +4,7 @@
 ;;;;
 ;;;; Currently tested against:
 ;;;; * GNU Emacs 28.2
+;;;; * GNU Emacs 29.1
 
 ;; Fix SVG issue in 28.2.
 (when (string= emacs-version "28.2")
