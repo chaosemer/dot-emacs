@@ -25,17 +25,11 @@ loaded (via `load') in alphabetical order.  Setting this
 variable after Emacs startup has no effect.")
 
 ;;; Helper functions and required functionality
-(require 'cl-lib)
-
 (defun file-init-loadable? (file)
   "Tests if FILE should be loaded at Emacs initialization."
   (and (file-regular-p file)
        (member (file-name-extension file t) load-suffixes)
        (not (member (file-name-nondirectory file) '("init.el" "early-init.el")))))
-
-(defun push-load-path! (directory)
-  "Adds DIRECTORY to `load-path'"
-  (add-to-list 'load-path directory))
 
 (defun directory-files-filter (directory predicate &optional full match nosort)
   "Return a list of names of files in DIRECTORY, excluding any files that don't satisfy PREDICATE"
@@ -44,21 +38,17 @@ variable after Emacs startup has no effect.")
       (when (funcall predicate file)
         (push file files)))
     (nreverse files)))
-
-(unless (boundp 'load-suffixes)
-  (defvar load-suffixes '(".elc" ".el")
-    "This variable was added by version 21.3.50."))
 
 ;; add the directories in *LOCAL-LOAD-PATH* to LOAD-PATH
 (when (file-exists-p *local-load-path*)
 (let ((save-abbrevs nil))
   (byte-recompile-directory *local-load-path*))
-(push-load-path! *local-load-path*)
+(add-to-list 'load-path *local-load-path*)
 (dolist (file (directory-files *local-load-path*))
   (let ((full-path (expand-file-name file *local-load-path*)))
     (when (and (file-directory-p full-path)
                (not (member file '("." ".."))))
-      (push-load-path! full-path)))))
+      (add-to-list 'load-path full-path)))))
 
 ; load each FILE-INIT-LOADABLE? file in *INIT-FILE-DIRECTORY* once
 (let ((debug-ignored-errors '())
@@ -66,12 +56,11 @@ variable after Emacs startup has no effect.")
       (debug-on-quit t)
       (prev-time (time-convert nil 'list))
       (timing-messages '()))
-  (dolist (file (cl-remove-duplicates
-		 (mapcar #'file-name-sans-extension
+  (dolist (file (delete-dups
+                 (mapcar #'file-name-sans-extension
 			 (directory-files-filter *init-file-directory*
 						 #'file-init-loadable?
-						 t))
-		 :test #'string=))
+						 t))))
     (load file)
     (let* ((cur-time (time-convert nil 'list))
            (delta-time (float-time (time-subtract cur-time prev-time))))
