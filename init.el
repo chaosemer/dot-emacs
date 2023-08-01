@@ -31,7 +31,7 @@ variable after Emacs startup has no effect.")
   "Tests if FILE should be loaded at Emacs initialization."
   (and (file-regular-p file)
        (member (file-name-extension file t) load-suffixes)
-       (not (string= (file-name-nondirectory file) "init.el"))))
+       (not (member (file-name-nondirectory file) '("init.el" "early-init.el")))))
 
 (defun push-load-path! (directory)
   "Adds DIRECTORY to `load-path'"

@@ -14,7 +14,6 @@
              '("melpa" . "http://stable.melpa.org/packages/"))
 
 ;; Global customizations -----------------------------------------------
-(load-theme 'modus-vivendi t)
 (global-subword-mode 1)
 (assoc-delete-all 'subword-mode minor-mode-alist)
 (bar-cursor-mode 1)
@@ -40,7 +39,6 @@
     ;; Use the default Windows browser.
     (setq browse-url-browser-function (lambda (url &rest args)
                                         (call-process "explorer.exe" nil nil nil url)))))
-(tool-bar-mode -1)
 (global-font-lock-mode 1)
 (electric-pair-mode 1)
 (url-handler-mode 1)
@@ -64,9 +62,6 @@
       window-resize-pixelwise t
       use-short-answers t
       use-dialog-box nil)
-
-;; Start maximized.
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; When deugging xterm-mouse issues, having a large buffer is quite
 ;; helpful.
