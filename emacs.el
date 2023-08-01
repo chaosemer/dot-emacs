@@ -178,101 +178,24 @@
   "Face for file level comments"
   :group 'local)
 
-;;; Pair file navigation TODO(package)
+;;; Sibling file navigation TODO(upstream)
 ;;;
-;;; Many programming languages have the concept of two related files, like C's source and header
-;;; files.  This allows you to navigate between two pair files with the press of a key.
+;;; Emacs has two ways to find other files:
 ;;;
-;;; NOTE: This is somewhat duplicate functionality to ff-find-other-file.  Mine supports finding in
-;;; other frames and other windows, for convience, while ff-find-other-file does not.
+;;; 1.  ff-find-other-file
+;;; 2.  find-sibling-file (Emacs 29+)
+;;;
+;;; Both of these have inconsistent support for other window, other
+;;; frame usage.
 
-;; In Emacs 29, this is no longer needed.
-(when (>= emacs-major-version 29)
-  (setf find-sibling-rules
-        '(("\\([^/]+\\)\\.c$" "\\1.h")
-          ("\\([^/]+\\)\\.cc$" "\\1.h" "\\1.hh")
-          ("\\([^/]+\\)\\.cpp$" "\\1.h" "\\1.hpp")
-          ("\\([^/]+\\)\\.h$" "\\1.c" "\\1.cpp" "\\1.cc")
-          ("\\([^/]+\\)\\.hh$" "\\1.cc")
-          ("\\([^/]+\\)\\.hpp$" "\\1.cpp"))))
-
-(defvar pair-file-extension-alist
-  ;; Can't allow literal data to be modified...
-  (copy-tree '(("c" "h")
-               ("h" "c" "cpp")
-               ("cpp" "hpp" "h")
-               ("hpp" "cpp")))
-  "*Alist of extensions mapped to potential pair extensions.")
-
-(defun pair-file-list (filename)
-  "Return a list of all potential pair files for filename,
-ordered by preference
-
-Pair files are determined by replacing the extension of FILENAME
-with each extension listed in `pair-file-extension-alist' for
-that extension."
-  (let ((extensions (cdr (assoc (file-name-extension filename)
-                                pair-file-extension-alist
-                                #'string=))))
-    (cl-loop for extension in extensions
-             collect (format "%s.%s"
-                             (file-name-sans-extension filename)
-                             extension))))
-
-(cl-defun find-pair-file-noselect (filename)
-  "Read the pair file of FILENAME into a buffer and return that
-buffer.  See also `find-file-noselect'."
-  (unless filename
-    (error "Buffer is not visiting a file"))
-  (let ((files (pair-file-list filename)))
-    (when files
-      (dolist (file files)
-        (when (or (file-exists-p file)
-                  (find-buffer-visiting file))
-          (cl-return-from find-pair-file-noselect
-            (find-file-noselect file)))))
-    (error "No known pair for file %s" filename)))
-
-(defun find-pair-file-read-args (prompt)
-  (list (read-file-name prompt nil buffer-file-name)))
-
-(defun find-pair-file (filename)
-  "Edit the pair file of FILENAME.
-
-Pair files are determined by `pair-file-list'."
-  (interactive (find-pair-file-read-args "Find pair file of: "))
-  (switch-to-buffer (find-pair-file-noselect filename)))
-(defun find-pair-file-other-window (filename)
-  "Edit the pair file of FILENAME in another window.
-
-Pair files are determined by `pair-file-list'."
-  (interactive (find-pair-file-read-args "Find pair file in other window of: "))
-  (switch-to-buffer-other-window (find-pair-file-noselect filename)))
-(defun find-pair-file-other-frame (filename)
-  "Edit the pair file of FILENAME in another frame.
-
-Pair files are determined by `pair-file-list'."
-  (interactive (find-pair-file-read-args "Find pair file in other frame of: "))
-  (switch-to-buffer-other-frame (find-pair-file-noselect filename)))
-
-(defun switch-to-pair-file (&optional createp)
-  "Display the pair file of the current file in the same window.  If CREATEP is
-
-Pair files are determined by `pair-file-list'."
+(defun ff-find-other-file-other-frame ()
+  "Visit the file you point at in another frame."
   (interactive)
-  (find-pair-file buffer-file-name))
-(defun switch-to-pair-file-other-window ()
-  "Display the pair file of the current file in another window.
-
-Pair files are determined by `pair-file-list'."
-  (interactive)
-  (find-pair-file-other-window buffer-file-name))
-(defun switch-to-pair-file-other-frame ()
-  "Display the pair file of the current file in another frame.
-
-Pair files are determined by `pair-file-list'."
-  (interactive)
-  (find-pair-file-other-frame buffer-file-name))
+  (other-frame-prefix)
+  (unwind-protect
+      (ff-find-other-file nil nil nil)
+    (let ((this-command t))
+      (run-hooks 'post-command-hook))))
 
 (if (>= emacs-major-version 29)
     (progn
@@ -284,7 +207,6 @@ Pair files are determined by `pair-file-list'."
         (other-window-prefix)
         (unwind-protect
             (find-sibling-file file)
-          (message (format "%s" post-command-hook))
           (let ((this-command t))
             (run-hooks 'post-command-hook))))
       (defun my-find-sibling-file-other-frame (file)
@@ -295,19 +217,28 @@ Pair files are determined by `pair-file-list'."
         (other-frame-prefix)
         (unwind-protect
             (find-sibling-file file)
-          (message (format "%s" post-command-hook))
           (let ((this-command t))
             (run-hooks 'post-command-hook))))
-    (setf (global-key-binding (kbd "C-x C-h")) 'find-sibling-file
+    (setf find-sibling-rules
+          '(("\\([^/]+\\)\\.c$" "\\1.h")
+            ("\\([^/]+\\)\\.cc$" "\\1.h" "\\1.hh")
+            ("\\([^/]+\\)\\.cpp$" "\\1.h" "\\1.hpp")
+            ("\\([^/]+\\)\\.h$" "\\1.c" "\\1.cpp" "\\1.cc")
+            ("\\([^/]+\\)\\.hh$" "\\1.cc")
+            ("\\([^/]+\\)\\.hpp$" "\\1.cpp"))
+
+          (global-key-binding (kbd "C-x C-h")) 'find-sibling-file
           (global-key-binding (kbd "C-x 4 C-h")) 'my-find-sibling-file-other-window
           (global-key-binding (kbd "C-x 4 h")) 'my-find-sibling-file-other-window
           (global-key-binding (kbd "C-x 5 C-h")) 'my-find-sibling-file-other-frame
           (global-key-binding (kbd "C-x 5 h")) 'my-find-sibling-file-other-frame))
-  (setf (global-key-binding (kbd "C-x C-h")) #'switch-to-pair-file
-        (global-key-binding (kbd "C-x 4 C-h")) #'switch-to-pair-file-other-window
-        (global-key-binding (kbd "C-x 4 h")) #'switch-to-pair-file-other-window
-        (global-key-binding (kbd "C-x 5 C-h")) #'switch-to-pair-file-other-frame
-        (global-key-binding (kbd "C-x 5 h")) #'switch-to-pair-file-other-frame))
+  (setf ff-always-try-to-create nil
+
+        (global-key-binding (kbd "C-x C-h")) 'ff-find-other-file
+        (global-key-binding (kbd "C-x 4 C-h")) 'ff-find-other-file-other-window
+        (global-key-binding (kbd "C-x 4 h")) 'ff-find-other-file-other-window
+        (global-key-binding (kbd "C-x 5 C-h")) 'ff-find-other-file-other-frame
+        (global-key-binding (kbd "C-x 5 h")) 'ff-find-other-file-other-frame))
 
 ;;; Other misc stuff TODO(package)
 (when (< emacs-major-version 29)
