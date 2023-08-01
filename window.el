@@ -69,7 +69,8 @@
              "\\*grep\\*"
              "\\*vc-git : "))
       (left-windows ; VC prompts
-       (list "\\*vc-dir\\*")))
+       (list "\\*Open Recent - More\\*"
+             "\\*vc-dir\\*")))
   (setf display-buffer-alist
         (append (mapcar (lambda (buffer)
                           `(,buffer display-buffer-in-side-window
