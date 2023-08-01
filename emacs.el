@@ -62,7 +62,8 @@
       narrow-to-defun-include-comments t
       frame-resize-pixelwise t
       window-resize-pixelwise t
-      use-short-answers t)
+      use-short-answers t
+      use-dialog-box nil)
 
 ;; Start maximized.
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
