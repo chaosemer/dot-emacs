@@ -170,13 +170,16 @@
 ;;; This allows for section and file level comments to be rendered bigger than normal text, so they
 ;;; stand out a bit more.
 (defface section-comment-face
-  '((t (:height 1.2 :inherit font-lock-comment-face)))
+  '((t (:height 1.3 :inherit (font-lock-comment-face variable-pitch))))
   "Face for section level comments"
   :group 'local)
 (defface file-comment-face
-  '((t (:height 1.5 :weight bold :inherit font-lock-comment-face)))
+  '((t (:height 1.5 :weight bold :inherit (font-lock-comment-face variable-pitch))))
   "Face for file level comments"
   :group 'local)
+
+;; Also make same adjustments for markdown.
+(setf markdown-header-scaling t)
 
 ;;; Sibling file navigation TODO(upstream)
 ;;;
@@ -187,7 +190,6 @@
 ;;;
 ;;; Both of these have inconsistent support for other window, other
 ;;; frame usage.
-
 (defun ff-find-other-file-other-frame ()
   "Visit the file you point at in another frame."
   (interactive)
