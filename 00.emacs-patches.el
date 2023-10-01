@@ -52,10 +52,12 @@ Image types are symbols like `xbm' or `jpeg'."
 (defvar device-class--should-collapse-to-mouse nil
   "Internal variable to track if collapsing should happen")
 (defvar device-class--mouse-wheel-events
-  (list mouse-wheel-up-event
-        mouse-wheel-up-alternate-event
-        mouse-wheel-down-event
-        mouse-wheel-down-alternate-event))
+  (append (list mouse-wheel-up-event mouse-wheel-down-event)
+	  ;; Some variables are only added in Emacs 29.
+	  (when (boundp 'mouse-wheel-up-alternate-event)
+	    (list mouse-wheel-up-alternate-event))
+	  (when (boundp 'mouse-wheel-down-alternate-event)
+	    (list mouse-wheel-down-alternate-event))))
 (defvar device-class--prev-event-timestamp 0
   "Interval variable of the previous event's timestamp.")
 (defvar device-class--prev-event-seems-like-mouse-event nil)
