@@ -8,42 +8,45 @@
   (defun bar-cursor-mode (&optional arg)
     ;; Do nothing -- stub
     ))
+(unless (>= emacs-major-version 29)
+  (defun pixel-scroll-precision-mode (&optional arg)
+    ;; Do nothing -- stub
+    ))
 
 ;; Access to the melpa.org packages.
 (add-to-list 'package-archives
              '("melpa" . "http://stable.melpa.org/packages/"))
 
 ;; Global customizations -----------------------------------------------
-(global-subword-mode 1)
-(assoc-delete-all 'subword-mode minor-mode-alist)
-(bar-cursor-mode 1)
-(assoc-delete-all 'bar-cursor-mode minor-mode-alist)
-
+(progn (bar-cursor-mode 1)
+       (assoc-delete-all 'bar-cursor-mode minor-mode-alist))
 (column-number-mode 1)
-(cua-mode 1)
-(fido-mode 1)
-(global-hi-lock-mode 1)
-(menu-bar-mode 1)
 (context-menu-mode 1)
-(when (>= emacs-major-version 29)
-  (pixel-scroll-precision-mode 1)
-  (setf pixel-scroll-precision-interpolate-page t))
+(cua-mode 1)
+(electric-pair-mode 1)
+(fido-mode 1)
+(global-font-lock-mode 1)
+(global-hi-lock-mode 1)
+(progn (global-subword-mode 1)
+       (assoc-delete-all 'subword-mode minor-mode-alist))
+(menu-bar-mode 1)
+(progn (pixel-scroll-precision-mode 1)
+       (setf pixel-scroll-precision-interpolate-page t))
+(recentf-mode 1)
+(tooltip-mode -1)
+(url-handler-mode 1)
+
 (if window-system
     (mouse-wheel-mode 1)
   (xterm-mouse-mode 1)
   (when (string-match "microsoft" (shell-command-to-string "uname -r"))
-    ;; Windows Console does not properly report that it supprots
+    ;; Windows Console does not properly report that it supports
     ;; setSelection. It does not support other functionality.
     (setq xterm-extra-capabilities '(setSelection))
 
     ;; Use the default Windows browser.
     (setq browse-url-browser-function (lambda (url &rest args)
                                         (call-process "explorer.exe" nil nil nil url)))))
-(global-font-lock-mode 1)
-(electric-pair-mode 1)
-(url-handler-mode 1)
-(recentf-mode 1)
-(tooltip-mode -1)
 (when (require 'hfyview nil t)
   (hfyview-add-to-files-menu))
 (hook-mode emacs-startup-hook
@@ -65,8 +68,7 @@
 
 ;; When deugging xterm-mouse issues, having a large buffer is quite
 ;; helpful.
-(when (fboundp 'lossage-size)
-  (lossage-size 10000))
+(lossage-size 10000)
 
 (setf (face-background 'show-paren-match)
       (if (> (display-color-cells) 256) "light gray" "blue")

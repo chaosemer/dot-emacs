@@ -11,7 +11,7 @@
   (setf inferior-lisp-program "sbcl")
   (slime-setup)
   
-  ;;; Key bindings
+  ;; Key bindings
   (setf (local-key-binding (kbd "C-<down-mouse-3>")) (lambda () (interactive)
                                                        (popup-menu slime-easy-menu))))
 
