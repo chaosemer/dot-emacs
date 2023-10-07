@@ -8,10 +8,6 @@
   (defun bar-cursor-mode (&optional arg)
     ;; Do nothing -- stub
     ))
-(unless (>= emacs-major-version 29)
-  (defun pixel-scroll-precision-mode (&optional arg)
-    ;; Do nothing -- stub
-    ))
 
 ;; Access to the melpa.org packages.
 (add-to-list 'package-archives
@@ -201,56 +197,41 @@
     (let ((this-command t))
       (run-hooks 'post-command-hook))))
 
-(if (>= emacs-major-version 29)
-    (progn
-      (defun my-find-sibling-file-other-window (file)
-        (interactive (progn
-                       (unless buffer-file-name
-                         (user-error "Not visiting a file"))
-                       (list buffer-file-name)))
-        (other-window-prefix)
-        (unwind-protect
-            (find-sibling-file file)
-          (let ((this-command t))
-            (run-hooks 'post-command-hook))))
-      (defun my-find-sibling-file-other-frame (file)
-        (interactive (progn
-                       (unless buffer-file-name
-                         (user-error "Not visiting a file"))
-                       (list buffer-file-name)))
-        (other-frame-prefix)
-        (unwind-protect
-            (find-sibling-file file)
-          (let ((this-command t))
-            (run-hooks 'post-command-hook))))
-    (setf find-sibling-rules
-          '(("\\([^/]+\\)\\.c$" "\\1.h")
-            ("\\([^/]+\\)\\.cc$" "\\1.h" "\\1.hh")
-            ("\\([^/]+\\)\\.cpp$" "\\1.h" "\\1.hpp")
-            ("\\([^/]+\\)\\.h$" "\\1.c" "\\1.cpp" "\\1.cc")
-            ("\\([^/]+\\)\\.hh$" "\\1.cc")
-            ("\\([^/]+\\)\\.hpp$" "\\1.cpp"))
+(defun my-find-sibling-file-other-window (file)
+  (interactive (progn
+                 (unless buffer-file-name
+                   (user-error "Not visiting a file"))
+                 (list buffer-file-name)))
+  (other-window-prefix)
+  (unwind-protect
+      (find-sibling-file file)
+    (let ((this-command t))
+      (run-hooks 'post-command-hook))))
+(defun my-find-sibling-file-other-frame (file)
+  (interactive (progn
+                 (unless buffer-file-name
+                   (user-error "Not visiting a file"))
+                 (list buffer-file-name)))
+  (other-frame-prefix)
+  (unwind-protect
+      (find-sibling-file file)
+    (let ((this-command t))
+      (run-hooks 'post-command-hook))))
+(setf find-sibling-rules
+      '(("\\([^/]+\\)\\.c$" "\\1.h")
+        ("\\([^/]+\\)\\.cc$" "\\1.h" "\\1.hh")
+        ("\\([^/]+\\)\\.cpp$" "\\1.h" "\\1.hpp")
+        ("\\([^/]+\\)\\.h$" "\\1.c" "\\1.cpp" "\\1.cc")
+        ("\\([^/]+\\)\\.hh$" "\\1.cc")
+        ("\\([^/]+\\)\\.hpp$" "\\1.cpp"))
 
-          (global-key-binding (kbd "C-x C-h")) 'find-sibling-file
-          (global-key-binding (kbd "C-x 4 C-h")) 'my-find-sibling-file-other-window
-          (global-key-binding (kbd "C-x 4 h")) 'my-find-sibling-file-other-window
-          (global-key-binding (kbd "C-x 5 C-h")) 'my-find-sibling-file-other-frame
-          (global-key-binding (kbd "C-x 5 h")) 'my-find-sibling-file-other-frame))
-  (setf ff-always-try-to-create nil
-
-        (global-key-binding (kbd "C-x C-h")) 'ff-find-other-file
-        (global-key-binding (kbd "C-x 4 C-h")) 'ff-find-other-file-other-window
-        (global-key-binding (kbd "C-x 4 h")) 'ff-find-other-file-other-window
-        (global-key-binding (kbd "C-x 5 C-h")) 'ff-find-other-file-other-frame
-        (global-key-binding (kbd "C-x 5 h")) 'ff-find-other-file-other-frame))
+      (global-key-binding (kbd "C-x C-h")) 'find-sibling-file
+      (global-key-binding (kbd "C-x 4 C-h")) 'my-find-sibling-file-other-window
+      (global-key-binding (kbd "C-x 4 h")) 'my-find-sibling-file-other-window
+      (global-key-binding (kbd "C-x 5 C-h")) 'my-find-sibling-file-other-frame
+      (global-key-binding (kbd "C-x 5 h")) 'my-find-sibling-file-other-frame)
 
 ;;; Other misc stuff TODO(package)
-(when (< emacs-major-version 29)
-  (defun scratch-buffer ()
-    "Switch to the scratch buffer."
-    (interactive)
-    (pop-to-buffer (get-buffer-create "*scratch*") nil t)))
-
 (defun indent-dwim (arg)
   "Try to do what a human would mean when indenting.
 

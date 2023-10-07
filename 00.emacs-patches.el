@@ -3,19 +3,7 @@
 ;;;; This allows me to use one init file across multiple versions of Emacs.
 ;;;;
 ;;;; Currently tested against:
-;;;; * GNU Emacs 28.2
 ;;;; * GNU Emacs 29.1
-
-;; Fix SVG issue in 28.2.
-(when (string= emacs-version "28.2")
-  (display-warning 'emacs "Fixing `image-type-available-p' for 28.2.")
-  (defun image-type-available-p (type)
-    "Return t if image type TYPE is available.
-Image types are symbols like `xbm' or `jpeg'."
-    (if (eq 'svg type)
-	nil
-      (and (fboundp 'init-image-library)
-           (init-image-library type)))))
 
 ;; TODO(upstream)
 (progn
@@ -85,7 +73,7 @@ Image types are symbols like `xbm' or `jpeg'."
           device-class--prev-event-seems-like-mouse-event device-class--should-collapse-to-mouse)))
 
 (when (and (featurep 'ns-win)
-           (version<= "29.1" emacs-version))
+           )
   (display-warning 'emacs "Fixing buggy pixel-scroll-precesion")
   (define-key global-map (kbd "<remap> <pixel-scroll-precision>") 'pixel-scroll-precision--patched)
   (advice-add 'device-class :filter-return 'device-class--collapse-to-mouse))

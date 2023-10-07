@@ -17,9 +17,7 @@
   '((t :background "#101018"))
   "Face applied to all side windows.")
 (defface my-mode-line-active-side-window
-  `((t :inherit ,(if (>= emacs-major-version 29)
-                     'mode-line-active
-                   'mode-line)
+  '((t :inherit mode-line-active
        :background "#202028"
        :box "#404050"))
   "Face replacement for `mode-line' in side windows.")
@@ -34,12 +32,10 @@
           (:filtered (:window window-side left) my-side-window)
           (:filtered (:window window-side bottom) my-side-window)
           default)
-        (,(if (>= emacs-major-version 29) 'mode-line-active
-            'mode-line)
+        (mode-line-active
          (:filtered (:window window-side left) my-mode-line-active-side-window)
          (:filtered (:window window-side bottom) my-mode-line-active-side-window)
-         ,(if (>= emacs-major-version 29) 'mode-line-active
-            'mode-line))
+         mode-line-active)
         (mode-line-inactive
          (:filtered (:window window-side left) my-mode-line-inactive-side-window)
          (:filtered (:window window-side bottom) my-mode-line-inactive-side-window)
