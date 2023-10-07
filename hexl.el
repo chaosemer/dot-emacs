@@ -8,24 +8,24 @@
     (turn-on-eldoc-mode)
     (setf truncate-lines t))
 
-  (define-key hexl-mode-map (kbd "<remap> <self-insert-command>")
+  (keymap-set hexl-mode-map "<remap> <self-insert-command>"
     'hexl-my-self-insert-command)
-  (define-key hexl-mode-map (kbd "\C-m") 'hexl-my-self-insert-command)
-  (define-key hexl-mode-map (kbd "<remap> <hexl-backward-char>")
+  (keymap-set hexl-mode-map "C-m" 'hexl-my-self-insert-command)
+  (keymap-set hexl-mode-map "<remap> <hexl-backward-char>"
     'hexl-my-backward-char)
-  (define-key hexl-mode-map (kbd "<remap> <hexl-forward-char>")
+  (keymap-set hexl-mode-map "<remap> <hexl-forward-char>"
     'hexl-my-forward-char)
-  (define-key hexl-mode-map (kbd "<remap> <hexl-previous-line>")
+  (keymap-set hexl-mode-map "<remap> <hexl-previous-line>"
     'hexl-my-previous-line)
-  (define-key hexl-mode-map (kbd "<remap> <hexl-next-line>")
+  (keymap-set hexl-mode-map "<remap> <hexl-next-line>"
     'hexl-my-next-line)
-  (define-key hexl-mode-map (kbd "<remap> <hexl-beginning-of-buffer>")
+  (keymap-set hexl-mode-map "<remap> <hexl-beginning-of-buffer>"
     'hexl-my-beginning-of-buffer)
-  (define-key hexl-mode-map (kbd "<remap> <hexl-end-of-buffer>")
+  (keymap-set hexl-mode-map "<remap> <hexl-end-of-buffer>"
     'hexl-my-end-of-buffer)
-  (define-key hexl-mode-map (kbd "<remap> <hexl-beginning-of-line>")
+  (keymap-set hexl-mode-map "<remap> <hexl-beginning-of-line>"
     'hexl-my-beginning-of-line)
-  (define-key hexl-mode-map (kbd "<remap> <hexl-end-of-line>")
+  (keymap-set hexl-mode-map "<remap> <hexl-end-of-line>"
     'hexl-my-end-of-line))
 
 ;; TODO(upstream)

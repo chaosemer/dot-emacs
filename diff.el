@@ -18,4 +18,4 @@
   (apply #'ediff-buffers3 (mapcar #'hexl-find-file-noselect (list file1 file2 file3))))
 
 ;; VC should use EDiff, as it provides a better visualization.
-(setf (global-key-binding (kbd "<remap> <vc-diff>")) 'vc-ediff)
+(keymap-global-set "<remap> <vc-diff>" 'vc-ediff)

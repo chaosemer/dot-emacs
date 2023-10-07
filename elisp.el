@@ -7,4 +7,4 @@
   eldoc-mode)
 
 ;; emacs-lisp-mode defines the tab key in its map.  It shouldn't TODO(upstream)
-(define-key emacs-lisp-mode-map (kbd "TAB") nil)
+(keymap-unset emacs-lisp-mode-map "TAB")

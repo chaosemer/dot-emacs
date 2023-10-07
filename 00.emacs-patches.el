@@ -27,11 +27,11 @@
 
 ;; Making C-a in log-edit-mode not be there TODO(upstream)
 (with-eval-after-load 'log-edit
-  (when (lookup-key log-edit-mode-map (kbd "C-a"))
+  (when (keymap-lookup log-edit-mode-map "C-a")
     (display-warning 'emacs "Cleaning up log-edit-mode-map")
-    (setf (lookup-key log-edit-mode-map (kbd "<remap> <beginning-of-line>"))
-	  (lookup-key log-edit-mode-map (kbd "C-a")))
-    (setf (lookup-key log-edit-mode-map (kbd "C-a")) nil)))
+    (keymap-set log-edit-mode-map "<remap> <beginning-of-line>"
+                (keymap-lookup log-edit-mode-map "C-a"))
+    (keymap-unset log-edit-mode-map "C-a")))
 
 ;; TODO(upstream)
 ;;
@@ -72,8 +72,7 @@
     (setf device-class--prev-event-timestamp timestamp
           device-class--prev-event-seems-like-mouse-event device-class--should-collapse-to-mouse)))
 
-(when (and (featurep 'ns-win)
-           )
+(when (featurep 'ns-win)
   (display-warning 'emacs "Fixing buggy pixel-scroll-precesion")
-  (define-key global-map (kbd "<remap> <pixel-scroll-precision>") 'pixel-scroll-precision--patched)
+  (keymap-global-set "<remap> <pixel-scroll-precision>" 'pixel-scroll-precision--patched)
   (advice-add 'device-class :filter-return 'device-class--collapse-to-mouse))

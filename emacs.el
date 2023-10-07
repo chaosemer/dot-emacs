@@ -72,62 +72,58 @@
       (face-foreground 'show-paren-mismatch) "white")
 
 ;; indent on newline
-(setf (global-key-binding (kbd "C-j")) 'newline
-      (global-key-binding (kbd "RET")) 'newline-and-indent)
+(keymap-global-set "C-j" 'newline)
+(keymap-global-set "RET" 'newline-and-indent)
 
 ;; usual editor bindings
-(setf (global-key-binding (kbd "C-f")) 'occur
-      (global-key-binding (kbd "C-S-f")) 'rgrep
-      (global-key-binding (kbd "C-g")) 'goto-line
-      (global-key-binding (kbd "<f7>")) 'recompile
-      (global-key-binding (kbd "C-<f7>")) 'compile
-      (global-key-binding (kbd "S-<f7>")) 'kill-compilation
-      (global-key-binding (kbd "C-a")) 'mark-whole-buffer
-      (global-key-binding (kbd "M-<home>")) 'beginning-of-defun
-      (global-key-binding (kbd "M-<end>")) 'end-of-defun)
-
-;; some more consistant key bindings
-(setf (global-key-binding (kbd "C-x 4 <next>")) 'scroll-other-window
-      (global-key-binding (kbd "C-x 4 <prior>")) 'scroll-other-window-down)
+(keymap-global-set "C-f" 'occur)
+(keymap-global-set "C-S-f" 'rgrep)
+(keymap-global-set "C-g" 'goto-line)
+(keymap-global-set "<f7>" 'recompile)
+(keymap-global-set "C-<f7>" 'compile)
+(keymap-global-set "S-<f7>" 'kill-compilation)
+(keymap-global-set "C-a" 'mark-whole-buffer)
+(keymap-global-set "M-<home>" 'beginning-of-defun)
+(keymap-global-set "M-<end>" 'end-of-defun)
 
 ;; Window system integration
 (when window-system
-  (setf (global-key-binding (kbd "<menu>")) 'execute-extended-command
-        (global-key-binding (kbd "S-<menu>")) 'eval-expression)
+  (keymap-global-set "<menu>" 'execute-extended-command)
+  (keymap-global-set "S-<menu>" 'eval-expression)
   (when (featurep 'dos-w32)
-    (setf (global-key-binding (kbd "M-<f4>"))
-          (lambda ()
-            (interactive)
-            (if (> (length (frame-list)) 1)
-                (delete-frame)
-              (when (y-or-n-p "Last frame, kill emacs? ")
-                (call-interactively #'save-buffers-kill-emacs )))))))
+    (keymap-global-set "M-<f4>"
+                       (lambda ()
+                         (interactive)
+                         (if (> (length (frame-list)) 1)
+                             (delete-frame)
+                           (when (y-or-n-p "Last frame, kill emacs? ")
+                             (call-interactively #'save-buffers-kill-emacs)))))))
 
 ;; Account for differences in Win32 keycodes
-(setf (lookup-key key-translation-map (kbd "C-<tab>")) (kbd "M-TAB"))
+(keymap-set key-translation-map "C-<tab>" (key-parse "M-TAB"))
 
 ;; Handle different platforms diving differnt names to the same key
 (when (featurep 'dos-w32)
-  (setf (lookup-key function-key-map (kbd "<apps>")) (kbd "<menu>")
-        (lookup-key function-key-map (kbd "S-<apps>")) (kbd "S-<menu>")))
+  (keymap-set function-key-map "<apps>" (key-parse "<menu>"))
+  (keymap-set function-key-map "S-<apps>" (key-parse "S-<menu>")))
 (when (and (null window-system) (string= (getenv "TERM") "xterm"))
-  (setf (lookup-key function-key-map (kbd "<print>")) (kbd "<menu>")
-        (lookup-key function-key-map (kbd "S-<print>")) (kbd "S-<menu>")))
+  (keymap-set function-key-map "<print>" (key-parse "<menu>"))
+  (keymap-set function-key-map "S-<print>" (key-parse "S-<menu>")))
 
 ;; simpler sexp bindings
-(setf (global-key-binding (kbd "M-<right>")) 'forward-sexp
-      (global-key-binding (kbd "M-<left>")) 'backward-sexp
-      (global-key-binding (kbd "M-<up>")) 'backward-up-list
-      (global-key-binding (kbd "M-<down>")) 'down-list
-      (global-key-binding (kbd "M-SPC")) 'mark-sexp
-      (global-key-binding (kbd "M-<delete>")) 'kill-sexp
-      (global-key-binding (kbd "M-<backspace>")) 'backward-kill-sexp)
+(keymap-global-set "M-<right>" 'forward-sexp)
+(keymap-global-set "M-<left>" 'backward-sexp)
+(keymap-global-set "M-<up>" 'backward-up-list)
+(keymap-global-set "M-<down>" 'down-list)
+(keymap-global-set "M-SPC" 'mark-sexp)
+(keymap-global-set "M-<delete>" 'kill-sexp)
+(keymap-global-set "M-<backspace>" 'backward-kill-sexp)
 
 ;; I'm always mistakenly hitting these
 (dolist (key '("C-<next>" "C-<prior>" "C-x m" "M-<home>" "M-<end>" "M-<begin>" "C-x <left>"
                "C-x <right>" "M-<begin>" "M-<next>" "M-<prior>" "C-M-v" "C-M-S-v" "ESC <begin>"
                "ESC <end>" "ESC <home>" "ESC <next>" "ESC <prior>"))
-  (setf (global-key-binding (read-kbd-macro key)) nil))
+  (keymap-global-unset key))
 
 ;;; DWIM <home> and <end> TODO(package)
 (defun beginning-of-line-dwim (&optional n)
@@ -149,8 +145,8 @@
     (when (= point (point))
       (end-of-line))))
 
-(setf (global-key-binding (kbd "<home>")) 'beginning-of-line-dwim
-      (global-key-binding (kbd "<end>")) 'end-of-line-dwim)
+(keymap-global-set "<home>" 'beginning-of-line-dwim)
+(keymap-global-set "<end>" 'end-of-line-dwim)
 
 ;;; Recursive edits TODO(package)
 (defun push-or-pop-excursion (pop?)
@@ -161,7 +157,7 @@
       (save-excursion (save-restriction (save-window-excursion (recursive-edit))))
     (when (> (recursion-depth) 0)
       (throw 'exit 'nil))))
-(setf (global-key-binding (kbd "C-x C-p")) 'push-or-pop-excursion)
+(keymap-global-set "C-x C-p" 'push-or-pop-excursion)
 
 ;;; Section and File level comment functionality.
 ;;;
@@ -223,13 +219,13 @@
         ("\\([^/]+\\)\\.cpp$" "\\1.h" "\\1.hpp")
         ("\\([^/]+\\)\\.h$" "\\1.c" "\\1.cpp" "\\1.cc")
         ("\\([^/]+\\)\\.hh$" "\\1.cc")
-        ("\\([^/]+\\)\\.hpp$" "\\1.cpp"))
+        ("\\([^/]+\\)\\.hpp$" "\\1.cpp")))
 
-      (global-key-binding (kbd "C-x C-h")) 'find-sibling-file
-      (global-key-binding (kbd "C-x 4 C-h")) 'my-find-sibling-file-other-window
-      (global-key-binding (kbd "C-x 4 h")) 'my-find-sibling-file-other-window
-      (global-key-binding (kbd "C-x 5 C-h")) 'my-find-sibling-file-other-frame
-      (global-key-binding (kbd "C-x 5 h")) 'my-find-sibling-file-other-frame)
+(keymap-global-set "C-x C-h" 'find-sibling-file)
+(keymap-global-set "C-x 4 C-h" 'my-find-sibling-file-other-window)
+(keymap-global-set "C-x 4 h" 'my-find-sibling-file-other-window)
+(keymap-global-set "C-x 5 C-h" 'my-find-sibling-file-other-frame)
+(keymap-global-set "C-x 5 h" 'my-find-sibling-file-other-frame)
 
 ;;; Other misc stuff TODO(package)
 (defun indent-dwim (arg)
@@ -247,4 +243,4 @@ The prefix argument, if given, indents to that column"
            (indent-to (prefix-numeric-value arg))))
         (t
          (indent-according-to-mode))))
-(setf (global-key-binding (kbd "TAB")) 'indent-dwim)
+(keymap-global-set "TAB" 'indent-dwim)
