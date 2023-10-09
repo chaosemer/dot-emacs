@@ -5,11 +5,6 @@
 ;;;; Currently tested against:
 ;;;; * GNU Emacs 29.1
 
-;; TODO(upstream)
-(progn
-  (display-warning 'emacs "Adding setf expansions for missing things")
-  (gv-define-simple-setter lookup-key define-key t))
-
 ;; Disallow navigating to the minibuffer
 (unless (eq (plist-get minibuffer-prompt-properties 'cursor-intangible) t)
   (display-warning 'emacs "Disallowing navigation into the minibuffer prompt")
@@ -40,12 +35,8 @@
 (defvar device-class--should-collapse-to-mouse nil
   "Internal variable to track if collapsing should happen")
 (defvar device-class--mouse-wheel-events
-  (append (list mouse-wheel-up-event mouse-wheel-down-event)
-	  ;; Some variables are only added in Emacs 29.
-	  (when (boundp 'mouse-wheel-up-alternate-event)
-	    (list mouse-wheel-up-alternate-event))
-	  (when (boundp 'mouse-wheel-down-alternate-event)
-	    (list mouse-wheel-down-alternate-event))))
+  (list mouse-wheel-up-event mouse-wheel-down-event
+        mouse-wheel-up-alternate-event mouse-wheel-down-alternate-event))
 (defvar device-class--prev-event-timestamp 0
   "Interval variable of the previous event's timestamp.")
 (defvar device-class--prev-event-seems-like-mouse-event nil)
