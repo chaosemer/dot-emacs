@@ -14,3 +14,6 @@
   (setf markdown-hide-markup t
         ;; So URLs hide automatically as they are typed.
         markdown-hide-urls t))
+
+;; Make sure we delete selection on highlight.
+(put 'markdown-enter-key 'delete-selection t)
