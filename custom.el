@@ -25,7 +25,6 @@
  '(hscroll-step 1)
  '(ido-enable-regexp t)
  '(indicate-empty-lines t)
- '(initial-major-mode 'fundamental-mode)
  '(jit-lock-stealth-time 0.2)
  '(mouse-wheel-progressive-speed nil)
  '(nxml-slash-auto-complete-flag t)

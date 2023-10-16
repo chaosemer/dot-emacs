@@ -45,9 +45,6 @@
                                         (call-process "explorer.exe" nil nil nil url)))))
 (when (require 'hfyview nil t)
   (hfyview-add-to-files-menu))
-(hook-mode emacs-startup-hook
-  (with-current-buffer (get-buffer "*scratch*")
-    (setf buffer-offer-save t)))
 
 (setf (default-value 'indent-tabs-mode) nil
       truncate-partial-width-windows nil
@@ -62,6 +59,16 @@
       use-short-answers t
       use-dialog-box nil
       outline-minor-mode-use-buttons 'in-margins)
+
+
+;; Customize the *scratch* buffer
+(hook-mode emacs-startup-hook
+  (with-current-buffer (get-buffer "*scratch*")
+    (setf buffer-offer-save t)))
+(setf initial-major-mode 'markdown-mode
+      initial-scratch-message (concat "Scratch buffer for notes\n"
+                                      "========================\n"
+                                      "Put notes here..."))
 
 ;; When deugging xterm-mouse issues, having a large buffer is quite
 ;; helpful.
