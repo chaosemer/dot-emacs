@@ -17,3 +17,25 @@
 
 ;; Make sure we delete selection on highlight.
 (put 'markdown-enter-key 'delete-selection t)
+
+;; Make markdown mode always indent / unintent with TAB / S-TAB
+(defun my-markdown-indent-line ()
+  "Wrapper for `markdown-indent-line' that always does indentation."
+  (interactive)
+
+  ;; markdown-indent-line checks this-command, so we have to override it.
+  (let ((this-command 'markdown-cycle))
+    (markdown-indent-line)))
+
+(defun my-markdown-outdent-line ()
+  "Replacement that always outdents the current line."
+  (interactive)
+  (save-excursion
+    (back-to-indentation)
+    (indent-line-to (markdown-outdent-find-next-position
+                     (current-column)
+                     (markdown-calc-indents)))))
+
+(with-eval-after-load 'markdown-mode
+  (keymap-set markdown-mode-map "TAB" 'my-markdown-indent-line)
+  (keymap-set markdown-mode-map "<backtab>" 'my-markdown-outdent-line))
