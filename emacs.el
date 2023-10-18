@@ -184,23 +184,6 @@
 (setf markdown-header-scaling t)
 
 ;;; Sibling file navigation TODO(upstream)
-;;;
-;;; Emacs has two ways to find other files:
-;;;
-;;; 1.  ff-find-other-file
-;;; 2.  find-sibling-file (Emacs 29+)
-;;;
-;;; Both of these have inconsistent support for other window, other
-;;; frame usage.
-(defun ff-find-other-file-other-frame ()
-  "Visit the file you point at in another frame."
-  (interactive)
-  (other-frame-prefix)
-  (unwind-protect
-      (ff-find-other-file nil nil nil)
-    (let ((this-command t))
-      (run-hooks 'post-command-hook))))
-
 (defun my-find-sibling-file-other-window (file)
   (interactive (progn
                  (unless buffer-file-name
