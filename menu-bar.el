@@ -9,14 +9,14 @@
 ;;;; mouse-click as "select current entry")
 
 ;; Clean up the file menu
-(define-key menu-bar-file-menu [new-file]
+(keymap-set menu-bar-file-menu "<new-file>"
   '(menu-item "New File"
               (lambda ()
                 (interactive)
                 (switch-to-buffer (generate-new-buffer "untitled")))
               :enable (menu-bar-non-minibuffer-window-p)
               :help "Create a new buffer"))
-(define-key menu-bar-file-menu [open-file]
+(keymap-set menu-bar-file-menu "<open-file>"
   '(menu-item "Open File..." find-file
               :enable (menu-bar-non-minibuffer-window-p)
               :help "Open an existing file"))
