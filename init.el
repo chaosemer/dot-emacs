@@ -58,9 +58,9 @@ variable after Emacs startup has no effect.")
       (timing-messages '()))
   (dolist (file (delete-dups
                  (mapcar #'file-name-sans-extension
-			 (directory-files-filter *init-file-directory*
-						 #'file-init-loadable?
-						 t))))
+                         (directory-files-filter *init-file-directory*
+                                                 #'file-init-loadable?
+                                                 t))))
     (load file)
     (let* ((cur-time (time-convert nil 'list))
            (delta-time (float-time (time-subtract cur-time prev-time))))

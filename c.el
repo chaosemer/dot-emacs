@@ -18,8 +18,8 @@
   ;; Special comment syntax
   (font-lock-add-keywords nil '(("^\\s *\\(///.*\n?\\)" 1 'section-comment-face t)
                                 ("^////.*\n?" 0 'file-comment-face t)
-								("^//.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?://.*\n\\)+" 0 'section-comment-face t)
-								("^/\\*.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?:.\\|\n\\)*?\\*/\n?" 0 'section-comment-face t)))
+                                ("^//.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?://.*\n\\)+" 0 'section-comment-face t)
+                                ("^/\\*.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?:.\\|\n\\)*?\\*/\n?" 0 'section-comment-face t)))
   (setf font-lock-multiline t)
   
   (setf beginning-of-defun-function 'my-c-beginning-of-defun)
@@ -41,7 +41,7 @@
 ;; Hiding should be delayed until after dirvars have been processed.
 (add-hook 'find-file-hook
           (lambda () (when (member major-mode '(c-mode c++-mode))
-                         (hide-ifdef-mode 1)))
+                       (hide-ifdef-mode 1)))
           t)
 
 ;; Make CC-Mode's defun finding include any function comments that
@@ -50,22 +50,22 @@
   "Move backward to the beginning of a defun, and any function
 comment right before it."
   (ignore-errors
-	(c-beginning-of-defun arg)
-	(while (c-backward-single-comment))
-	(re-search-forward "\\(?:\\s \\|[\n\r]\\)*" nil t)))
+    (c-beginning-of-defun arg)
+    (while (c-backward-single-comment))
+    (re-search-forward "\\(?:\\s \\|[\n\r]\\)*" nil t)))
 
 ;; Make CScope use next-error functionality, so "C-x `" works correctly
 (defun cscope-next-error (n &optional reset)
   "Advance to the next error message and visit the file where the error was.
 This is the value of `next-error-function' in CScope buffers."
   (let ((buffer (get-buffer cscope-output-buffer-name)))
-	(when reset
-	  (with-current-buffer buffer
-		(goto-char (point-min))))
+    (when reset
+      (with-current-buffer buffer
+        (goto-char (point-min))))
 
-	(let ((do-next (> n 0)))
-	  (dotimes (i (abs n))
-		(cscope-buffer-search t do-next)))))
+    (let ((do-next (> n 0)))
+      (dotimes (i (abs n))
+	(cscope-buffer-search t do-next)))))
 (defadvice cscope-call (before my-cscope-call)
   "Wrapper to make sure `next-error-function' is set."
   (set (make-local-variable 'next-error-function) 'cscope-next-error))
