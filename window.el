@@ -63,7 +63,8 @@
              "\\*Warnings\\*"
              "\\*compilation\\*"
              "\\*grep\\*"
-             "\\*vc-git : "))
+             "\\*vc-git : "
+             "\\*xref\\*"))
       (left-windows ; VC prompts
        (list "\\*Open Recent - More\\*"
              "\\*vc-dir\\*")))
