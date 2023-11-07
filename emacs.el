@@ -58,7 +58,8 @@
       window-resize-pixelwise t
       use-short-answers t
       use-dialog-box nil
-      outline-minor-mode-use-buttons 'in-margins)
+      outline-minor-mode-use-buttons 'in-margins
+      delete-by-moving-to-trash t)
 
 
 ;; Customize the *scratch* buffer
