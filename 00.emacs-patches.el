@@ -67,3 +67,36 @@
   (display-warning 'emacs "Fixing buggy pixel-scroll-precesion")
   (keymap-global-set "<remap> <pixel-scroll-precision>" 'pixel-scroll-precision--patched)
   (advice-add 'device-class :filter-return 'device-class--collapse-to-mouse))
+
+(when (version< emacs-version "30.0")
+  (with-eval-after-load 'dired
+    (display-warning 'emacs "Fixing buggy behavior in dired--make-directory-clickable")
+    (defun dired--make-directory-clickable ()
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward
+                (if (memq system-type '(windows-nt ms-dos))
+                    "^  \\([a-zA-Z]:/\\|//\\)"
+                  "^  /")
+                nil t 1)
+          (let ((bound (line-end-position))
+                (segment-start (point))
+                (inhibit-read-only t)
+                (dir (substring (match-string 0) 2)))
+            (while (search-forward "/" bound t 1)
+              (setq dir (concat dir (buffer-substring segment-start (point))))
+              (add-text-properties
+               segment-start (1- (point))
+               `( mouse-face highlight
+                  help-echo "mouse-1: goto this directory"
+                  keymap ,(let* ((current-dir dir)
+                                 (click (lambda ()
+                                          (interactive)
+                                          (if (assoc current-dir dired-subdir-alist)
+                                              (dired-goto-subdir current-dir)
+                                            (dired--find-possibly-alternative-file current-dir)))))
+                            (define-keymap
+                              "<mouse-2>" click
+                              "<follow-link>" 'mouse-face
+                              "RET" click))))
+              (setq segment-start (point)))))))))

@@ -9,14 +9,27 @@
 (require 'ls-lisp)
 (setf ls-lisp-use-insert-directory-program nil)
 
-
 (setf
- ;; Like most file browsers
+ ;; Display like most file browsers
  ls-lisp-dirs-first t
  dired-listing-switches (concat dired-listing-switches " --human-readable")
 
- ;; Extremely low verbosity:
+ ;; Only three columns
  ;; <permissions> <size> <filename>
  ls-lisp-verbosity '()
  ls-lisp-use-localized-time-format t
- ls-lisp-format-time-list '("" ""))
+ ls-lisp-format-time-list '("" "")
+
+ ;; Single buffer at a time
+ dired-kill-when-opening-new-dired-buffer t)
+
+(with-eval-after-load 'dired
+  (keymap-set dired-mode-map "v" 'my-dired-vc-dir)
+  (keymap-set dired-mode-map "<mouse-2>" #'dired-mouse-find-file))
+
+(defun my-dired-vc-dir ()
+  "Show VC status for the currently displayed directory."
+  (interactive)
+  (unless (eq major-mode 'dired-mode)
+    (error "`my-dired-vc-dir' only works in dired mode."))
+  (vc-dir (dired-current-directory)))
