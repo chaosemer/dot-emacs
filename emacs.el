@@ -156,6 +156,11 @@
 
 (keymap-global-set "<home>" 'beginning-of-line-dwim)
 (keymap-global-set "<end>" 'end-of-line-dwim)
+
+;;; Packaging
+(when-let ((list (package--upgradeable-packages)))
+  (display-warning 'emacs (format "%d upgradeable package(s)" (length list))))
+(run-with-idle-timer 30 nil (lambda () (package-refresh-contents t)))
 
 ;;; Recursive edits TODO(package)
 (defun push-or-pop-excursion (pop?)
