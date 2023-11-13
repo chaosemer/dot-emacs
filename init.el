@@ -38,6 +38,13 @@ variable after Emacs startup has no effect.")
       (when (funcall predicate file)
         (push file files)))
     (nreverse files)))
+
+(defvar init--long-load-time-warning 0.05
+  "Controls if a particular file gets a warning if it takes too long to load.
+
+Best practice is to increment this using `cl-incf' next to known
+slow operations.  This can also be set to `nil' to completely
+disable the long load warning.")
 
 ;; add the directories in *LOCAL-LOAD-PATH* to LOAD-PATH
 (when (file-exists-p *local-load-path*)
@@ -51,24 +58,25 @@ variable after Emacs startup has no effect.")
       (add-to-list 'load-path full-path)))))
 
 ; load each FILE-INIT-LOADABLE? file in *INIT-FILE-DIRECTORY* once
-(let ((debug-ignored-errors '())
-      (debug-on-error t)
-      (debug-on-quit t)
-      (prev-time (time-convert nil 'list))
+(let ((prev-time (time-convert nil 'list))
       (timing-messages '()))
   (dolist (file (delete-dups
                  (mapcar #'file-name-sans-extension
                          (directory-files-filter *init-file-directory*
                                                  #'file-init-loadable?
                                                  t))))
-    (load file)
-    (let* ((cur-time (time-convert nil 'list))
-           (delta-time (float-time (time-subtract cur-time prev-time))))
-      (when (> delta-time 0.05)
-        (push (format "Loading `%s' took %f seconds."
-                      file delta-time)
-              timing-messages))
-      (setf prev-time cur-time)))
+    (let ((debug-ignored-errors '())
+          (debug-on-error t)
+          (debug-on-quit t)
+          (init--long-load-time-warning init--long-load-time-warning))
+      (load file)
+      (let* ((cur-time (time-convert nil 'list))
+             (delta-time (float-time (time-subtract cur-time prev-time))))
+        (when (and init--long-load-time-warning (> delta-time init--long-load-time-warning))
+          (push (format "Loading `%s' took %f seconds."
+                        file delta-time)
+                timing-messages))
+        (setf prev-time cur-time))))
 
   ;; Helpful debugging for init files.
   (when timing-messages

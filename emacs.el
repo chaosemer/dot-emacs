@@ -13,6 +13,9 @@
 (add-to-list 'package-archives
              '("melpa" . "http://stable.melpa.org/packages/"))
 
+;; This file is known to be slow, so add a bit more time here.
+(cl-incf init--long-load-time-warning 0.1)
+
 ;; Global customizations -----------------------------------------------
 (progn (bar-cursor-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'bar-cursor-mode minor-mode-alist)))
