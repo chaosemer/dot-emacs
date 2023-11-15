@@ -1,24 +1,13 @@
 ;;;; Global Emacs customizations.  -*- lexical-binding: t; -*-
 ;;;;
 ;;;; Put stuff here if you have nowhere else to put them
-(unless (require 'bar-cursor nil t)
+(unless (fboundp 'bar-cursor-mode)
   ;; If this triggers, make sure to install the `bar-cursor' package
   ;; from melpa unstable.
   (display-warning 'emacs "SETUP ISSUE: bar-cursor package is not installed.")
   (defun bar-cursor-mode (&optional arg)
     ;; Do nothing -- stub
     ))
-
-;; Access to the melpa.org packages.
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archive-priorities
-             '("melpa-stable" . 100))
-(add-to-list 'package-archive-priorities
-             '("melpa" . -100))
-(setf package-archive-column-width 12)
 
 ;; This file is known to be slow, so add a bit more time here.
 (cl-incf init-dir--long-load-time-warning 0.1)
@@ -172,9 +161,38 @@
 (keymap-global-set "<end>" 'end-of-line-dwim)
 
 ;;; Packaging
-(when-let ((list (package--upgradeable-packages)))
-  (display-warning 'emacs (format "%d upgradeable package(s)" (length list))))
-(run-with-idle-timer 30 nil (lambda () (package-refresh-contents t)))
+
+;; Intended archive sequencing:
+;;
+;; 1. melpa-stable
+;; 2. Emacs default
+;; 3. melpa (HEAD)
+;;
+;; Melpa (HEAD) should never auto update.
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archive-priorities
+             '("melpa-stable" . 100))
+(add-to-list 'package-archive-priorities
+             '("melpa" . -100))
+(setf package-archive-column-width 12)
+
+;; Calculating the list of upgradable packages takes under a second,
+;; so defer until after soon initalization is complete.
+(run-with-idle-timer
+ 1 nil
+ (lambda ()
+   (when-let ((list (package--upgradeable-packages)))
+     (display-warning 'emacs (format "%d upgradeable package(s)" (length list))))))
+
+;; Refreshing the list of packages takes even longer than calculating
+;; the list (it involves network traffic) so run that asynchronously
+;; when it won't impact user interaction.
+(run-with-idle-timer
+ 30 nil
+ (lambda () (package-refresh-contents t)))
 
 ;;; Recursive edits TODO(package)
 (defun push-or-pop-excursion (pop?)

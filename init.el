@@ -2,12 +2,6 @@
 ;;;; MJF Emacs customizations
 ;;;; TODO(upstream/package)
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
 (defun init-dir--file-init-loadable-p (file)
   "Tests if FILE should be loaded at Emacs initialization."
   (and (file-regular-p file)
