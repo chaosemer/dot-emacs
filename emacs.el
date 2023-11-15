@@ -11,7 +11,14 @@
 
 ;; Access to the melpa.org packages.
 (add-to-list 'package-archives
-             '("melpa" . "http://stable.melpa.org/packages/"))
+             '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archive-priorities
+             '("melpa-stable" . 100))
+(add-to-list 'package-archive-priorities
+             '("melpa" . -100))
+(setf package-archive-column-width 12)
 
 ;; This file is known to be slow, so add a bit more time here.
 (cl-incf init-dir--long-load-time-warning 0.1)
