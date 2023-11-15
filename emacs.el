@@ -64,6 +64,8 @@
       outline-minor-mode-use-buttons 'in-margins
       delete-by-moving-to-trash t)
 
+;; Ignore Unity .meta files as well, they show up everywhere.
+(add-to-list 'completion-ignored-extensions ".meta")
 
 ;; Customize the *scratch* buffer
 (hook-mode emacs-startup-hook
