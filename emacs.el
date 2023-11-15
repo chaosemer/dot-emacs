@@ -15,8 +15,9 @@
 
 ;; This file is known to be slow, so add a bit more time here.
 (cl-incf init-dir--long-load-time-warning 0.1)
+
+;;; Global customizations
 
-;; Global customizations -----------------------------------------------
 (progn (bar-cursor-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'bar-cursor-mode minor-mode-alist)))
 (column-number-mode 1)
@@ -26,6 +27,7 @@
 (fido-mode 1)
 (global-font-lock-mode 1)
 (global-hi-lock-mode 1)
+(global-page-break-lines-mode 1)
 (progn (global-subword-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'subword-mode minor-mode-alist)))
 (menu-bar-mode 1)
