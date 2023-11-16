@@ -184,8 +184,12 @@
 (run-with-idle-timer
  1 nil
  (lambda ()
-   (when-let ((list (package--upgradeable-packages)))
-     (display-warning 'emacs (format "%d upgradeable package(s)" (length list))))))
+   (when-let ((list (seq-remove (lambda (elt)
+                                  (package-vc-p (car (alist-get elt package-alist))))
+                                (package--upgradeable-packages))))
+     (display-warning 'emacs (format "%d upgradeable package(s): %s"
+				     (length list)
+				     (mapconcat #'symbol-name list ", "))))))
 
 ;; Refreshing the list of packages takes even longer than calculating
 ;; the list (it involves network traffic) so run that asynchronously
