@@ -49,6 +49,7 @@
              "\\*Async Shell Command\\*"
              "\\*Backtrace\\*"
              "\\*Buffer List\\*"
+             "\\*Checkdoc Status\\*"
              "\\*Completions\\*"
              "\\*Compile-Log\\*"
              "\\*Deletions\\*"
