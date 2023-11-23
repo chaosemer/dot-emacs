@@ -1,4 +1,4 @@
-;;;; Configuration for XML files
+;;;; Configuration for XML files  -*- lexical-binding: t; -*-
 
 (add-to-list 'major-mode-remap-alist '(xml-mode . nxml-mode))
 (add-to-list 'major-mode-remap-alist '(mhtml-mode . nxml-mode))
