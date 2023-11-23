@@ -29,9 +29,10 @@
  '(mouse-wheel-progressive-speed nil)
  '(nxml-slash-auto-complete-flag t)
  '(package-selected-packages
-   '(page-break-lines modus-themes init-dir dired-icon markdown-mode bar-cursor slime))
+   '(window-tool-bar page-break-lines modus-themes init-dir dired-icon markdown-mode bar-cursor slime))
  '(package-vc-selected-packages
-   '((init-dir :vc-backend Git :url "http://github.com/chaosemer/init-dir")))
+   '((window-tool-bar :vc-backend Git :url "http://github.com/chaosemer/window-tool-bar")
+     (init-dir :vc-backend Git :url "http://github.com/chaosemer/init-dir")))
  '(server-window 'switch-to-buffer-other-frame)
  '(show-paren-style 'expression)
  '(vc-handled-backends '(SVN Git Hg))
