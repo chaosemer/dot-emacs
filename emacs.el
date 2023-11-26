@@ -23,7 +23,7 @@
 (fido-mode 1)
 (global-font-lock-mode 1)
 (global-hi-lock-mode 1)
-(global-page-break-lines-mode 1)
+(global-form-feed-st-mode 1)
 (progn (global-subword-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'subword-mode minor-mode-alist)))
 (menu-bar-mode 1)
