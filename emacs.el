@@ -119,11 +119,31 @@
 ;; My experimental package, <http://github.com/chaosemer/window-tool-bar>
 (global-window-tool-bar-mode 1)
 
+;;; Faces:
+
 (setf (face-background 'show-paren-match)
       (if (> (display-color-cells) 256) "light gray" "blue")
       (face-background 'show-paren-mismatch) "red"
       (face-foreground 'show-paren-mismatch) "white")
+
+;;; Section and File level comment functionality.
+;;;
+;;; This allows for section and file level comments to be rendered bigger than normal text, so they
+;;; stand out a bit more.
+(defface section-comment-face
+  '((t (:height 1.3 :inherit (font-lock-comment-face variable-pitch))))
+  "Face for section level comments"
+  :group 'local)
+(defface file-comment-face
+  '((t (:height 1.5 :weight bold :inherit (font-lock-comment-face variable-pitch))))
+  "Face for file level comments"
+  :group 'local)
+
+;; Also make same adjustments for markdown.
+(setf markdown-header-scaling t)
 
+;;; Keymaps:
+
 ;; indent on newline
 (keymap-global-set "C-j" 'newline)
 (keymap-global-set "RET" 'newline-and-indent)
@@ -211,22 +231,6 @@
     (when (> (recursion-depth) 0)
       (throw 'exit 'nil))))
 (keymap-global-set "C-x C-p" 'push-or-pop-excursion)
-
-;;; Section and File level comment functionality.
-;;;
-;;; This allows for section and file level comments to be rendered bigger than normal text, so they
-;;; stand out a bit more.
-(defface section-comment-face
-  '((t (:height 1.3 :inherit (font-lock-comment-face variable-pitch))))
-  "Face for section level comments"
-  :group 'local)
-(defface file-comment-face
-  '((t (:height 1.5 :weight bold :inherit (font-lock-comment-face variable-pitch))))
-  "Face for file level comments"
-  :group 'local)
-
-;; Also make same adjustments for markdown.
-(setf markdown-header-scaling t)
 
 ;;; Sibling file navigation TODO(upstream)
 (defun my-find-sibling-file-other-window (file)
