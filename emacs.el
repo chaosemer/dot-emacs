@@ -12,6 +12,44 @@
 ;; This file is known to be slow, so add a bit more time here.
 (cl-incf init-dir--long-load-time-warning 0.1)
 
+;;; Package customization:
+
+;; Intended archive sequencing:
+;;
+;; 1. melpa-stable
+;; 2. Emacs default
+;; 3. melpa (HEAD)
+;;
+;; Melpa (HEAD) should never auto update.
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archive-priorities
+             '("melpa-stable" . 100))
+(add-to-list 'package-archive-priorities
+             '("melpa" . -100))
+(setf package-archive-column-width 12)
+
+;; Calculating the list of upgradable packages takes under a second,
+;; so defer until after soon initalization is complete.
+(run-with-idle-timer
+ 1 nil
+ (lambda ()
+   (when-let ((list (seq-remove (lambda (elt)
+                                  (package-vc-p (car (alist-get elt package-alist))))
+                                (package--upgradeable-packages))))
+     (display-warning 'emacs (format "%d upgradeable package(s): %s"
+				     (length list)
+				     (mapconcat #'symbol-name list ", "))))))
+
+;; Refreshing the list of packages takes even longer than calculating
+;; the list (it involves network traffic) so run that asynchronously
+;; when it won't impact user interaction.
+(run-with-idle-timer
+ 30 nil
+ (lambda () (package-refresh-contents t)))
+
 ;;; Global customizations
 
 (progn (bar-cursor-mode 1)
@@ -162,44 +200,6 @@
 
 (keymap-global-set "<home>" 'beginning-of-line-dwim)
 (keymap-global-set "<end>" 'end-of-line-dwim)
-
-;;; Packaging
-
-;; Intended archive sequencing:
-;;
-;; 1. melpa-stable
-;; 2. Emacs default
-;; 3. melpa (HEAD)
-;;
-;; Melpa (HEAD) should never auto update.
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archive-priorities
-             '("melpa-stable" . 100))
-(add-to-list 'package-archive-priorities
-             '("melpa" . -100))
-(setf package-archive-column-width 12)
-
-;; Calculating the list of upgradable packages takes under a second,
-;; so defer until after soon initalization is complete.
-(run-with-idle-timer
- 1 nil
- (lambda ()
-   (when-let ((list (seq-remove (lambda (elt)
-                                  (package-vc-p (car (alist-get elt package-alist))))
-                                (package--upgradeable-packages))))
-     (display-warning 'emacs (format "%d upgradeable package(s): %s"
-				     (length list)
-				     (mapconcat #'symbol-name list ", "))))))
-
-;; Refreshing the list of packages takes even longer than calculating
-;; the list (it involves network traffic) so run that asynchronously
-;; when it won't impact user interaction.
-(run-with-idle-timer
- 30 nil
- (lambda () (package-refresh-contents t)))
 
 ;;; Recursive edits TODO(package)
 (defun push-or-pop-excursion (pop?)
