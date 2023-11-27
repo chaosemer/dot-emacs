@@ -197,6 +197,8 @@
                "C-x <right>" "M-<begin>" "M-<next>" "M-<prior>" "C-M-v" "C-M-S-v" "ESC <begin>"
                "ESC <end>" "ESC <home>" "ESC <next>" "ESC <prior>"))
   (keymap-global-unset key))
+
+;;; Custom commands:
 
 ;;; DWIM <home> and <end> TODO(package)
 (defun beginning-of-line-dwim (&optional n)
