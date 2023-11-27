@@ -50,7 +50,7 @@
  30 nil
  (lambda () (package-refresh-contents t)))
 
-;;; Global customizations
+;;; Global customizations:
 
 (progn (bar-cursor-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'bar-cursor-mode minor-mode-alist)))
