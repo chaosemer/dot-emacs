@@ -60,8 +60,9 @@
 (electric-pair-mode 1)
 (fido-mode 1)
 (global-font-lock-mode 1)
+(progn (global-form-feed-st-mode 1)
+       (setf minor-mode-alist (assoc-delete-all 'form-feed-st-mode minor-mode-alist)))
 (global-hi-lock-mode 1)
-(global-form-feed-st-mode 1)
 (progn (global-subword-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'subword-mode minor-mode-alist)))
 (menu-bar-mode 1)
@@ -98,7 +99,8 @@
       use-short-answers t
       use-dialog-box nil
       outline-minor-mode-use-buttons 'in-margins
-      delete-by-moving-to-trash t)
+      delete-by-moving-to-trash t
+      form-feed-st-include-modes '(prog-mode text-mode special-mode))
 
 ;; Ignore Unity .meta files as well, they show up everywhere.
 (add-to-list 'completion-ignored-extensions ".meta")
