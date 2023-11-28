@@ -9,10 +9,6 @@
   (c-set-offset 'member-init-intro '++)
   (c-set-offset 'cpp-macro 0)
   (c-set-offset 'statement-case-open '+)
-  (keymap-local-set "C-c M-<right>" 'c-forward-conditional)
-  (keymap-local-set "C-c M-<left>" 'c-backward-conditional)
-  (keymap-local-set "C-c M-<up>" 'c-up-conditional-with-else)
-  (keymap-local-set "C-c M-<down>" 'c-down-conditional)
   (when (fboundp 'cscope-bind-keys-3deep) (cscope-bind-keys-3deep))
 
   ;; Special comment syntax
@@ -24,14 +20,7 @@
   
   (setf beginning-of-defun-function 'my-c-beginning-of-defun)
 
-  ;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY
-  ;; inconvenient.  Nothing else uses C-c C, so I'm moving it to that.
-  (require 'ebrowse)
-  (keymap-global-set "C-c C" ebrowse-global-map)
-
-  ;; cc-mode defines the tab key in its map.  It shouldn't TODO(upstream)
-  (keymap-unset c-mode-map "TAB")
-  (keymap-unset c++-mode-map "TAB"))
+  (require 'ebrowse))
 
 (setf (default-value 'c-recognize-knr-p) nil
       (default-value 'c-recognize-paren-inits) t
@@ -43,6 +32,23 @@
           (lambda () (when (member major-mode '(c-mode c++-mode))
                        (hide-ifdef-mode 1)))
           t)
+
+;;; Keymaps:
+(keymap-set c-mode-base-map "C-c M-<right>" 'c-forward-conditional)
+(keymap-set c-mode-base-map "C-c M-<left>" 'c-backward-conditional)
+(keymap-set c-mode-base-map "C-c M-<up>" 'c-up-conditional-with-else)
+(keymap-set c-mode-base-map "C-c M-<down>" 'c-down-conditional)
+
+;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY
+;; inconvenient.  Nothing else uses C-c C, so I'm moving it to that.
+(setf ebrowse-global-prefix-key (kbd "C-c C"))
+
+;; cc-mode defines the tab key in its map.  It shouldn't TODO(upstream)
+(with-eval-after-load 'cc-mode
+  (keymap-unset c-mode-map "TAB")
+  (keymap-unset c++-mode-map "TAB"))
+
+;;; Custom commands:
 
 ;; Make CC-Mode's defun finding include any function comments that
 ;; immediately preceede it.

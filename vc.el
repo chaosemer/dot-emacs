@@ -1,6 +1,8 @@
 ;;; init/vc.el --- Customizing Version Control menus and such  -*- lexical-binding: t; -*-
 
 ;;; Code:
+
+;;; Custom commands:
 (with-eval-after-load 'vc-git
   (keymap-set vc-git-extra-menu-map "<git-svn-dcommit>"
               '(menu-item "Git SVN Commit" vc-git-svn-dcommit))

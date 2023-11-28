@@ -23,14 +23,17 @@
 
  ;; Single buffer at a time
  dired-kill-when-opening-new-dired-buffer t)
-
+
+;;; Keymaps:
 (with-eval-after-load 'dired
-  (keymap-set dired-mode-map "v" 'my-dired-vc-dir)
-  (keymap-set dired-mode-map "<mouse-2>" #'dired-mouse-find-file))
-
+  (keymap-set dired-mode-map "v" 'my-dired-vc-dir))
+
+;;; Custom commands:
 (defun my-dired-vc-dir ()
   "Show VC status for the currently displayed directory."
   (interactive)
   (unless (eq major-mode 'dired-mode)
     (error "`my-dired-vc-dir' only works in Dired mode"))
   (vc-dir (dired-current-directory)))
+(with-eval-after-load 'dired
+  (keymap-set dired-mode-map "<mouse-2>" #'dired-mouse-find-file))

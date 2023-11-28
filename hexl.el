@@ -6,8 +6,10 @@
     (hexl-follow-line)
     (hexl-activate-ruler)
     (turn-on-eldoc-mode)
-    (setf truncate-lines t))
-
+    (setf truncate-lines t)))
+
+;;; Custom commands:
+(with-eval-after-load 'hexl
   (keymap-set hexl-mode-map "<remap> <self-insert-command>"
     'hexl-my-self-insert-command)
   (keymap-set hexl-mode-map "C-m" 'hexl-my-self-insert-command)

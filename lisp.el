@@ -1,8 +1,6 @@
 ;;; init/lisp.el --- (Common) Lisp customizations  -*- lexical-binding: t; -*-
 
 ;;; Code:
-(cl-pushnew '("\\.asd\\'" . lisp-mode) auto-mode-alist :test #'equal)
-
 (hook-mode lisp-mode-hook
   (make-variable-buffer-local 'browse-url-browser-function)
   (setf browse-url-browser-function 'w3m)
@@ -11,10 +9,10 @@
 
   (require 'slime)
   (setf inferior-lisp-program "sbcl")
-  (slime-setup)
-  
-  ;; Key bindings
-  (keymap-local-set "C-<down-mouse-3>" (lambda () (interactive)
-                                         (popup-menu slime-easy-menu))))
-
+  (slime-setup))
+(cl-pushnew '("\\.asd\\'" . lisp-mode) auto-mode-alist :test #'equal)
+
+;;; Keymaps:
+(keymap-set lisp-mode-map "C-<down-mouse-3>" (lambda () (interactive)
+                                               (popup-menu slime-easy-menu)))
 (keymap-unset lisp-mode-map "TAB")

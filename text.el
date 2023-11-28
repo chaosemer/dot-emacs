@@ -12,13 +12,16 @@
   (electric-pair-local-mode -1)
   (markdown-toggle-markup-hiding 1))
 
+;; Actually, I prefer GitHub flavored markdown
+(add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode))
+
 ;; Make sure we delete selection on highlight.
 (put 'markdown-enter-key 'delete-selection t)
 
+(setf markdown-fontify-code-blocks-natively t)
+
+;;; Keymaps:
 (with-eval-after-load 'markdown-mode
   ;; Make markdown mode always indent / unintent with TAB / S-TAB
   (keymap-set markdown-mode-map "TAB" 'markdown-demote-list-item)
   (keymap-set markdown-mode-map "<backtab>" 'markdown-promote-list-item))
-
-;; Actually, I prefer GitHub flavored markdown
-(add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode))

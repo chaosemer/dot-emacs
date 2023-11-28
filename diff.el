@@ -1,6 +1,10 @@
 ;;; init/diff.el --- Diff mode customizations  -*- lexical-binding: t; -*-
-
-;;; Code:
+
+;;; Kemaps:
+;; VC should use EDiff, as it provides a better visualization.
+(keymap-global-set "<remap> <vc-diff>" 'vc-ediff)
+
+;;; Custom commands:
 (defun hexl-find-file-noselect (file)
   "Find a file and put it into `hexl-mode'.
 
@@ -35,6 +39,3 @@ FILE3: Path to the third file."
                      (read-file-name "File B to compare: ")
                      (read-file-name "File C to compare: ")))
   (apply #'ediff-buffers3 (mapcar #'hexl-find-file-noselect (list file1 file2 file3))))
-
-;; VC should use EDiff, as it provides a better visualization.
-(keymap-global-set "<remap> <vc-diff>" 'vc-ediff)
