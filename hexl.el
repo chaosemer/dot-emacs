@@ -1,6 +1,4 @@
 ;;;; Hexl (hex editor) customizations.  -*- lexical-binding: t; -*-
-(require 'hexl)
-
 (with-eval-after-load 'hexl
   (hook-mode hexl-mode-hook
     (hexl-follow-line)
