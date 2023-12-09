@@ -1,4 +1,6 @@
-;;;; Hexl (hex editor) customizations.  -*- lexical-binding: t; -*-
+;;; init/hexl.el --- Hexl (hex editor) customizations  -*- lexical-binding: t; -*-
+
+;;; Code:
 (with-eval-after-load 'hexl
   (hook-mode hexl-mode-hook
     (hexl-follow-line)
@@ -28,7 +30,11 @@
 
 ;; TODO(upstream)
 (defun hexl-insert-nybble (ch arg)
-  "Insert nybble for character ch arg times."
+  "Insert nybble for character CH, ARG times.
+
+CH: Character for a nybble to insert.  This should be a
+    hexadecimal digit, ?0 - ?9 or ?A -?F.
+ARG: Number of times to insert the above character."
   (when (not (or (<= ?0 ch ?9)
                  (<= ?a ch ?f)
                  (<= ?A ch ?F)))
@@ -47,7 +53,9 @@
       (goto-char (+ hex-position index 1)))))
 
 (defun hexl-my-self-insert-command (arg)
-  "Replacement for `hexl-self-insert-command'."
+  "Replacement for `hexl-self-insert-command'.
+
+ARG: Number of times to insert the character."
   (interactive "p")
   (if (< (current-column) (hexl-ascii-start-column))
       (hexl-insert-nybble last-command-event arg)
@@ -65,50 +73,73 @@
                               1 0)))))
 
 (defun hexl-my-ascii-position (addr)
+  "Return the buffer position in the ascii column.
+
+ADDR: Address to get the position for, as returned from
+`hexl-current-address'."
   (+ (* (/ addr 16) (hexl-line-displen))
      (hexl-ascii-start-column)
      (point-min)
      (% addr 16)))
 
 (defun hexl-my-movement (f arg)
+  "Execute movement function F, staying in ASCII or bytes column.
+
+F: Function to execute.
+ARG: Argument to pass to F, as (F ARG)."
   (let ((at-ascii-position (>= (current-column) (hexl-ascii-start-column))))
     (funcall f arg)
     (when at-ascii-position
       (goto-char (hexl-my-ascii-position (hexl-current-address t))))))
 
 (defun hexl-my-movement0 (f)
+  "Execute movement function F, staying in ASCII or bytes column.
+
+F: Function to execute."
   (let ((at-ascii-position (>= (current-column) (hexl-ascii-start-column))))
     (funcall f)
     (when at-ascii-position
       (goto-char (hexl-my-ascii-position (hexl-current-address t))))))
 
 (defun hexl-my-backward-char (arg)
-  "Replacement for `hexl-backward-char'."
+  "Replacement for `hexl-backward-char'.
+
+ARG: Number of characters to move."
   (interactive "p")
   (hexl-my-forward-char (- arg)))
 
 (defun hexl-my-forward-char (arg)
-  "Replacement for `hexl-forward-char'."
+  "Replacement for `hexl-forward-char'.
+
+ARG: Number of characters to move."
   (interactive "p")
   (hexl-my-movement 'hexl-my-forward-char-internal arg))
 
 (defun hexl-my-previous-line (arg)
-  "Replacement for `hexl-previous-line'."
+  "Replacement for `hexl-previous-line'.
+
+ARG: Number of lines to move."
   (interactive "p")
   (hexl-my-movement 'hexl-previous-line arg))
 
 (defun hexl-my-next-line (arg)
-  "Replacement for `hexl-next-line'."
+  "Replacement for `hexl-next-line'.
+
+ARG: Number of lines to move."
   (interactive "p")
   (hexl-my-movement 'hexl-next-line arg))
 
 (defun hexl-my-beginning-of-buffer (arg)
-  "Replacement for `hexl-beginning-of-buffer'."
+  "Replacement for `hexl-beginning-of-buffer'.
+
+ARG: Passed to `hexl-beginning-of-buffer'."
   (interactive "p")
   (hexl-my-movement 'hexl-beginning-of-buffer arg))
 
 (defun hexl-my-end-of-buffer (arg)
-  "Replcaement for `hexl-end-of-buffer'."
+  "Replcaement for `hexl-end-of-buffer'.
+
+ARG: Passed to `hexl-end-of-buffer'."
   (interactive "p")
   (hexl-my-movement 'hexl-end-of-buffer arg))
 

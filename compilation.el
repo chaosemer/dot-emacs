@@ -1,4 +1,6 @@
-;;;; Compilation mode customizations  -*- lexical-binding: t; -*-
+;;; init/compilation.el --- Compilation mode customizations  -*- lexical-binding: t; -*-
+
+;;; Code:
 (hook-mode compilation-mode-hook
   next-error-follow-minor-mode)
 (hook-mode occur-mode-hook

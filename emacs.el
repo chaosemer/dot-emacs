@@ -1,6 +1,6 @@
-;;;; Global Emacs customizations.  -*- lexical-binding: t; -*-
-;;;;
-;;;; Put stuff here if you have nowhere else to put them
+;;; init/emacs.el --- Global Emacs customizations  -*- lexical-binding: t; -*-
+
+;;; Code:
 (unless (fboundp 'bar-cursor-mode)
   ;; If this triggers, make sure to install the `bar-cursor' package
   ;; from melpa unstable.
@@ -144,11 +144,11 @@
 ;;; stand out a bit more.
 (defface section-comment-face
   '((t (:height 1.3 :inherit (font-lock-comment-face variable-pitch))))
-  "Face for section level comments"
+  "Face for section level comments."
   :group 'local)
 (defface file-comment-face
   '((t (:height 1.5 :weight bold :inherit (font-lock-comment-face variable-pitch))))
-  "Face for file level comments"
+  "Face for file level comments."
   :group 'local)
 
 ;; Also make same adjustments for markdown.
@@ -181,7 +181,7 @@
                          (interactive)
                          (if (> (length (frame-list)) 1)
                              (delete-frame)
-                           (when (y-or-n-p "Last frame, kill emacs? ")
+                           (when (y-or-n-p "Last frame, kill Emacs? ")
                              (call-interactively #'save-buffers-kill-emacs)))))))
 
 ;; Account for differences in Win32 keycodes
@@ -223,7 +223,9 @@
       (beginning-of-line))))
 
 (defun end-of-line-dwim (&optional n)
-  "Movie point to the last non-whitespace character or the end of line."
+  "Movie point to the last non-whitespace character or the end of line.
+
+N: Number of lines to go forward."
   (interactive "^p")
 
   (let ((point (point)))
@@ -237,7 +239,10 @@
 
 ;;; Recursive edits TODO(package)
 (defun push-or-pop-excursion (pop?)
-  "Pushes or pops an excursion, depending on the prefix arg."
+  "Pushes or pops an excursion, depending on the prefix arg.
+
+POP?: If nil (the default), then push an excursion.  Otherwise,
+pop an excursion."
   (interactive (list current-prefix-arg))
 
   (if (not pop?)
@@ -248,6 +253,12 @@
 
 ;;; Sibling file navigation TODO(upstream)
 (defun my-find-sibling-file-other-window (file)
+  "Variant of `find-sibling-file', that opens in another window.
+
+When called interactively, find the sibling of the current
+buffer's file.
+
+FILE: File to find the sibling file of."
   (interactive (progn
                  (unless buffer-file-name
                    (user-error "Not visiting a file"))
@@ -258,6 +269,12 @@
     (let ((this-command t))
       (run-hooks 'post-command-hook))))
 (defun my-find-sibling-file-other-frame (file)
+  "Variant of `find-sibling-file', that opens in another frame.
+
+When called interactively, find the sibling of the current
+buffer's file.
+
+FILE: File to find the sibling file of."
   (interactive (progn
                  (unless buffer-file-name
                    (user-error "Not visiting a file"))
@@ -285,7 +302,7 @@
 (defun indent-dwim (arg)
   "Try to do what a human would mean when indenting.
 
-The prefix argument, if given, indents to that column"
+The prefix argument ARG, if given, indents to that column."
   (interactive (list current-prefix-arg))
 
   (cond (mark-active

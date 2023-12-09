@@ -1,9 +1,17 @@
-;;;; Patches for buggy/old emacs code  -*- lexical-binding: t; -*-
-;;;;
-;;;; This allows me to use one init file across multiple versions of Emacs.
-;;;;
-;;;; Currently tested against:
-;;;; * GNU Emacs 29.1
+;;; init/00.emacs-patches.el --- Patches for buggy/old emacs code  -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;;
+;; This file serves two purposes:
+;;
+;; 1. It contains bugfixes for core Emacs functions.
+;; 2. It backports new Emacs functionality to earlier versions that
+;; are not yet available on Debian stable.
+;;
+;; Currently tested against:
+;; * GNU Emacs 29.1
+
+;;; Code:
 
 ;; Disallow navigating to the minibuffer
 (unless (eq (plist-get minibuffer-prompt-properties 'cursor-intangible) t)

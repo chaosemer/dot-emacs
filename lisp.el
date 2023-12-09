@@ -1,4 +1,6 @@
-;;;; (Common) Lisp customizations  -*- lexical-binding: t; -*-
+;;; init/lisp.el --- (Common) Lisp customizations  -*- lexical-binding: t; -*-
+
+;;; Code:
 (cl-pushnew '("\\.asd\\'" . lisp-mode) auto-mode-alist :test #'equal)
 
 (hook-mode lisp-mode-hook

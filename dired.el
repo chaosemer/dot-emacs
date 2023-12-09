@@ -1,5 +1,6 @@
-;;;; Dired mode customizations. -*- lexical-binding: t; -*-
+;;; init/dired.el --- Dired mode customizations -*- lexical-binding: t; -*-
 
+;;; Code:
 (hook-mode dired-mode-hook
   (when window-system
     (dired-icon-mode 1))
@@ -31,5 +32,5 @@
   "Show VC status for the currently displayed directory."
   (interactive)
   (unless (eq major-mode 'dired-mode)
-    (error "`my-dired-vc-dir' only works in dired mode."))
+    (error "`my-dired-vc-dir' only works in Dired mode"))
   (vc-dir (dired-current-directory)))

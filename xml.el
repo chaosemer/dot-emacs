@@ -1,5 +1,6 @@
-;;;; Configuration for XML files  -*- lexical-binding: t; -*-
+;;; init/xml.el --- Configuration for XML files  -*- lexical-binding: t; -*-
 
+;;; Code:
 (add-to-list 'major-mode-remap-alist '(xml-mode . nxml-mode))
 (add-to-list 'major-mode-remap-alist '(mhtml-mode . nxml-mode))
 

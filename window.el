@@ -1,7 +1,11 @@
-;;;; Control the window layout. -*- lexical-binding: t; -*-
-;;;;
-;;;; Generally this customizes display-buffer-alist and related
-;;;; options.
+;;; init/window.el --- Control the window layout -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;;
+;; Using `display-buffer-alist' send small utility windows to side
+;; windows.  This also adjusts some related options.
+
+;;; Code:
 
 ;; Make more switching commands do what I want.
 (setf switch-to-buffer-obey-display-actions t

@@ -1,4 +1,6 @@
-;;;; Customizing Version Control menus and such  -*- lexical-binding: t; -*-
+;;; init/vc.el --- Customizing Version Control menus and such  -*- lexical-binding: t; -*-
+
+;;; Code:
 (with-eval-after-load 'vc-git
   (keymap-set vc-git-extra-menu-map "<git-svn-dcommit>"
               '(menu-item "Git SVN Commit" vc-git-svn-dcommit))
@@ -6,14 +8,18 @@
               '(menu-item "Git SVN Update" vc-git-svn-rebase)))
 
 (defun vc-git-svn-rebase ()
-  "Get lastest changes from SVN to Git."
+  "Get latest commits from SVN to Git."
   (interactive)
   (let ((root (vc-git-root default-directory)))
     (assert root nil "Not in a Git repository")
     (vc-git-command "*vc-git*" 'async nil "svn" "rebase")
     (display-buffer "*vc-git*")))
+
 (defun vc-git-svn-dcommit (&optional rebase-also)
-  "Commit changes stored in a Git repository to SVN."
+  "Submit SVN commits for all commits in the Git repository.
+
+REBASE-ALSO: If non-nil, do not actually rebase so that you can
+manually do the desired rebase."
   (interactive "P")
   (let ((root (vc-git-root default-directory)))
     (assert root nil "Not in a Git repository")

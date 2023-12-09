@@ -1,4 +1,6 @@
-;; -*- lexical-binding: t; -*-
+;;; init/custom.el --- Location for changes from Custom. -*- lexical-binding: t; -*-
+
+;;; Code:
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)

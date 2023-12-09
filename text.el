@@ -1,6 +1,6 @@
-;;;; Text mode customizations.  -*- lexical-binding: t; -*-
-;;;;
-;;;; Why not use Emacs for editting plain old text?
+;;; init/text.el --- Text mode customizations  -*- lexical-binding: t; -*-
+
+;;; Code:
 (hook-mode text-mode-hook
   (unless (member major-mode '(mail-mode org-mode))
 	visual-line-mode))

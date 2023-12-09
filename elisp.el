@@ -1,4 +1,6 @@
-;;;; Emacs Lisp customizations  -*- lexical-binding: t; -*-
+;;; init/elisp.el --- Emacs Lisp customizations  -*- lexical-binding: t; -*-
+
+;;; Code:
 (hook-mode emacs-lisp-mode-hook
   eldoc-mode
   (font-lock-add-keywords nil '(("^\\s *;;;.*\n?" (0 'section-comment-face t))

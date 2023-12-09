@@ -1,6 +1,6 @@
-;;;; C customizations.  -*- lexical-binding: t; -*-
-;;;;
-;;;; Also applied to other C-like languages (really anything that uses CC-mode)
+;;; init/c.el --- C based language customizations  -*- lexical-binding: t; -*-
+
+;;; Code:
 (hook-mode c-mode-common-hook
   visual-line-mode
   (c-set-offset 'case-label '+)
@@ -47,8 +47,12 @@
 ;; Make CC-Mode's defun finding include any function comments that
 ;; immediately preceede it.
 (defun my-c-beginning-of-defun (&optional arg)
-  "Move backward to the beginning of a defun, and any function
-comment right before it."
+  "Move backward to the beginning of a defun, including comments.
+
+Unlike `c-beginning-of-defun', this also includes the comment
+block in front of it.
+
+ARG: Number of defuns to move, as in `c-beginning-of-defun'."
   (ignore-errors
     (c-beginning-of-defun arg)
     (while (c-backward-single-comment))
@@ -57,7 +61,10 @@ comment right before it."
 ;; Make CScope use next-error functionality, so "C-x `" works correctly
 (defun cscope-next-error (n &optional reset)
   "Advance to the next error message and visit the file where the error was.
-This is the value of `next-error-function' in CScope buffers."
+This is the value of `next-error-function' in CScope buffers.
+
+N: Number of errors to move forward.
+RESET: If non-nil, start from the beginning."
   (let ((buffer (get-buffer cscope-output-buffer-name)))
     (when reset
       (with-current-buffer buffer
