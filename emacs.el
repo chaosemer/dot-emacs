@@ -59,21 +59,18 @@
 (cua-mode 1)
 (electric-pair-mode 1)
 (fido-mode 1)
-(global-font-lock-mode 1)
 (progn (global-form-feed-st-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'form-feed-st-mode minor-mode-alist)))
-(global-hi-lock-mode 1)
 (progn (global-subword-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'subword-mode minor-mode-alist)))
-(menu-bar-mode 1)
-(progn (pixel-scroll-precision-mode 1)
-       (setf pixel-scroll-precision-interpolate-page t))
+(setf (default-value 'indent-tabs-mode) nil)
 (recentf-mode 1)
 (tooltip-mode -1)
 (url-handler-mode 1)
 
 (if window-system
-    (mouse-wheel-mode 1)
+    (progn (pixel-scroll-precision-mode 1)
+           (setf pixel-scroll-precision-interpolate-page t))
   (xterm-mouse-mode 1)
   (when (string-match "microsoft" (shell-command-to-string "uname -r"))
     ;; Windows Console does not properly report that it supports
@@ -83,24 +80,23 @@
     ;; Use the default Windows browser.
     (setq browse-url-browser-function (lambda (url &rest args)
                                         (call-process "explorer.exe" nil nil nil url)))))
-(when (require 'hfyview nil t)
-  (hfyview-add-to-files-menu))
 
-(setf (default-value 'indent-tabs-mode) nil
-      truncate-partial-width-windows nil
+;; Make Emacs display similar to modern editors.
+(setf frame-resize-pixelwise t
       frame-title-format "%b - Emacs"
-      icon-title-format "%b - Emacs"
-      x-stretch-cursor t
+      icon-title-format t
       scroll-conservatively most-positive-fixnum
-      parse-sexp-lookup-properties t
-      narrow-to-defun-include-comments t
-      frame-resize-pixelwise t
       window-resize-pixelwise t
-      use-short-answers t
-      use-dialog-box nil
+      x-stretch-cursor t)
+
+(setf delete-by-moving-to-trash t
+      form-feed-st-include-modes '(prog-mode text-mode special-mode)
+      narrow-to-defun-include-comments t
       outline-minor-mode-use-buttons 'in-margins
-      delete-by-moving-to-trash t
-      form-feed-st-include-modes '(prog-mode text-mode special-mode))
+      parse-sexp-lookup-properties t
+      truncate-partial-width-windows nil
+      use-dialog-box nil
+      use-short-answers t)
 
 ;; Ignore Unity .meta files as well, they show up everywhere.
 (add-to-list 'completion-ignored-extensions ".meta")
