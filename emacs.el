@@ -5,21 +5,21 @@
   ;; If this triggers, make sure to install the `bar-cursor' package
   ;; from melpa unstable.
   (display-warning 'emacs "SETUP ISSUE: bar-cursor package is not installed.")
-  (defun bar-cursor-mode (&optional arg)
+  (defun bar-cursor-mode (&optional _)
     ;; Do nothing -- stub
     ))
 (unless (fboundp 'global-form-feed-st-mode)
   ;; If this triggers, make sure to install the `form-feed-st' package
   ;; from melpa unstable.
   (display-warning 'emacs "SETUP ISSUE: form-feed-st package is not installed.")
-  (defun global-form-feed-st-mode (&optional arg)
+  (defun global-form-feed-st-mode (&optional _)
     ;; Do nothing -- stub
     ))
 (unless (fboundp 'global-window-tool-bar-mode)
   ;; If this triggers, make sure to install the `window-tool-bar'
   ;; package from GitHub.
   (display-warning 'emacs "SETUP ISSUE: window-tool-bar package is not installed.")
-  (defun global-window-tool-bar-mode (&optional arg)
+  (defun global-window-tool-bar-mode (&optional _)
     ;; Do nothing -- stub
     ))
 
@@ -92,7 +92,7 @@
     (setq xterm-extra-capabilities '(setSelection))
 
     ;; Use the default Windows browser.
-    (setq browse-url-browser-function (lambda (url &rest args)
+    (setq browse-url-browser-function (lambda (url &rest _)
                                         (call-process "explorer.exe" nil nil nil url)))))
 
 ;; Make Emacs display similar to modern editors.
@@ -213,7 +213,7 @@
 ;;; Custom commands:
 
 ;;; DWIM <home> and <end> TODO(package)
-(defun beginning-of-line-dwim (&optional n)
+(defun beginning-of-line-dwim (&optional _)
   "Move point to the first non-whitespace character or the beginning of line."
   (interactive "^p")
 

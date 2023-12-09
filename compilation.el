@@ -4,8 +4,8 @@
 (hook-mode occur-mode-hook
   next-error-follow-minor-mode)
 
-(defun road-runner (&rest args)
+(defun road-runner (&rest _)
   "BEEP! BEEP!"
-  (dotimes (i 2)
+  (dotimes (_ 2)
     (beep) (sleep-for 0.2)))
 (add-hook 'compilation-finish-functions 'road-runner)

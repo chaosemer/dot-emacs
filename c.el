@@ -64,7 +64,7 @@ This is the value of `next-error-function' in CScope buffers."
         (goto-char (point-min))))
 
     (let ((do-next (> n 0)))
-      (dotimes (i (abs n))
+      (dotimes (_ (abs n))
 	(cscope-buffer-search t do-next)))))
 (defadvice cscope-call (before my-cscope-call)
   "Wrapper to make sure `next-error-function' is set."
