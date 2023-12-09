@@ -45,30 +45,30 @@
   (copy-tree '(window-parameters (no-other-window . t))))
 
 (let ((bottom-windows ; Extremely transient windows
-       (list "\\*Apropos\\*"
-             "\\*Async Shell Command\\*"
-             "\\*Backtrace\\*"
-             "\\*Buffer List\\*"
-             "\\*Checkdoc Status\\*"
-             "\\*Completions\\*"
-             "\\*Compile-Log\\*"
-             "\\*Deletions\\*"
-             "\\*Help\\*"
-             "\\*Local Variables\\*"
-             "\\*Message\\*"
-             "\\*Messages\\*"
-             "\\*Multiple Choice Help\\*"
-             "\\*Occur\\*"
-             "\\*RE-Builder\\*"
-             "\\*Shell Command Output\\*"
-             "\\*Warnings\\*"
-             "\\*compilation\\*"
-             "\\*grep\\*"
-             "\\*vc-git : "
-             "\\*xref\\*"))
+       (list "^\\*Apropos\\*$"
+             "^\\*Async Shell Command\\*$"
+             "^\\*Backtrace\\*$"
+             "^\\*Buffer List\\*$"
+             "^\\*Checkdoc Status\\*$"
+             "^\\*Completions\\*$"
+             "^\\*Compile-Log\\*$"
+             "^\\*Deletions\\*$"
+             "^\\*Help\\*$"
+             "^\\*Local Variables\\*$"
+             "^\\*Message\\*$"
+             "^\\*Messages\\*$"
+             "^\\*Multiple Choice Help\\*$"
+             "^\\*Occur\\*$"
+             "^\\*RE-Builder\\*$"
+             "^\\*Shell Command Output\\*$"
+             "^\\*Warnings\\*$"
+             "^\\*compilation\\*$"
+             "^\\*grep\\*$"
+             "^\\*vc-git : "
+             "^\\*xref\\*$"))
       (left-windows ; VC prompts
-       (list "\\*Open Recent - More\\*"
-             "\\*vc-dir\\*"
+       (list "^\\*Open Recent - More\\*$"
+             "^\\*vc-dir\\*$"
              '(derived-mode . dired-mode))))
   (setf display-buffer-alist
         (append (mapcar (lambda (buffer)
