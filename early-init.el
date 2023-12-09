@@ -15,4 +15,6 @@
 
   ;; Maximized (but not its own desktop on Mac)
   (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-  (tool-bar-mode -1))
+
+  ;; No tool-bar (the global tool bar isn't useful)
+  (add-to-list 'default-frame-alist '(tool-bar-lines . 0)))

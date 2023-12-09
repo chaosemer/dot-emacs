@@ -32,41 +32,42 @@
 ;;
 ;; The proper upstream is actually in `pixel-scroll-precision' to
 ;; collapse other cases to mouse. Solve via advice.
-(defvar device-class--should-collapse-to-mouse nil
-  "Internal variable to track if collapsing should happen")
-(defvar device-class--mouse-wheel-events
-  (list mouse-wheel-up-event mouse-wheel-down-event
-        mouse-wheel-up-alternate-event mouse-wheel-down-alternate-event))
-(defvar device-class--prev-event-timestamp 0
-  "Interval variable of the previous event's timestamp.")
-(defvar device-class--prev-event-seems-like-mouse-event nil)
-
-(defun device-class--collapse-to-mouse (r)
-  "Patch for `pixel-scroll-precision' to return mouse for pointers."
-  (if (and device-class--should-collapse-to-mouse
-           (eq r 'core-pointer))
-      'mouse
-    r))
-(defun pixel-scroll-precision--patched (event)
-  (interactive "e")
-  (let* ((wheel-event (member (event-basic-type event) device-class--mouse-wheel-events))
-         (line-count (event-line-count event))
-         (seems-like-mouse-event (and wheel-event (/= line-count 0)))
-         (timestamp (posn-timestamp (event-start event)))
-         ;; collapse to mouse when the event seems like a mouse event
-         (device-class--should-collapse-to-mouse
-          (if (< (- timestamp device-class--prev-event-timestamp)
-                 100)
-              device-class--prev-event-seems-like-mouse-event
-            seems-like-mouse-event)))
-    (pixel-scroll-precision event)
-    (setf device-class--prev-event-timestamp timestamp
-          device-class--prev-event-seems-like-mouse-event device-class--should-collapse-to-mouse)))
-
 (when (featurep 'ns-win)
-  (display-warning 'emacs "Fixing buggy pixel-scroll-precesion")
-  (keymap-global-set "<remap> <pixel-scroll-precision>" 'pixel-scroll-precision--patched)
-  (advice-add 'device-class :filter-return 'device-class--collapse-to-mouse))
+  (with-eval-after-load 'pixel-scroll
+    (defvar device-class--should-collapse-to-mouse nil
+      "Internal variable to track if collapsing should happen")
+    (defvar device-class--mouse-wheel-events
+      (list mouse-wheel-up-event mouse-wheel-down-event
+            mouse-wheel-up-alternate-event mouse-wheel-down-alternate-event))
+    (defvar device-class--prev-event-timestamp 0
+      "Interval variable of the previous event's timestamp.")
+    (defvar device-class--prev-event-seems-like-mouse-event nil)
+
+    (defun device-class--collapse-to-mouse (r)
+      "Patch for `pixel-scroll-precision' to return mouse for pointers."
+      (if (and device-class--should-collapse-to-mouse
+               (eq r 'core-pointer))
+	  'mouse
+        r))
+    (defun pixel-scroll-precision--patched (event)
+      (interactive "e")
+      (let* ((wheel-event (member (event-basic-type event) device-class--mouse-wheel-events))
+             (line-count (event-line-count event))
+             (seems-like-mouse-event (and wheel-event (/= line-count 0)))
+             (timestamp (posn-timestamp (event-start event)))
+             ;; collapse to mouse when the event seems like a mouse event
+             (device-class--should-collapse-to-mouse
+              (if (< (- timestamp device-class--prev-event-timestamp)
+                     100)
+		  device-class--prev-event-seems-like-mouse-event
+                seems-like-mouse-event)))
+        (pixel-scroll-precision event)
+        (setf device-class--prev-event-timestamp timestamp
+              device-class--prev-event-seems-like-mouse-event device-class--should-collapse-to-mouse)))
+
+    (display-warning 'emacs "Fixing buggy pixel-scroll-precesion")
+    (keymap-global-set "<remap> <pixel-scroll-precision>" 'pixel-scroll-precision--patched)
+    (advice-add 'device-class :filter-return 'device-class--collapse-to-mouse)))
 
 (when (version< emacs-version "30.0")
   (with-eval-after-load 'dired
@@ -100,3 +101,8 @@
                               "<follow-link>" 'mouse-face
                               "RET" click))))
               (setq segment-start (point)))))))))
+
+;; Actually a workaround for leotaku/elisp-check which doesn't have a
+;; way to silence an intended error.
+(unless (boundp 'init-dir--long-load-time-warning)
+  (defvar init-dir--long-load-time-warning 0))

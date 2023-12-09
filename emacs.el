@@ -8,6 +8,20 @@
   (defun bar-cursor-mode (&optional arg)
     ;; Do nothing -- stub
     ))
+(unless (fboundp 'global-form-feed-st-mode)
+  ;; If this triggers, make sure to install the `form-feed-st' package
+  ;; from melpa unstable.
+  (display-warning 'emacs "SETUP ISSUE: form-feed-st package is not installed.")
+  (defun global-form-feed-st-mode (&optional arg)
+    ;; Do nothing -- stub
+    ))
+(unless (fboundp 'global-window-tool-bar-mode)
+  ;; If this triggers, make sure to install the `window-tool-bar'
+  ;; package from GitHub.
+  (display-warning 'emacs "SETUP ISSUE: window-tool-bar package is not installed.")
+  (defun global-window-tool-bar-mode (&optional arg)
+    ;; Do nothing -- stub
+    ))
 
 ;; This file is known to be slow, so add a bit more time here.
 (cl-incf init-dir--long-load-time-warning 0.1)
