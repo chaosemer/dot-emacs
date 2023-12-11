@@ -51,7 +51,7 @@
  1 nil
  (lambda ()
    (when-let ((list (seq-remove (lambda (elt)
-                                  (package-vc-p (car (alist-get elt package-alist))))
+                                  (seq-some #'package-vc-p (alist-get elt package-alist)))
                                 (package--upgradeable-packages))))
      (display-warning 'emacs (format "%d upgradeable package(s): %s"
 				     (length list)
