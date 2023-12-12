@@ -63,6 +63,7 @@
              "^\\*Messages\\*$"
              "^\\*Multiple Choice Help\\*$"
              "^\\*Occur\\*$"
+             "^\\*Package-Lint\\*$"
              "^\\*RE-Builder\\*$"
              "^\\*Shell Command Output\\*$"
              "^\\*Warnings\\*$"
