@@ -96,7 +96,7 @@ WINDOW: See `shrink-window-if-larger-than-buffer'."
   (setq window (or window (window-normalize-window window t)))
   
   (unless (window-parameter window 'window-side)
-    (funcall fn window)))
+    (funcall old-fn window)))
 
 (advice-add 'shrink-window-if-larger-than-buffer :around
             'dont-shrink-side-windows)
