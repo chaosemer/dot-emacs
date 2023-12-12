@@ -72,7 +72,7 @@
              "^\\*xref\\*$"))
       (left-windows ; VC prompts
        (list "^\\*Open Recent - More\\*$"
-             "^\\*vc-dir\\*$"
+             "^\\*vc-dir\\*"
              '(derived-mode . dired-mode))))
   (setf display-buffer-alist
         (append (mapcar (lambda (buffer)
