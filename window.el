@@ -86,3 +86,17 @@
                                     (side . left)
                                     ,my--additional-window-parameters))
                          left-windows))))
+
+;; Don't allow side windows to be shrunk automatically.
+(defun dont-shrink-side-windows (old-fn &optional window)
+  "Advice function for `shrink-window-if-larger-than-buffer'.
+
+OLD-FN: Old function, provided by advice system.
+WINDOW: See `shrink-window-if-larger-than-buffer'."
+  (setq window (or window (window-normalize-window window t)))
+  
+  (unless (window-parameter window 'window-side)
+    (funcall fn window)))
+
+(advice-add 'shrink-window-if-larger-than-buffer :around
+            'dont-shrink-side-windows)
