@@ -45,18 +45,6 @@
              '("melpa" . -100))
 (setf package-archive-column-width 12)
 
-;; Calculating the list of upgradable packages takes under a second,
-;; so defer until after soon initalization is complete.
-(run-with-idle-timer
- 1 nil
- (lambda ()
-   (when-let ((list (seq-remove (lambda (elt)
-                                  (seq-some #'package-vc-p (alist-get elt package-alist)))
-                                (package--upgradeable-packages))))
-     (display-warning 'emacs (format "%d upgradeable package(s): %s"
-				     (length list)
-				     (mapconcat #'symbol-name list ", "))))))
-
 ;; Refreshing the list of packages takes even longer than calculating
 ;; the list (it involves network traffic) so run that asynchronously
 ;; when it won't impact user interaction.
