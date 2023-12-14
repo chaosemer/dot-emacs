@@ -31,7 +31,7 @@
  '(mouse-wheel-progressive-speed nil)
  '(nxml-slash-auto-complete-flag t)
  '(package-selected-packages
-   '(form-feed-st window-tool-bar modus-themes dired-icon markdown-mode bar-cursor slime))
+   '(form-feed-st window-tool-bar dired-icon markdown-mode bar-cursor slime))
  '(package-vc-selected-packages
    '((window-tool-bar :vc-backend Git :url "http://github.com/chaosemer/window-tool-bar")
      (init-dir :vc-backend Git :url "http://github.com/chaosemer/init-dir")))
