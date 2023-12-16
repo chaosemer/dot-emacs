@@ -1,34 +1,14 @@
 ;;; init/00.required-libraries.el --- Misc utilities useful for init files  -*- lexical-binding: t; -*-
 
 ;;; Code:
-(require 'cl-lib)
-(require 'package)
 
-;;; A new and improved DEFMACRO. TODO(upstream)
-(defmacro defmacro+ (name args &rest body)
-  "Like `cl-defmacro', but also attempts to figure out the indenting.
-
-NAME: Symbol to use as macro, as in `cl-defmacro'.
-ARGS: List of parameters to the macro, as in `cl-defmacro'.
-BODY: The body of the macro, as in `cl-defmacro'."
-  (let ((body-index (cl-position-if (lambda (arg) (member arg '(&body &rest)))
-                                    (remove '&optional args))))
-    `(progn
-       (setf (get ',name 'lisp-indent-function) ,body-index)
-       (cl-defmacro ,name ,args ,@body))))
-(setf find-function-regexp
-      "^\\s-*(\\(def\\(ine-skeleton\\|ine-generic-mode\\|ine-derived-mode\\|ine\\(?:-global\\)?-minor-mode\\|ine-compilation-mode\\|un-cvs-mode\\|foo\\|[^cfgv]\\w+\\*?\\+?\\)\\|easy-mmode-define-[a-z-]+\\|easy-menu-define\\|menu-bar-make-toggle\\)\\(?:\\s-\\|\n\\|;.*\n\\)+\\('\\|(quote \\)?%s\\(\\s-\\|$\\|(\\|)\\)")
-(font-lock-add-keywords 'emacs-lisp-mode
-                        '(("(\\(defmacro\\+\\) \\s *\\(\\(?:\\sw\\|\\s_\\)*\\)"
-                           (1 'font-lock-keyword-face)
-                           (2 'font-lock-function-name-face))))
-
-;;; Allow me to declaratively hook things, automatically removing the hook when redefined.
-(defmacro+ hook-mode (hook &body modes)
+;; Allow me to declaratively hook things, automatically removing the hook when redefined.
+(defmacro hook-mode (hook &rest modes)
   "Hook each member of MODES on HOOK.  If the member is a symbol,
 call (member 1); if it is a list, just execute it directly.
 
 This allows you to declaratively hook in minor modes on a major mode."
+  (declare (indent 1))
   (let ((body (cl-loop for expr in modes
                        if (and (symbolp expr) (fboundp expr))
                          collect (list expr 1)
