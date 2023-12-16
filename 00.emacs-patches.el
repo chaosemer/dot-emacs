@@ -28,7 +28,7 @@
       (display-warning 'emacs "Fixing buggy Microsoft regexp")
       (setf (nth 1 (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp))))
 
-;; Making C-a in log-edit-mode not be there TODO(upstream)
+;; Making C-a in log-edit-mode not be there TODO(Bug#67851, fixed in 30.1)
 (with-eval-after-load 'log-edit
   (when (keymap-lookup log-edit-mode-map "C-a")
     (display-warning 'emacs "Cleaning up log-edit-mode-map")
@@ -77,6 +77,8 @@
     (keymap-global-set "<remap> <pixel-scroll-precision>" 'pixel-scroll-precision--patched)
     (advice-add 'device-class :filter-return 'device-class--collapse-to-mouse)))
 
+;; Fix for clicking on directory line not properly respecting
+;; `dired-kill-when-opening-new-dired-buffer'. TODO(upstream)
 (when (version< emacs-version "30.0")
   (with-eval-after-load 'dired
     (display-warning 'emacs "Fixing buggy behavior in dired--make-directory-clickable")
