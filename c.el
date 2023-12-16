@@ -43,11 +43,6 @@
 ;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY
 ;; inconvenient.  Nothing else uses C-c C, so I'm moving it to that.
 (setf ebrowse-global-prefix-key (kbd "C-c C"))
-
-;; cc-mode defines the tab key in its map.  It shouldn't TODO(upstream)
-(with-eval-after-load 'cc-mode
-  (keymap-unset c-mode-map "TAB")
-  (keymap-unset c++-mode-map "TAB"))
 
 ;;; Custom commands:
 
