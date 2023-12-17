@@ -226,14 +226,14 @@ N: Number of lines to go forward."
 (keymap-global-set "<end>" 'end-of-line-dwim)
 
 ;;; Recursive edits TODO(package)
-(defun push-or-pop-excursion (pop?)
+(defun push-or-pop-excursion (arg)
   "Pushes or pops an excursion, depending on the prefix arg.
 
-POP?: If nil (the default), then push an excursion.  Otherwise,
+ARG: If nil (the default), then push an excursion.  Otherwise,
 pop an excursion."
   (interactive (list current-prefix-arg))
 
-  (if (not pop?)
+  (if (not arg)
       (save-excursion (save-restriction (save-window-excursion (recursive-edit))))
     (when (> (recursion-depth) 0)
       (throw 'exit 'nil))))
