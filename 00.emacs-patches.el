@@ -20,13 +20,6 @@
 
 (cl-incf init-dir--long-load-time-warning 0.5)
 
-;; Disallow navigating to the minibuffer
-(unless (eq (plist-get minibuffer-prompt-properties 'cursor-intangible) t)
-  (display-warning 'emacs "Disallowing navigation into the minibuffer prompt")
-  (setf minibuffer-prompt-properties
-	(plist-put minibuffer-prompt-properties 'cursor-intangible t))
-  (add-hook 'minibuffer-setup-hook 'cursor-intangible-mode))
-
 ;; Fix buggy regexp in Emacs TODO(upstream)
 ;;   incorrect-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^ :(\t\n][^:(\t\n]*\\)(\\([0-9]+\\)\\(?:,\\([0-9]+\\)\\)?) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) C[0-9]+:\\)"
 (require 'compile)

@@ -28,6 +28,7 @@
  '(ido-enable-regexp t)
  '(indicate-empty-lines t)
  '(jit-lock-stealth-time 0.2)
+ '(minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
  '(mouse-wheel-progressive-speed nil)
  '(nxml-slash-auto-complete-flag t)
  '(package-selected-packages
