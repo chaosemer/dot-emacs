@@ -13,6 +13,13 @@
 
 ;;; Code:
 
+;; Actually a workaround for leotaku/elisp-check which doesn't have a
+;; way to silence an intended error.
+(unless (boundp 'init-dir--long-load-time-warning)
+  (defvar init-dir--long-load-time-warning 0))
+
+(cl-incf init-dir--long-load-time-warning 0.5)
+
 ;; Disallow navigating to the minibuffer
 (unless (eq (plist-get minibuffer-prompt-properties 'cursor-intangible) t)
   (display-warning 'emacs "Disallowing navigation into the minibuffer prompt")
@@ -22,19 +29,19 @@
 
 ;; Fix buggy regexp in Emacs TODO(upstream)
 ;;   incorrect-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^ :(\t\n][^:(\t\n]*\\)(\\([0-9]+\\)\\(?:,\\([0-9]+\\)\\)?) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) C[0-9]+:\\)"
-(with-eval-after-load 'compile
-  (let ((correct-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) [A-Z][0-9]+:\\)"))
-    (unless (equal (nth 1 (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)
-      (display-warning 'emacs "Fixing buggy Microsoft regexp")
-      (setf (nth 1 (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp))))
+(require 'compile)
+(let ((correct-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) [A-Z][0-9]+:\\)"))
+  (unless (equal (nth 1 (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)
+    (display-warning 'emacs "Fixing buggy Microsoft regexp")
+    (setf (nth 1 (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)))
 
 ;; Making C-a in log-edit-mode not be there TODO(Bug#67851, fixed in 30.1)
-(with-eval-after-load 'log-edit
-  (when (keymap-lookup log-edit-mode-map "C-a")
-    (display-warning 'emacs "Cleaning up log-edit-mode-map")
-    (keymap-set log-edit-mode-map "<remap> <beginning-of-line>"
-                (keymap-lookup log-edit-mode-map "C-a"))
-    (keymap-unset log-edit-mode-map "C-a")))
+(require 'log-edit)
+(when (keymap-lookup log-edit-mode-map "C-a")
+  (display-warning 'emacs "Cleaning up log-edit-mode-map")
+  (keymap-set log-edit-mode-map "<remap> <beginning-of-line>"
+              (keymap-lookup log-edit-mode-map "C-a"))
+  (keymap-unset log-edit-mode-map "C-a"))
 
 ;; TODO(upstream)
 ;;
@@ -80,39 +87,34 @@
 ;; Fix for clicking on directory line not properly respecting
 ;; `dired-kill-when-opening-new-dired-buffer'. TODO(upstream)
 (when (version< emacs-version "30.0")
-  (with-eval-after-load 'dired
-    (display-warning 'emacs "Fixing buggy behavior in dired--make-directory-clickable")
-    (defun dired--make-directory-clickable ()
-      (save-excursion
-        (goto-char (point-min))
-        (while (re-search-forward
-                (if (memq system-type '(windows-nt ms-dos))
-                    "^  \\([a-zA-Z]:/\\|//\\)"
-                  "^  /")
-                nil t 1)
-          (let ((bound (line-end-position))
-                (segment-start (point))
-                (inhibit-read-only t)
-                (dir (substring (match-string 0) 2)))
-            (while (search-forward "/" bound t 1)
-              (setq dir (concat dir (buffer-substring segment-start (point))))
-              (add-text-properties
-               segment-start (1- (point))
-               `( mouse-face highlight
-                  help-echo "mouse-1: goto this directory"
-                  keymap ,(let* ((current-dir dir)
-                                 (click (lambda ()
-                                          (interactive)
-                                          (if (assoc current-dir dired-subdir-alist)
-                                              (dired-goto-subdir current-dir)
-                                            (dired--find-possibly-alternative-file current-dir)))))
-                            (define-keymap
-                              "<mouse-2>" click
-                              "<follow-link>" 'mouse-face
-                              "RET" click))))
-              (setq segment-start (point)))))))))
-
-;; Actually a workaround for leotaku/elisp-check which doesn't have a
-;; way to silence an intended error.
-(unless (boundp 'init-dir--long-load-time-warning)
-  (defvar init-dir--long-load-time-warning 0))
+  (require 'dired)
+  (display-warning 'emacs "Fixing buggy behavior in dired--make-directory-clickable")
+  (defun dired--make-directory-clickable ()
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward
+              (if (memq system-type '(windows-nt ms-dos))
+                  "^  \\([a-zA-Z]:/\\|//\\)"
+                "^  /")
+              nil t 1)
+        (let ((bound (line-end-position))
+              (segment-start (point))
+              (inhibit-read-only t)
+              (dir (substring (match-string 0) 2)))
+          (while (search-forward "/" bound t 1)
+            (setq dir (concat dir (buffer-substring segment-start (point))))
+            (add-text-properties
+             segment-start (1- (point))
+             `( mouse-face highlight
+                help-echo "mouse-1: goto this directory"
+                keymap ,(let* ((current-dir dir)
+                               (click (lambda ()
+                                        (interactive)
+                                        (if (assoc current-dir dired-subdir-alist)
+                                            (dired-goto-subdir current-dir)
+                                          (dired--find-possibly-alternative-file current-dir)))))
+                          (define-keymap
+                            "<mouse-2>" click
+                            "<follow-link>" 'mouse-face
+                            "RET" click))))
+            (setq segment-start (point))))))))
