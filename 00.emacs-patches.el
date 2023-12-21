@@ -103,9 +103,14 @@
                 keymap ,(let* ((current-dir dir)
                                (click (lambda ()
                                         (interactive)
-                                        (if (assoc current-dir dired-subdir-alist)
-                                            (dired-goto-subdir current-dir)
-                                          (dired--find-possibly-alternative-file current-dir)))))
+                                        (cond
+                                          ((assoc current-dir dired-subdir-alist)
+                                           (dired-goto-subdir current-dir))
+                                          ;; Defensive programming -- is this case actually hit?
+                                          ((insert-directory-wildcard-in-dir-p current-dir)
+                                           (dired current-dir))
+                                          (t
+                                           (dired--find-possibly-alternative-file current-dir))))))
                           (define-keymap
                             "<mouse-2>" click
                             "<follow-link>" 'mouse-face
