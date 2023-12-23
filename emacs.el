@@ -225,7 +225,10 @@ N: Number of lines to go forward."
 (keymap-global-set "<home>" 'beginning-of-line-dwim)
 (keymap-global-set "<end>" 'end-of-line-dwim)
 
-;;; Recursive edits TODO(package)
+;;; Recursive edits.  For whatever reason, my mind doesn't really
+;;; align with registers to store window configuration.  Instead, I
+;;; like to think about things as a stack, which conveniently maps
+;;; directly to recursive edit.
 (defun push-or-pop-excursion (arg)
   "Pushes or pops an excursion, depending on the prefix arg.
 
