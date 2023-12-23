@@ -18,7 +18,8 @@
 (unless (boundp 'init-dir--long-load-time-warning)
   (defvar init-dir--long-load-time-warning 0))
 
-(cl-incf init-dir--long-load-time-warning 0.5)
+;; Lots of requires here slow down loading.
+(cl-incf init-dir--long-load-time-warning 1)
 
 ;; Fix buggy regexp in Emacs TODO(upstream)
 ;;   incorrect-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^ :(\t\n][^:(\t\n]*\\)(\\([0-9]+\\)\\(?:,\\([0-9]+\\)\\)?) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) C[0-9]+:\\)"
