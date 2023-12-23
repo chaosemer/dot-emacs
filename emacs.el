@@ -239,59 +239,37 @@ pop an excursion."
       (throw 'exit 'nil))))
 (keymap-global-set "C-x C-p" 'push-or-pop-excursion)
 
-;;; Sibling file navigation TODO(upstream)
-(defun find-sibling-file-noselect (file)
-  "Load a \"sibling\" file of FILE into a buffer and return that buffer.
-The \"sibling\" file is defined by the `find-sibling-rules' variable."
-  (unless find-sibling-rules
-    (user-error "The `find-sibling-rules' variable has not been configured"))
-  (let ((siblings (find-sibling-file-search (expand-file-name file)
-                                            find-sibling-rules)))
-    (cond
-     ((null siblings)
-      (user-error "Couldn't find any sibling files"))
-     ((length= siblings 1)
-      (find-file-noselect (car siblings)))
-     (t
-      (let ((relatives (mapcar (lambda (sibling)
-                                 (file-relative-name
-                                  sibling (file-name-directory file)))
-                               siblings)))
-        (find-file-noselect
-         (completing-read (format-prompt "Find file" (car relatives))
-                          relatives nil t nil nil (car relatives))))))))
-
-(defun find-sibling-file-read-args ()
-  (unless buffer-file-name
-    (user-error "Not visiting a file"))
-  (list buffer-file-name))
-
-(defun my-find-sibling-file (file)
-  "See `find-sibling-file'.
-
-FILE: File to find the sibling file of."
-  (interactive (find-sibling-file-read-args))
-  (pop-to-buffer-same-window (find-sibling-file-noselect file)))
-
-(defun my-find-sibling-file-other-window (file)
+;;; Sibling file navigation.  This is helpful with C / C++ code when
+;;; switching between header and code files.
+(defun find-sibling-file-other-window (file)
   "Variant of `find-sibling-file', that opens in another window.
 
 When called interactively, find the sibling of the current
 buffer's file.
 
 FILE: File to find the sibling file of."
-  (interactive (find-sibling-file-read-args))
-  (switch-to-buffer-other-window (find-sibling-file-noselect file)))
+  (interactive (progn
+                 (unless buffer-file-name
+                   (user-error "Not visiting a file"))
+                 (list buffer-file-name)))
+  (let ((display-buffer-overriding-action
+         '(display-buffer-pop-up-window . ((inhibit-same-window . t)))))
+    (find-sibling-file file)))
 
-(defun my-find-sibling-file-other-frame (file)
+(defun find-sibling-file-other-frame (file)
   "Variant of `find-sibling-file', that opens in another frame.
 
 When called interactively, find the sibling of the current
 buffer's file.
 
 FILE: File to find the sibling file of."
-  (interactive (find-sibling-file-read-args))
-  (switch-to-buffer-other-frame (find-sibling-file-noselect file)))
+  (interactive (progn
+                 (unless buffer-file-name
+                   (user-error "Not visiting a file"))
+                 (list buffer-file-name)))
+  (let ((display-buffer-overriding-action
+         '(display-buffer-pop-up-frame . ((inhibit-same-window . t)))))
+    (find-sibling-file file)))
 
 (setf find-sibling-rules
       '(("\\([^/]+\\)\\.c$" "\\1.h")
@@ -301,11 +279,11 @@ FILE: File to find the sibling file of."
         ("\\([^/]+\\)\\.hh$" "\\1.cc")
         ("\\([^/]+\\)\\.hpp$" "\\1.cpp")))
 
-(keymap-global-set "C-x C-h" 'my-find-sibling-file)
-(keymap-global-set "C-x 4 C-h" 'my-find-sibling-file-other-window)
-(keymap-global-set "C-x 4 h" 'my-find-sibling-file-other-window)
-(keymap-global-set "C-x 5 C-h" 'my-find-sibling-file-other-frame)
-(keymap-global-set "C-x 5 h" 'my-find-sibling-file-other-frame)
+(keymap-global-set "C-x C-h" 'find-sibling-file)
+(keymap-global-set "C-x 4 C-h" 'find-sibling-file-other-window)
+(keymap-global-set "C-x 4 h" 'find-sibling-file-other-window)
+(keymap-global-set "C-x 5 C-h" 'find-sibling-file-other-frame)
+(keymap-global-set "C-x 5 h" 'find-sibling-file-other-frame)
 
 ;;; Other misc stuff TODO(package)
 (defun indent-dwim (arg)
