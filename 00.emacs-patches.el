@@ -79,8 +79,8 @@
     (advice-add 'device-class :filter-return 'device-class--collapse-to-mouse)))
 
 ;; Fix for clicking on directory line not properly respecting
-;; `dired-kill-when-opening-new-dired-buffer'. TODO(upstream, Bug#67856)
-(when (version< emacs-version "30.0")
+;; `dired-kill-when-opening-new-dired-buffer'. TODO(Bug#67856, fixed in 29.2)
+(when (version< emacs-version "29.2")
   (require 'dired)
   (display-warning 'emacs "Fixing buggy behavior in dired--make-directory-clickable")
   (defun dired--make-directory-clickable ()
