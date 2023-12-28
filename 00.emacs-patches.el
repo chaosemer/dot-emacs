@@ -106,7 +106,8 @@
 ;; Currently, only x and pgtk distinguish between touchpad and mouse
 ;; via `device-class' so prompt the user (me!) to choose if using
 ;; pixel-scroll.
-(unless (memq window-system '(x pgtk))
+(unless (and (memq window-system '(x pgtk))
+             (not (string-match "microsoft" (shell-command-to-string "uname -r"))))
   (with-eval-after-load 'pixel-scroll
     (display-warning
      'emacs
