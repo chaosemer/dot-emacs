@@ -159,29 +159,9 @@
 (keymap-global-set "M-<home>" 'beginning-of-defun)
 (keymap-global-set "M-<end>" 'end-of-defun)
 
-;; Window system integration
-(when window-system
-  (keymap-global-set "<menu>" 'execute-extended-command)
-  (keymap-global-set "S-<menu>" 'eval-expression)
-  (when (featurep 'dos-w32)
-    (keymap-global-set "M-<f4>"
-                       (lambda ()
-                         (interactive)
-                         (if (> (length (frame-list)) 1)
-                             (delete-frame)
-                           (when (y-or-n-p "Last frame, kill Emacs? ")
-                             (call-interactively #'save-buffers-kill-emacs)))))))
-
-;; Account for differences in Win32 keycodes
+;; Use C-<tab> for all M-TAB commands as Windows uses M-TAB for window
+;; switching.
 (keymap-set key-translation-map "C-<tab>" (key-parse "M-TAB"))
-
-;; Handle different platforms diving differnt names to the same key
-(when (featurep 'dos-w32)
-  (keymap-set function-key-map "<apps>" (key-parse "<menu>"))
-  (keymap-set function-key-map "S-<apps>" (key-parse "S-<menu>")))
-(when (and (null window-system) (string= (getenv "TERM") "xterm"))
-  (keymap-set function-key-map "<print>" (key-parse "<menu>"))
-  (keymap-set function-key-map "S-<print>" (key-parse "S-<menu>")))
 
 ;; simpler sexp bindings
 (keymap-global-set "M-<right>" 'forward-sexp)

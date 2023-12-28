@@ -77,6 +77,30 @@
                             "RET" click))))
             (setq segment-start (point))))))))
 
+;; Add support for Windows' Alt-F4 to close window key binding. TODO(upstream)
+(when (and (eq window-system 'w32)
+           (null (keymap-global-lookup "M-<f4>")))
+  (display-warning 'emacs "Adding keybinding for M-<f4>.")
+  ;; Real fix is in `handle-delete-frame'.  For now, just duplicate
+  ;; code here.
+  (defun my-handle-delete-frame ()
+    (interactive)
+    (let ((frame (window-frame)))
+      (if (catch 'other-frame
+            (dolist (frame-1 (frame-list))
+              ;; A valid "other" frame is visible, has its `delete-before'
+              ;; parameter unset and is not a child frame.
+              (when (and (not (eq frame-1 frame))
+                         (frame-visible-p frame-1)
+                         (not (frame-parent frame-1))
+                         (not (frame-parameter frame-1 'delete-before)))
+                (throw 'other-frame t))))
+	  (delete-frame frame t)
+        ;; Gildea@x.org says it is ok to ask questions before terminating.
+        (save-buffers-kill-emacs))))
+  (keymap-global-set "M-<f4>" #'my-handle-delete-frame))
+
+
 ;; Waiting on Emacs support for `device-class' on other platforms.
 ;;
 ;; Currently, only x and pgtk distinguish between touchpad and mouse
