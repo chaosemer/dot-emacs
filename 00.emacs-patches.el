@@ -10,6 +10,7 @@
 ;;
 ;; Currently tested against:
 ;; * GNU Emacs 29.1
+;; * GNU Emacs 29.2
 
 ;;; Code:
 
