@@ -118,6 +118,7 @@
 
 ;; My experimental package, <http://github.com/chaosemer/window-tool-bar>
 (global-window-tool-bar-mode 1)
+(keymap-global-set "C-x C-m" #'window-tool-bar-show-memory-use)
 
 ;;; Faces:
 
