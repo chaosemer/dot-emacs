@@ -1,4 +1,7 @@
 ;;; init/diff.el --- Diff mode customizations  -*- lexical-binding: t; -*-
+
+;;; Code:
+;; no special code
 
 ;;; Kemaps:
 ;; VC should use EDiff, as it provides a better visualization.

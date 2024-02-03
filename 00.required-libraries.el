@@ -4,10 +4,10 @@
 
 ;; Allow me to declaratively hook things, automatically removing the hook when redefined.
 (defmacro hook-mode (hook &rest modes)
-  "Hook each member of MODES on HOOK.  If the member is a symbol,
-call (member 1); if it is a list, just execute it directly.
-
-This allows you to declaratively hook in minor modes on a major mode."
+  "Hook each member of MODES on HOOK.
+If the member is a symbol, call (member 1); if it is a list, just
+execute it directly.  This allows you to declaratively hook in
+minor modes on a major mode."
   (declare (indent 1))
   (let ((body (cl-loop for expr in modes
                        if (and (symbolp expr) (fboundp expr))
