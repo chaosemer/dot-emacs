@@ -65,7 +65,8 @@
        (setf minor-mode-alist (assoc-delete-all 'form-feed-st-mode minor-mode-alist)))
 (progn (global-subword-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'subword-mode minor-mode-alist)))
-(setf (default-value 'indent-tabs-mode) nil)
+(setf (default-value 'indent-tabs-mode) nil
+      tab-always-indent 'complete)
 (recentf-mode 1)
 (tooltip-mode -1)
 (url-handler-mode 1)
@@ -159,10 +160,6 @@
 (keymap-global-set "C-a" 'mark-whole-buffer)
 (keymap-global-set "M-<home>" 'beginning-of-defun)
 (keymap-global-set "M-<end>" 'end-of-defun)
-
-;; Use C-<tab> for all M-TAB commands as Windows uses M-TAB for window
-;; switching.
-(keymap-set key-translation-map "C-<tab>" (key-parse "M-TAB"))
 
 ;; simpler sexp bindings
 (keymap-global-set "M-<right>" 'forward-sexp)
@@ -268,21 +265,3 @@ FILE: File to find the sibling file of."
 (keymap-global-set "C-x 4 h" 'find-sibling-file-other-window)
 (keymap-global-set "C-x 5 C-h" 'find-sibling-file-other-frame)
 (keymap-global-set "C-x 5 h" 'find-sibling-file-other-frame)
-
-;;; Other misc stuff TODO(package)
-(defun indent-dwim (arg)
-  "Try to do what a human would mean when indenting.
-
-The prefix argument ARG, if given, indents to that column."
-  (interactive (list current-prefix-arg))
-
-  (cond (mark-active
-         (indent-region (region-beginning) (region-end) arg))
-        (arg
-         (save-excursion
-           (beginning-of-line)
-           (delete-horizontal-space)
-           (indent-to (prefix-numeric-value arg))))
-        (t
-         (indent-according-to-mode))))
-(keymap-global-set "TAB" 'indent-dwim)
