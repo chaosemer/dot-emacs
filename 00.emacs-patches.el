@@ -124,3 +124,37 @@
                  (lambda (&rest _)
                    (setf pixel-scroll-precision-large-scroll-height nil)))
       (propertize " " 'invisible t 'rear-nonsticky t)))))
+
+;; The command `ielm-return' doesn't work well with
+;; `electric-pair-mode'.  This is because while in this mode, you
+;; always have a complete sexp.
+(with-eval-after-load 'ielm
+  (defun ielm-return (&optional for-effect)
+    "Newline and indent, or evaluate the sexp before the prompt.
+Complete sexps are evaluated; for incomplete sexps inserts a newline
+and indents.  If however `ielm-dynamic-return' is nil, this always
+simply inserts a newline."
+    (interactive)
+    (if ielm-dynamic-return
+        (let ((state
+               (save-excursion
+                 ;; Don't do this -- I want to insert a line when not at end of line!
+                 ;;(end-of-line)
+                 ;; End of removal
+                 (parse-partial-sexp (ielm-pm)
+                                     (point)))))
+          (if (and (< (car state) 1) (not (nth 3 state))
+                   ;; Add this! -- I want to insert a line when not at end of line!
+                   (looking-at "[ \t]*$")
+                   ;; End of addition
+                   )
+              (ielm-send-input for-effect)
+            (when (and ielm-dynamic-multiline-inputs
+                       (save-excursion
+                         (beginning-of-line)
+                         (looking-at-p comint-prompt-regexp)))
+              (save-excursion
+                (goto-char (ielm-pm))
+                (newline 1)))
+            (newline-and-indent)))
+      (newline))))
