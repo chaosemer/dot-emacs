@@ -71,6 +71,11 @@
 (tooltip-mode -1)
 (url-handler-mode 1)
 
+;; Toolbar display
+(global-window-tool-bar-mode 1)
+(tool-bar-mode -1)
+(setf tool-bar-map nil)
+
 (if window-system
     (progn (pixel-scroll-precision-mode 1)
            (setf pixel-scroll-precision-interpolate-page t))
@@ -116,10 +121,6 @@
 ;; When deugging xterm-mouse issues, having a large buffer is quite
 ;; helpful.
 (lossage-size 10000)
-
-;; My experimental package, <http://github.com/chaosemer/window-tool-bar>
-(global-window-tool-bar-mode 1)
-(keymap-global-set "C-x C-m" #'window-tool-bar-show-memory-use)
 
 ;;; Faces:
 
@@ -175,6 +176,9 @@
                "C-x <right>" "M-<begin>" "M-<next>" "M-<prior>" "C-M-v" "C-M-S-v" "ESC <begin>"
                "ESC <end>" "ESC <home>" "ESC <next>" "ESC <prior>"))
   (keymap-global-unset key))
+
+;; My experimental package, <http://github.com/chaosemer/window-tool-bar>
+(keymap-global-set "C-x C-m" #'window-tool-bar-debug-show-memory-use)
 
 ;;; Custom commands:
 
