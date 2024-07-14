@@ -97,8 +97,9 @@
       window-resize-pixelwise t
       x-stretch-cursor t)
 
-(setf delete-by-moving-to-trash t
-      form-feed-st-include-modes '(prog-mode text-mode special-mode)
+ (setf delete-by-moving-to-trash t
+;; BUG: This breaks M-x customize-themes visuals
+;;       form-feed-st-include-modes '(prog-mode text-mode special-mode)
       narrow-to-defun-include-comments t
       outline-minor-mode-use-buttons 'in-margins
       parse-sexp-lookup-properties t
