@@ -270,3 +270,36 @@ FILE: File to find the sibling file of."
 (keymap-global-set "C-x 4 h" 'find-sibling-file-other-window)
 (keymap-global-set "C-x 5 C-h" 'find-sibling-file-other-frame)
 (keymap-global-set "C-x 5 h" 'find-sibling-file-other-frame)
+
+;;; Turn on the horizontal scroll bar when `truncate-lines' is set TODO(package)
+(defun toggle-horizontal-scroll-bar (symbol newval operation where)
+  "Toggle the horizontal scroll bar based on `truncate-lines'.
+If `truncate-lines' is non-nil, the horizontal scroll bar will be
+displayed. If nil, the horizontal scroll bar will be hidden.
+
+This function may be passed to `add-variable-watcher'."
+  (when (and (eq symbol 'truncate-lines)
+             (eq operation 'set)
+             (bufferp where))
+    (setq horizontal-scroll-bar (if newval 'bottom
+                                  nil)) ; t would be more appropriate,
+                                        ; but then workaround below
+                                        ; for macOS specific bug
+                                        ; wouldn't work.
+
+    ;; Force any windows displaying this buffer to show a scroll bar
+    (dolist (window (get-buffer-window-list where nil t))
+      (set-window-buffer window where))))
+
+;; Do same check as `horizontal-scroll-bars-available-p' does, but
+;; ignore the current frame by not calling `display-graphic-p'. Just
+;; because initial frame is non-graphical doesn't mean all frames are
+;; not graphical.
+(when (bound-and-true-p x-toolkit-scroll-bars)
+  (add-variable-watcher 'truncate-lines #'toggle-horizontal-scroll-bar)
+
+  ;; workaround bug on macOS where horizontal scroll bars aren't
+  ;; visible unless they are visible on a frame
+  (horizontal-scroll-bar-mode)
+  (setq-default horizontal-scroll-bar nil))
+
