@@ -9,9 +9,7 @@
 ;; are not yet available on Debian stable.
 ;;
 ;; Currently tested against:
-;; * GNU Emacs 29.1
-;; * GNU Emacs 29.2
-;; * GNU Emacs 29.3
+;; * GNU Emacs 29.4
 
 ;;; Code:
 
@@ -38,46 +36,6 @@
   (keymap-set log-edit-mode-map "<remap> <beginning-of-line>"
               (keymap-lookup log-edit-mode-map "C-a"))
   (keymap-unset log-edit-mode-map "C-a"))
-
-;; Fix for clicking on directory line not properly respecting
-;; `dired-kill-when-opening-new-dired-buffer'. TODO(Bug#67856, fixed in 29.2)
-(when (version< emacs-version "29.2")
-  (require 'dired)
-  (display-warning 'emacs "Fixing buggy behavior in dired--make-directory-clickable")
-  (defun dired--make-directory-clickable ()
-    (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward
-              (if (memq system-type '(windows-nt ms-dos))
-                  "^  \\([a-zA-Z]:/\\|//\\)"
-                "^  /")
-              nil t 1)
-        (let ((bound (line-end-position))
-              (segment-start (point))
-              (inhibit-read-only t)
-              (dir (substring (match-string 0) 2)))
-          (while (search-forward "/" bound t 1)
-            (setq dir (concat dir (buffer-substring segment-start (point))))
-            (add-text-properties
-             segment-start (1- (point))
-             `( mouse-face highlight
-                help-echo "mouse-1: goto this directory"
-                keymap ,(let* ((current-dir dir)
-                               (click (lambda ()
-                                        (interactive)
-                                        (cond
-                                          ((assoc current-dir dired-subdir-alist)
-                                           (dired-goto-subdir current-dir))
-                                          ;; Defensive programming -- is this case actually hit?
-                                          ((insert-directory-wildcard-in-dir-p current-dir)
-                                           (dired current-dir))
-                                          (t
-                                           (dired--find-possibly-alternative-file current-dir))))))
-                          (define-keymap
-                            "<mouse-2>" click
-                            "<follow-link>" 'mouse-face
-                            "RET" click))))
-            (setq segment-start (point))))))))
 
 ;; Add support for Windows' Alt-F4 to close window key binding. TODO(upstream)
 (when (and (eq window-system 'w32)
