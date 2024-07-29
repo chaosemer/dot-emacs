@@ -19,6 +19,7 @@
   (defvar init-dir--long-load-time-warning 0))
 
 ;; Lots of requires here slow down loading.
+(defvar init-dir--long-load-time-warning)
 (cl-incf init-dir--long-load-time-warning 1)
 
 ;; Fix buggy regexp in Emacs TODO(upstream)
@@ -58,6 +59,11 @@
 	  (delete-frame frame t)
         ;; Gildea@x.org says it is ok to ask questions before terminating.
         (save-buffers-kill-emacs))))
+
+  ;; Not sure why this is needed, maybe because above defun is not at
+  ;; top level?
+  (declare-function my-handle-delete-frame "00.emacs-patches" ())
+
   (keymap-global-set "M-<f4>" #'my-handle-delete-frame))
 
 
@@ -68,6 +74,7 @@
 ;; pixel-scroll.
 (unless (and (memq window-system '(x pgtk))
              (not (string-match "microsoft" (shell-command-to-string "uname -r"))))
+  (defvar pixel-scroll-precision-large-scroll-height)
   (with-eval-after-load 'pixel-scroll
     (display-warning
      'emacs
@@ -86,6 +93,10 @@
 ;; The command `ielm-return' doesn't work well with
 ;; `electric-pair-mode'.  This is because while in this mode, you
 ;; always have a complete sexp.
+(defvar ielm-dynamic-return)
+(defvar ielm-dynamic-multiline-inputs)
+(declare-function ielm-send-input "ielm" (&optional for-effect))
+(declare-function ielm-pm "ielm" ())
 (with-eval-after-load 'ielm
   (defun ielm-return (&optional for-effect)
     "Newline and indent, or evaluate the sexp before the prompt.

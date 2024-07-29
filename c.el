@@ -34,6 +34,7 @@
           t)
 
 ;;; Keymaps:
+(defvar c-mode-base-map)
 (with-eval-after-load 'cc-mode
   (keymap-set c-mode-base-map "C-c M-<right>" 'c-forward-conditional)
   (keymap-set c-mode-base-map "C-c M-<left>" 'c-backward-conditional)

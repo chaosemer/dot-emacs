@@ -24,6 +24,7 @@
     ))
 
 ;; This file is known to be slow, so add a bit more time here.
+(defvar init-dir--long-load-time-warning)
 (cl-incf init-dir--long-load-time-warning 0.1)
 
 ;;; Package customization:
