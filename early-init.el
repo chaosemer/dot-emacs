@@ -9,6 +9,7 @@
 ;;; Code:
 ;; `early-init-file' is set after the early init process, which serves
 ;; as a clear flag.
+(defvar modus-themes-headings)
 (unless early-init-file
   (setf modus-themes-headings
         '((1 . (variable-pitch (height 1.5)))

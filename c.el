@@ -43,12 +43,15 @@
 
 ;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY
 ;; inconvenient.  Nothing else uses C-c C, so I'm moving it to that.
+(defvar ebrowse-global-prefix-key)
 (setf ebrowse-global-prefix-key (kbd "C-c C"))
 
 ;;; Custom commands:
 
 ;; Make CC-Mode's defun finding include any function comments that
 ;; immediately preceede it.
+(declare-function c-beginning-of-defun "cc-cmds")
+(declare-function c-backward-single-comment "cc-engine")
 (defun my-c-beginning-of-defun (&optional arg)
   "Move backward to the beginning of a defun, including comments.
 
@@ -62,6 +65,8 @@ ARG: Number of defuns to move, as in `c-beginning-of-defun'."
     (re-search-forward "\\(?:\\s \\|[\n\r]\\)*" nil t)))
 
 ;; Make CScope use next-error functionality, so "C-x `" works correctly
+(defvar cscope-output-buffer-name)
+(declare-function cscope-call "cscope")
 (defun cscope-next-error (n &optional reset)
   "Advance to the next error message and visit the file where the error was.
 This is the value of `next-error-function' in CScope buffers.

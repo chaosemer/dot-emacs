@@ -1,6 +1,7 @@
 ;;; init/dired.el --- Dired mode customizations -*- lexical-binding: t; -*-
 
 ;;; Code:
+(declare-function dired-icon-mode "dired-icon")
 (hook-mode dired-mode-hook
   (when window-system
     (dired-icon-mode 1))
