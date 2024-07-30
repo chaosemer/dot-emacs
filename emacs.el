@@ -278,7 +278,9 @@ FILE: File to find the sibling file of."
 If `truncate-lines' is non-nil, the horizontal scroll bar will be
 displayed. If nil, the horizontal scroll bar will be hidden.
 
-This function may be passed to `add-variable-watcher'."
+This function may be passed to `add-variable-watcher'.
+Parameters SYMBOL, NEWVAL, OPERATION, and WHERE are as documented
+there."
   (when (and (eq symbol 'truncate-lines)
              (eq operation 'set)
              (bufferp where))
