@@ -3,6 +3,7 @@
 ;;; Code:
 (hook-mode emacs-lisp-mode-hook
   eldoc-mode)
+(defvar ielm-mode-hook)
 (hook-mode ielm-mode-hook
   eldoc-mode)
 

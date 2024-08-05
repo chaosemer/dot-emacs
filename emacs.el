@@ -77,6 +77,8 @@
 (tool-bar-mode -1)
 (setf tool-bar-map nil)
 
+(defvar pixel-scroll-precision-interpolate-page)
+(defvar xterm-extra-capabilities)
 (if window-system
     (progn (pixel-scroll-precision-mode 1)
            (setf pixel-scroll-precision-interpolate-page t))
@@ -91,6 +93,7 @@
                                         (call-process "explorer.exe" nil nil nil url)))))
 
 ;; Make Emacs display similar to modern editors.
+(defvar x-stretch-cursor)
 (setf frame-resize-pixelwise t
       frame-title-format "%b - Emacs"
       icon-title-format t

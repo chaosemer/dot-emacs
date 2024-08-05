@@ -1,6 +1,7 @@
 ;;; init/c.el --- C based language customizations  -*- lexical-binding: t; -*-
 
 ;;; Code:
+(defvar c-mode-common-hook)
 (hook-mode c-mode-common-hook
   visual-line-mode
   (c-set-offset 'case-label '+)
@@ -67,6 +68,7 @@ ARG: Number of defuns to move, as in `c-beginning-of-defun'."
 ;; Make CScope use next-error functionality, so "C-x `" works correctly
 (defvar cscope-output-buffer-name)
 (declare-function cscope-call "cscope")
+(declare-function cscope-buffer-search "cscope")
 (defun cscope-next-error (n &optional reset)
   "Advance to the next error message and visit the file where the error was.
 This is the value of `next-error-function' in CScope buffers.
