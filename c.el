@@ -3,7 +3,7 @@
 ;;; Code:
 (defvar c-mode-common-hook)
 (hook-mode c-mode-common-hook
-  visual-line-mode
+  (visual-line-mode)
   (c-set-offset 'case-label '+)
   (c-set-offset 'innamespace 0)
   (c-set-offset 'arglist-intro '++)

@@ -3,7 +3,7 @@
 ;;; Code:
 (hook-mode text-mode-hook
   (unless (member major-mode '(mail-mode org-mode))
-	visual-line-mode))
+    visual-line-mode))
 
 (hook-mode markdown-mode-hook
   ;; Normally, electric pair mode is on and helpful, but in Markdown

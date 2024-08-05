@@ -10,9 +10,7 @@ execute it directly.  This allows you to declaratively hook in
 minor modes on a major mode."
   (declare (indent 1))
   (let ((body (cl-loop for expr in modes
-                       if (and (symbolp expr) (fboundp expr))
-                         collect (list expr 1)
-                       else if (listp expr)
+                       if (listp expr)
                          collect expr
                        else do (error "%s does not appear to name a minor mode" expr))))
     `(progn
