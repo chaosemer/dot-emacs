@@ -306,14 +306,6 @@ there."
 
   ;; Workaround needed on macOS due to
   ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=72331
+  ;; TODO: Fixed in Emacs 30.
   (horizontal-scroll-bar-mode)
   (setq-default horizontal-scroll-bar nil))
-
-;; For reporting https://debbugs.gnu.org/cgi/bugreport.cgi?bug=72331
-(defun bug-report-toggle-buffer-horizontal-scroll-bar ()
-  "Like `toggle-scroll-bar', but for just the current buffer.
-And for horizontal scroll bars.  I guess it's acutally very
-different."
-  (interactive)
-  (setq horizontal-scroll-bar (if horizontal-scroll-bar nil 'bottom))
-  (set-window-buffer (selected-window) (current-buffer)))
