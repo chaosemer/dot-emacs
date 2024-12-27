@@ -22,6 +22,12 @@
   (defun global-window-tool-bar-mode (&optional _)
     ;; Do nothing -- stub
     ))
+(unless (fboundp 'xclip-mode)
+  ;; If this triggers, make sure to install the `xclip' package from GNU Elpa.
+  (display-warning 'emacs "SETUP ISSUE: xclip package is not installed.")
+  (defun xclip-mode (&optional _)
+    ;; Do nothing -- stub
+    ))
 
 ;; This file is known to be slow, so add a bit more time here.
 (defvar init-dir--long-load-time-warning)
@@ -64,6 +70,7 @@
 (fido-mode 1)
 (progn (global-form-feed-st-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'form-feed-st-mode minor-mode-alist)))
+(global-goto-address-mode 1)
 (progn (global-subword-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'subword-mode minor-mode-alist)))
 (setf (default-value 'indent-tabs-mode) nil
@@ -71,6 +78,7 @@
 (recentf-mode 1)
 (tooltip-mode -1)
 (url-handler-mode 1)
+(xclip-mode 1)
 
 ;; Toolbar display
 (global-window-tool-bar-mode 1)
