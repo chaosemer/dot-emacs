@@ -22,12 +22,6 @@
   (defun global-window-tool-bar-mode (&optional _)
     ;; Do nothing -- stub
     ))
-(unless (fboundp 'xclip-mode)
-  ;; If this triggers, make sure to install the `xclip' package from GNU Elpa.
-  (display-warning 'emacs "SETUP ISSUE: xclip package is not installed.")
-  (defun xclip-mode (&optional _)
-    ;; Do nothing -- stub
-    ))
 
 ;; This file is known to be slow, so add a bit more time here.
 (defvar init-dir--long-load-time-warning)
@@ -78,7 +72,6 @@
 (recentf-mode 1)
 (tooltip-mode -1)
 (url-handler-mode 1)
-(xclip-mode 1)
 
 ;; Toolbar display
 (global-window-tool-bar-mode 1)
@@ -91,6 +84,7 @@
     (progn (pixel-scroll-precision-mode 1)
            (setf pixel-scroll-precision-interpolate-page t))
   (xterm-mouse-mode 1)
+  (setf xterm-set-window-title t)
   (when (string-match "microsoft" (shell-command-to-string "uname -r"))
     ;; Windows Console does not properly report that it supports
     ;; setSelection. It does not support other functionality.
