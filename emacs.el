@@ -117,9 +117,10 @@
 (add-to-list 'completion-ignored-extensions ".meta")
 
 ;; Customize the *scratch* buffer
-(hook-mode emacs-startup-hook
-  (with-current-buffer (get-buffer "*scratch*")
-    (setf buffer-offer-save t)))
+(add-hook 'emacs-startup-hook
+          (defun my-emacs-startup-hook ()
+            (with-current-buffer (get-buffer "*scratch*")
+              (setf buffer-offer-save t))))
 (setf initial-major-mode 'gfm-mode
       initial-scratch-message (concat "Scratch buffer for notes\n"
                                       "========================\n"

@@ -2,10 +2,11 @@
 
 ;;; Code:
 (declare-function dired-icon-mode "dired-icon")
-(hook-mode dired-mode-hook
-  (when window-system
-    (dired-icon-mode 1))
-  (setq-local truncate-lines t))
+(add-hook 'dired-mode-hook
+          (defun my-dired-mode-hook ()
+            (when window-system
+              (dired-icon-mode 1))
+            (setq-local truncate-lines t)))
 
 ;; Force use of LS emulation as it enables all my other customizations
 (require 'ls-lisp)

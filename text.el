@@ -1,16 +1,18 @@
 ;;; init/text.el --- Text mode customizations  -*- lexical-binding: t; -*-
 
 ;;; Code:
-(hook-mode text-mode-hook
-  (unless (member major-mode '(mail-mode org-mode))
-    visual-line-mode))
+(add-hook 'text-mode-hook
+          (defun my-text-mode-hook ()
+            (unless (member major-mode '(mail-mode org-mode))
+              visual-line-mode)))
 
-(hook-mode markdown-mode-hook
-  ;; Normally, electric pair mode is on and helpful, but in Markdown
-  ;; mode it makes URLs be automatically hidden before they're typed
-  ;; in.
-  (electric-pair-local-mode -1)
-  (markdown-toggle-markup-hiding 1))
+(add-hook 'markdown-mode-hook
+          (defun my-markdown-mode-hook ()
+            ;; Normally, electric pair mode is on and helpful, but in
+            ;; Markdown mode it makes URLs be automatically hidden
+            ;; before they're typed in.
+            (electric-pair-local-mode -1)
+            (markdown-toggle-markup-hiding 1)))
 
 ;; Actually, I prefer GitHub flavored markdown
 (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode))

@@ -2,26 +2,27 @@
 
 ;;; Code:
 (defvar c-mode-common-hook)
-(hook-mode c-mode-common-hook
-  (visual-line-mode)
-  (c-set-offset 'case-label '+)
-  (c-set-offset 'innamespace 0)
-  (c-set-offset 'arglist-intro '++)
-  (c-set-offset 'member-init-intro '++)
-  (c-set-offset 'cpp-macro 0)
-  (c-set-offset 'statement-case-open '+)
-  (when (fboundp 'cscope-bind-keys-3deep) (cscope-bind-keys-3deep))
+(add-hook 'c-mode-common-hook
+          (defun my-c-mode-common-hook ()
+            (visual-line-mode)
+            (c-set-offset 'case-label '+)
+            (c-set-offset 'innamespace 0)
+            (c-set-offset 'arglist-intro '++)
+            (c-set-offset 'member-init-intro '++)
+            (c-set-offset 'cpp-macro 0)
+            (c-set-offset 'statement-case-open '+)
+            (when (fboundp 'cscope-bind-keys-3deep) (cscope-bind-keys-3deep))
 
-  ;; Special comment syntax
-  (font-lock-add-keywords nil '(("^\\s *\\(///.*\n?\\)" 1 'section-comment-face t)
-                                ("^////.*\n?" 0 'file-comment-face t)
-                                ("^//.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?://.*\n\\)+" 0 'section-comment-face t)
-                                ("^/\\*.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?:.\\|\n\\)*?\\*/\n?" 0 'section-comment-face t)))
-  (setf font-lock-multiline t)
-  
-  (setf beginning-of-defun-function 'my-c-beginning-of-defun)
+            ;; Special comment syntax
+            (font-lock-add-keywords nil '(("^\\s *\\(///.*\n?\\)" 1 'section-comment-face t)
+                                          ("^////.*\n?" 0 'file-comment-face t)
+                                          ("^//.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?://.*\n\\)+" 0 'section-comment-face t)
+                                          ("^/\\*.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?:.\\|\n\\)*?\\*/\n?" 0 'section-comment-face t)))
+            (setf font-lock-multiline t)
+            
+            (setf beginning-of-defun-function 'my-c-beginning-of-defun)
 
-  (require 'ebrowse))
+            (require 'ebrowse)))
 
 (setf (default-value 'c-recognize-knr-p) nil
       (default-value 'c-recognize-paren-inits) t

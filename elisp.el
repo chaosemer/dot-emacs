@@ -1,11 +1,13 @@
 ;;; init/elisp.el --- Emacs Lisp customizations  -*- lexical-binding: t; -*-
 
 ;;; Code:
-(hook-mode emacs-lisp-mode-hook
-  (eldoc-mode))
+(add-hook 'emacs-lisp-mode-hook
+          (defun my-emacs-lisp-mode-hook ()
+            (eldoc-mode)))
 (defvar ielm-mode-hook)
-(hook-mode ielm-mode-hook
-  (eldoc-mode))
+(add-hook 'ielm-mode-hook
+          (defun my-ielm-mode-hook ()
+            (eldoc-mode)))
 
 ;;; Faces:
 (font-lock-add-keywords 'emacs-lisp-mode

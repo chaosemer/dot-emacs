@@ -2,11 +2,12 @@
 
 ;;; Code:
 (with-eval-after-load 'hexl
-  (hook-mode hexl-mode-hook
-    (hexl-follow-line)
-    (hexl-activate-ruler)
-    (turn-on-eldoc-mode)
-    (setf truncate-lines t)))
+  (add-hook 'hexl-mode-hook
+            (defun my-hexl-mode-hook ()
+              (hexl-follow-line)
+              (hexl-activate-ruler)
+              (turn-on-eldoc-mode)
+              (setf truncate-lines t))))
 
 ;;; Custom commands:
 (with-eval-after-load 'hexl
