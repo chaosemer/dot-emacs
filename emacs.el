@@ -73,6 +73,12 @@
 (tooltip-mode -1)
 (url-handler-mode 1)
 
+;; I prefer splitting windows horizontally where possible
+(setf split-width-threshold 150         ;twice 75, which is a bit under
+                                        ;an 80 column wide value to
+                                        ;make room for margins
+      split-height-threshold nil)
+
 ;; Toolbar display
 (global-window-tool-bar-mode 1)
 (tool-bar-mode -1)
@@ -184,6 +190,10 @@
                "C-x <right>" "M-<begin>" "M-<next>" "M-<prior>" "C-M-v" "C-M-S-v" "ESC <begin>"
                "ESC <end>" "ESC <home>" "ESC <next>" "ESC <prior>"))
   (keymap-global-unset key))
+
+;; Prefer creating new windows horizontally
+(keymap-global-set "C-x 2" 'split-window-right)
+(keymap-global-set "C-x 3" 'split-window-below)
 
 ;; My experimental package, <http://github.com/chaosemer/window-tool-bar>
 (keymap-global-set "C-x C-m" #'window-tool-bar-debug-show-memory-use)
