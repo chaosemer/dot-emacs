@@ -70,6 +70,8 @@
 (setf (default-value 'indent-tabs-mode) nil
       tab-always-indent 'complete)
 (recentf-mode 1)
+(save-place-mode 1)
+(savehist-mode 1)
 (tooltip-mode -1)
 (url-handler-mode 1)
 
@@ -78,6 +80,9 @@
                                         ;an 80 column wide value to
                                         ;make room for margins
       split-height-threshold nil)
+
+;; This only works on Linux
+(setf font-use-system-font t)
 
 ;; Toolbar display
 (global-window-tool-bar-mode 1)
