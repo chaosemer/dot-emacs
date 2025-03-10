@@ -113,6 +113,9 @@
       scroll-conservatively most-positive-fixnum
       window-resize-pixelwise t
       x-stretch-cursor t)
+(add-hook 'prog-mode-hook
+          (defun my-prog-mode-hook ()
+            (setf show-trailing-whitespace t)))
 
  (setf delete-by-moving-to-trash t
 ;; BUG: This breaks M-x customize-themes visuals
