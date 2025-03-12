@@ -1,27 +1,18 @@
 ;;; init/emacs.el --- Global Emacs customizations  -*- lexical-binding: t; -*-
 
 ;;; Code:
-(unless (fboundp 'bar-cursor-mode)
-  ;; If this triggers, make sure to install the `bar-cursor' package
-  ;; from melpa unstable.
-  (display-warning 'emacs "SETUP ISSUE: bar-cursor package is not installed.")
-  (defun bar-cursor-mode (&optional _)
-    ;; Do nothing -- stub
-    ))
-(unless (fboundp 'global-form-feed-st-mode)
-  ;; If this triggers, make sure to install the `form-feed-st' package
-  ;; from melpa unstable.
-  (display-warning 'emacs "SETUP ISSUE: form-feed-st package is not installed.")
-  (defun global-form-feed-st-mode (&optional _)
-    ;; Do nothing -- stub
-    ))
-(unless (fboundp 'global-window-tool-bar-mode)
-  ;; If this triggers, make sure to install the `window-tool-bar'
-  ;; package from GitHub.
-  (display-warning 'emacs "SETUP ISSUE: window-tool-bar package is not installed.")
-  (defun global-window-tool-bar-mode (&optional _)
-    ;; Do nothing -- stub
-    ))
+(defun stub-function (sym package)
+  "Define a stub replacement for SYM if needed."
+  (unless (fboundp sym)
+    (display-warning 'emacs (format "SETUP ISSUE: %s package is not installed." package))
+    (fset sym (lambda (&optional _)
+                ;; Do nothing -- stub
+                ))))
+(stub-function 'bar-cursor-mode "bar-cursor")
+(stub-function 'diff-hl-flydiff-mode "diff-hl")
+(stub-function 'global-form-feed-st-mode "form-feed-st")
+(stub-function 'global-window-tool-bar-mode "window-tool-bar")
+(stub-function 'global-diff-hl-mode "diff-hl")
 
 ;; This file is known to be slow, so add a bit more time here.
 (defvar init-dir--long-load-time-warning)
