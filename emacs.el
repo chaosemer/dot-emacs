@@ -13,6 +13,7 @@
 (stub-function 'global-form-feed-st-mode "form-feed-st")
 (stub-function 'global-window-tool-bar-mode "window-tool-bar")
 (stub-function 'global-diff-hl-mode "diff-hl")
+(stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl")
 
 ;; This file is known to be slow, so add a bit more time here.
 (defvar init-dir--long-load-time-warning)
@@ -55,6 +56,7 @@
 (electric-pair-mode 1)
 (fido-mode 1)
 (global-diff-hl-mode 1)
+(global-diff-hl-show-hunk-mouse-mode 1)
 (progn (global-form-feed-st-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'form-feed-st-mode minor-mode-alist)))
 (global-goto-address-mode 1)
