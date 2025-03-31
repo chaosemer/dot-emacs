@@ -52,11 +52,8 @@
 (column-number-mode 1)
 (context-menu-mode 1)
 (cua-mode 1)
-(diff-hl-flydiff-mode 1)
 (electric-pair-mode 1)
 (fido-mode 1)
-(global-diff-hl-mode 1)
-(global-diff-hl-show-hunk-mouse-mode 1)
 (progn (global-form-feed-st-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'form-feed-st-mode minor-mode-alist)))
 (global-goto-address-mode 1)
@@ -69,6 +66,19 @@
 (savehist-mode 1)
 (tooltip-mode -1)
 (url-handler-mode 1)
+
+;; Diff-hl is particularly heavyweight (2025-03-31)
+;; Defer until the first file is loaded.
+;;
+;; TODO(upstream) -- All of these are global modes. Global modes
+;; should be cheap to turn on.
+(defvar my-turn-on-diff-hl-mode nil)
+(add-hook 'find-file-hook (defun my-turn-on-diff-hl-mode ()
+                            (unless my-turn-on-diff-hl-mode
+                              (global-diff-hl-mode 1)
+                              (global-diff-hl-show-hunk-mouse-mode 1)
+                              (diff-hl-flydiff-mode 1)
+                              (setf my-turn-on-diff-hl-mode t))))
 
 ;; I prefer splitting windows horizontally where possible
 (setf split-width-threshold 150         ;twice 75, which is a bit under
