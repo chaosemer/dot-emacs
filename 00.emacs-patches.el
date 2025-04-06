@@ -84,3 +84,36 @@ simply inserts a newline."
                 (newline 1)))
             (newline-and-indent)))
       (newline))))
+
+;; https://www2.lib.uchicago.edu/keith/emacs/ recommends alternaties
+;; to `list-buffers'.
+(display-warning
+ 'emacs
+ (concat
+  "You are trying out alternative bindings for C-x C-b.\n"
+  "  Toggle the binding: "
+  (buttonize "[list-buffers]"
+             (lambda (&rest _)
+               (keymap-global-set "C-x C-b" #'list-buffers)))
+  " "
+  (buttonize "[bs-show]"
+             (lambda (&rest _)
+               (keymap-global-set "C-x C-b" #'bs-show)))
+  " "
+  (buttonize "[ibuffer]"
+             (lambda (&rest _)
+               (keymap-global-set "C-x C-b" #'ibuffer)))
+  (propertize " " 'invisible t 'rear-nonsticky t)))
+(keymap-global-set "C-x C-b" #'ibuffer)
+(with-eval-after-load 'ibuffer
+  (keymap-set ibuffer-mode-filter-group-map
+              "<mouse-1>" #'ibuffer-toggle-filter-group))
+(setf ibuffer-show-empty-filter-groups nil
+      ibuffer-saved-filter-groups '(("Home"
+                                     ("Files" (visiting-file))
+                                     ("Starred" (starred-name)))))
+(add-hook 'ibuffer-mode-hook
+          (defun my-ibuffer-hook ()
+            (ibuffer-switch-to-saved-filter-groups "Home")
+            (ibuffer-do-sort-by-alphabetic)
+            (setf ibuffer-hidden-filter-groups '("Starred"))))

@@ -15,6 +15,11 @@
 (stub-function 'global-diff-hl-mode "diff-hl")
 (stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl")
 
+;; Ensure doc-view can be used
+(unless (and (executable-find "dvipdf")
+             (executable-find "pdftotext"))
+  (display-warning 'emacs "SETUP ISSUE: dvipdf and pdftotext programs are not installed."))
+
 ;; This file is known to be slow, so add a bit more time here.
 (defvar init-dir--long-load-time-warning)
 (cl-incf init-dir--long-load-time-warning 0.1)
@@ -62,6 +67,7 @@
 (setf (default-value 'indent-tabs-mode) nil
       tab-always-indent 'complete)
 (recentf-mode 1)
+(repeat-mode 1)
 (save-place-mode 1)
 (savehist-mode 1)
 (tooltip-mode -1)
@@ -198,6 +204,13 @@
 (keymap-global-set "M-<delete>" 'kill-sexp)
 (keymap-global-set "M-<backspace>" 'backward-kill-sexp)
 
+;; Fancier paste (cua-specific)
+(keymap-global-set "<remap> <delete-selection-repeat-replace-region>" 'cua-paste-pop)
+
+;; I like to visually see the possible dynamic abbrevs.  Swap default bindings.
+(keymap-global-set "M-/" 'dabbrev-completion)
+(keymap-global-set "C-M-/" 'dabbrev-expand)
+
 ;; I'm always mistakenly hitting these
 (dolist (key '("C-<next>" "C-<prior>" "C-x m" "M-<home>" "M-<end>" "M-<begin>" "C-x <left>"
                "C-x <right>" "M-<begin>" "M-<next>" "M-<prior>" "C-M-v" "C-M-S-v" "ESC <begin>"
@@ -238,10 +251,19 @@ N: Number of lines to go forward."
 (keymap-global-set "<home>" 'beginning-of-line-dwim)
 (keymap-global-set "<end>" 'end-of-line-dwim)
 
-;;; Recursive edits.  For whatever reason, my mind doesn't really
-;;; align with registers to store window configuration.  Instead, I
-;;; like to think about things as a stack, which conveniently maps
-;;; directly to recursive edit.
+;;; For whatever reason, my mind doesn't really align with registers
+;;; to store window configuration.  Instead, I like to think about
+;;; things as a stack.
+
+;; New option: winner-mode
+;;
+;; The main benefit of this is it already exists in Emacs and is
+;; widely used.
+(winner-mode 1)
+
+;; Old option: Recursive edits
+;;
+;; This is self written.  It's been pretty stable.
 (defun push-or-pop-excursion (arg)
   "Pushes or pops an excursion, depending on the prefix arg.
 
