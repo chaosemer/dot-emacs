@@ -23,51 +23,6 @@
 (defvar init-dir--long-load-time-warning)
 (cl-incf init-dir--long-load-time-warning 1)
 
-;; Fix buggy regexp in Emacs TODO(upstream)
-;;   incorrect-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^ :(\t\n][^:(\t\n]*\\)(\\([0-9]+\\)\\(?:,\\([0-9]+\\)\\)?) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) C[0-9]+:\\)"
-(require 'compile)
-(let ((correct-regexp "^ *\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) ?: \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) [A-Z][0-9]+:\\)"))
-  (unless (equal (nth 1 (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)
-    (display-warning 'emacs "Fixing buggy Microsoft regexp")
-    (setf (nth 1 (assoc 'msft compilation-error-regexp-alist-alist)) correct-regexp)))
-
-;; Making C-a in log-edit-mode not be there TODO(Bug#67851, fixed in 30.1)
-(require 'log-edit)
-(when (keymap-lookup log-edit-mode-map "C-a")
-  (display-warning 'emacs "Cleaning up log-edit-mode-map")
-  (keymap-set log-edit-mode-map "<remap> <beginning-of-line>"
-              (keymap-lookup log-edit-mode-map "C-a"))
-  (keymap-unset log-edit-mode-map "C-a"))
-
-;; Add support for Windows' Alt-F4 to close window key binding. TODO(upstream)
-(when (and (eq window-system 'w32)
-           (null (keymap-global-lookup "M-<f4>")))
-  (display-warning 'emacs "Adding keybinding for M-<f4>.")
-  ;; Real fix is in `handle-delete-frame'.  For now, just duplicate
-  ;; code here.
-  (defun my-handle-delete-frame ()
-    (interactive)
-    (let ((frame (window-frame)))
-      (if (catch 'other-frame
-            (dolist (frame-1 (frame-list))
-              ;; A valid "other" frame is visible, has its `delete-before'
-              ;; parameter unset and is not a child frame.
-              (when (and (not (eq frame-1 frame))
-                         (frame-visible-p frame-1)
-                         (not (frame-parent frame-1))
-                         (not (frame-parameter frame-1 'delete-before)))
-                (throw 'other-frame t))))
-	  (delete-frame frame t)
-        ;; Gildea@x.org says it is ok to ask questions before terminating.
-        (save-buffers-kill-emacs))))
-
-  ;; Not sure why this is needed, maybe because above defun is not at
-  ;; top level?
-  (declare-function my-handle-delete-frame "00.emacs-patches" ())
-
-  (keymap-global-set "M-<f4>" #'my-handle-delete-frame))
-
-
 ;; Waiting on Emacs support for `device-class' on other platforms.
 ;;
 ;; Currently, only x and pgtk distinguish between touchpad and mouse
