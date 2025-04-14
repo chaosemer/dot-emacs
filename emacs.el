@@ -10,6 +10,7 @@
                 ))))
 (stub-function 'bar-cursor-mode "bar-cursor")
 (stub-function 'diff-hl-flydiff-mode "diff-hl")
+(stub-function 'diff-hl-margin-mode "diff-hl")
 (stub-function 'global-form-feed-st-mode "form-feed-st")
 (stub-function 'global-window-tool-bar-mode "window-tool-bar")
 (stub-function 'global-diff-hl-mode "diff-hl")
@@ -110,6 +111,7 @@
     (progn (pixel-scroll-precision-mode 1)
            (setf pixel-scroll-precision-interpolate-page t))
   (xterm-mouse-mode 1)
+  (diff-hl-margin-mode 1)
   (setf xterm-set-window-title t)
   (when (string-match "microsoft" (shell-command-to-string "uname -r"))
     ;; Windows Console does not properly report that it supports
