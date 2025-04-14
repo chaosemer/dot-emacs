@@ -96,6 +96,10 @@
 (setf font-use-system-font t)
 
 ;; Toolbar display
+
+;; tool-bar-mode is not preloaded on emacs-nox builds
+(unless (fboundp 'tool-bar-mode)
+  (require 'tool-bar))
 (global-window-tool-bar-mode 1)
 (tool-bar-mode -1)
 (setf tool-bar-map nil)
