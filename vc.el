@@ -13,7 +13,8 @@
   "Get latest commits from SVN to Git."
   (interactive)
   (let ((root (vc-git-root default-directory)))
-    (assert root nil "Not in a Git repository")
+    (unless root
+      (error "Not in a Git repository"))
     (vc-git-command "*vc-git*" 'async nil "svn" "rebase")
     (display-buffer "*vc-git*")))
 
