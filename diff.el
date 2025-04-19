@@ -1,6 +1,21 @@
 ;;; init/diff.el --- Diff mode customizations  -*- lexical-binding: t; -*-
 
 ;;; Code:
+
+;; Restore window configuration when existing ediff.  Thanks to
+;; https://www2.lib.uchicago.edu/keith/emacs/#org1c1fe56.
+(defvar my-ediff-prev-window-configuration nil
+  "The window configuration before entering ediff.")
+
+(add-hook 'ediff-before-setup-hook
+          (defun my-ediff-save-window-configuration ()
+            (setf my-ediff-prev-window-configuration
+                  (current-window-configuration))))
+
+(add-hook 'ediff-quit-hook
+          (defun my-ediff-restore-window-configuration ()
+            (set-window-configuration my-ediff-prev-window-configuration)))
+(add-hook 'ediff-suspend-hook 'my-ediff-restore-window-configuration)
 ;; no special code
 
 ;;; Kemaps:
