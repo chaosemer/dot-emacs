@@ -2,6 +2,9 @@
 
 ;;; Code:
 
+(setf ediff-split-window-function #'split-window-horizontally
+      ediff-window-setup-function #'ediff-setup-windows-plain)
+
 ;; Restore window configuration when existing ediff.  Thanks to
 ;; https://www2.lib.uchicago.edu/keith/emacs/#org1c1fe56.
 (defvar my-ediff-prev-window-configuration nil
