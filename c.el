@@ -1,7 +1,16 @@
 ;;; init/c.el --- C based language customizations  -*- lexical-binding: t; -*-
 
-;;; Code:
+;;; Declarations:
+(declare-function c-backward-single-comment "cc-engine")
+(declare-function c-beginning-of-defun "cc-cmds")
+(declare-function cscope-buffer-search "cscope")
+(declare-function cscope-call "cscope")
+(defvar c-mode-base-map)
 (defvar c-mode-common-hook)
+(defvar cscope-output-buffer-name)
+(defvar ebrowse-global-prefix-key)
+
+;;; Code:
 (add-hook 'c-mode-common-hook
           (defun my-c-mode-common-hook ()
             (visual-line-mode)
@@ -19,7 +28,7 @@
                                           ("^//.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?://.*\n\\)+" 0 'section-comment-face t)
                                           ("^/\\*.*\\(\\s_\\|\\s.\\)\\1\\1\\1.*\n?\\(?:.\\|\n\\)*?\\*/\n?" 0 'section-comment-face t)))
             (setf font-lock-multiline t)
-            
+
             (setf beginning-of-defun-function 'my-c-beginning-of-defun)
 
             (require 'ebrowse)))
@@ -36,7 +45,6 @@
           t)
 
 ;;; Keymaps:
-(defvar c-mode-base-map)
 (with-eval-after-load 'cc-mode
   (keymap-set c-mode-base-map "C-c M-<right>" 'c-forward-conditional)
   (keymap-set c-mode-base-map "C-c M-<left>" 'c-backward-conditional)
@@ -45,15 +53,12 @@
 
 ;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY
 ;; inconvenient.  Nothing else uses C-c C, so I'm moving it to that.
-(defvar ebrowse-global-prefix-key)
 (setf ebrowse-global-prefix-key (kbd "C-c C"))
 
 ;;; Custom commands:
 
 ;; Make CC-Mode's defun finding include any function comments that
 ;; immediately preceede it.
-(declare-function c-beginning-of-defun "cc-cmds")
-(declare-function c-backward-single-comment "cc-engine")
 (defun my-c-beginning-of-defun (&optional arg)
   "Move backward to the beginning of a defun, including comments.
 
@@ -67,9 +72,6 @@ ARG: Number of defuns to move, as in `c-beginning-of-defun'."
     (re-search-forward "\\(?:\\s \\|[\n\r]\\)*" nil t)))
 
 ;; Make CScope use next-error functionality, so "C-x `" works correctly
-(defvar cscope-output-buffer-name)
-(declare-function cscope-call "cscope")
-(declare-function cscope-buffer-search "cscope")
 (defun cscope-next-error (n &optional reset)
   "Advance to the next error message and visit the file where the error was.
 This is the value of `next-error-function' in CScope buffers.
@@ -84,8 +86,6 @@ RESET: If non-nil, start from the beginning."
     (let ((do-next (> n 0)))
       (dotimes (_ (abs n))
 	(cscope-buffer-search t do-next)))))
-(defadvice cscope-call (before my-cscope-call)
+(define-advice cscope-call (:before () my-cscope-call)
   "Wrapper to make sure `next-error-function' is set."
   (set (make-local-variable 'next-error-function) 'cscope-next-error))
-(ad-activate #'cscope-call)
-

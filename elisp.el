@@ -1,10 +1,12 @@
 ;;; init/elisp.el --- Emacs Lisp customizations  -*- lexical-binding: t; -*-
 
+;;; Declarations:
+(defvar ielm-mode-hook)
+
 ;;; Code:
 (add-hook 'emacs-lisp-mode-hook
           (defun my-emacs-lisp-mode-hook ()
             (eldoc-mode)))
-(defvar ielm-mode-hook)
 (add-hook 'ielm-mode-hook
           (defun my-ielm-mode-hook ()
             (eldoc-mode)))

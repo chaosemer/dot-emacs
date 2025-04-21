@@ -12,6 +12,23 @@
 ;; * GNU Emacs 29.4
 ;; * GNU Emacs 30.1
 
+;;; Declarations:
+(declare-function ibuffer-do-sort-by-alphabetic "ibuf-ext")
+(declare-function ibuffer-switch-to-saved-filter-groups "ibuf-ext")
+(declare-function ibuffer-toggle-filter-group "ibuf-ext")
+(declare-function ielm-pm "ielm")
+(declare-function ielm-send-input "ielm")
+(defvar comint-prompt-regexp)
+(defvar ibuffer-hidden-filter-groups)
+(defvar ibuffer-hidden-filter-groups)
+(defvar ibuffer-mode-filter-group-map)
+(defvar ibuffer-saved-filter-groups)
+(defvar ibuffer-show-empty-filter-groups)
+(defvar ielm-dynamic-multiline-inputs)
+(defvar ielm-dynamic-return)
+(defvar init-dir--long-load-time-warning)
+(defvar pixel-scroll-precision-large-scroll-height)
+
 ;;; Code:
 
 ;; Actually a workaround for leotaku/elisp-check which doesn't have a
@@ -20,7 +37,6 @@
   (defvar init-dir--long-load-time-warning 0))
 
 ;; Lots of requires here slow down loading.
-(defvar init-dir--long-load-time-warning)
 (cl-incf init-dir--long-load-time-warning 1)
 
 ;; Waiting on Emacs support for `device-class' on other platforms.
@@ -30,7 +46,6 @@
 ;; pixel-scroll.
 (unless (and (memq window-system '(x pgtk))
              (not (string-match "microsoft" (shell-command-to-string "uname -r"))))
-  (defvar pixel-scroll-precision-large-scroll-height)
   (with-eval-after-load 'pixel-scroll
     (display-warning
      'emacs
@@ -50,10 +65,6 @@
 ;; `electric-pair-mode'.  This is because while in this mode, you
 ;; always have a complete sexp.
 (display-warning 'emacs "Fixing `ielm-return' when not at end of line")
-(defvar ielm-dynamic-return)
-(defvar ielm-dynamic-multiline-inputs)
-(declare-function ielm-send-input "ielm" (&optional for-effect))
-(declare-function ielm-pm "ielm" ())
 (with-eval-after-load 'ielm
   (defun ielm-return (&optional for-effect)
     "Newline and indent, or evaluate the sexp before the prompt.

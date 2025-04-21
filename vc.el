@@ -25,7 +25,8 @@ REBASE-ALSO: If non-nil, do not actually rebase so that you can
 manually do the desired rebase."
   (interactive "P")
   (let ((root (vc-git-root default-directory)))
-    (assert root nil "Not in a Git repository")
+    (unless root
+      (error "Not in a Git repository"))
     (if rebase-also
 	(vc-git-command "*vc-git*" 'async nil "svn" "dcommit" "--no-rebase")
       (vc-git-command "*vc-git*" 'async nil "svn" "dcommit"))

@@ -5,7 +5,7 @@
 ;; This file should only be loaded during the early init and not
 ;; during regular init.  This is only for fundamental visual changes
 ;; that would otherwise cause Emacs to flicker during startup.
-
+
 ;;; Code:
 ;; `early-init-file' is set after the early init process, which serves
 ;; as a clear flag.

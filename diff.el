@@ -1,7 +1,13 @@
 ;;; init/diff.el --- Diff mode customizations  -*- lexical-binding: t; -*-
 
+;;; Declarations:
+(declare-function diff-hl-show-hunk "diff-hl-show-hunk")
+(declare-function ediff-setup-windows-plain "ediff-wind")
+(defvar diff-hl-mode-map)
+(defvar ediff-split-window-function)
+(defvar ediff-window-setup-function)
+
 ;;; Code:
-
 (setf ediff-split-window-function #'split-window-sensibly
       ediff-window-setup-function #'ediff-setup-windows-plain)
 

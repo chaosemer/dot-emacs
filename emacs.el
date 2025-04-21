@@ -1,20 +1,34 @@
 ;;; init/emacs.el --- Global Emacs customizations  -*- lexical-binding: t; -*-
 
+;;; Declarations:
+(declare-function horizontal-scroll-bar-mode "scroll-bar")
+(declare-function tool-bar-mode "tool-bar")
+(defvar init-dir--long-load-time-warning)
+(defvar markdown-header-scaling)
+(defvar outline-minor-mode-use-buttons)
+(defvar pixel-scroll-precision-interpolate-page)
+(defvar tool-bar-map)
+(defvar x-stretch-cursor)
+(defvar xterm-extra-capabilities)
+(defvar xterm-set-window-title)
+
 ;;; Code:
-(defun stub-function (sym package)
-  "Define a stub replacement for SYM if needed."
-  (unless (fboundp sym)
-    (display-warning 'emacs (format "SETUP ISSUE: %s package is not installed." package))
-    (fset sym (lambda (&optional _)
-                ;; Do nothing -- stub
-                ))))
-(stub-function 'bar-cursor-mode "bar-cursor")
-(stub-function 'diff-hl-flydiff-mode "diff-hl")
-(stub-function 'diff-hl-margin-mode "diff-hl")
-(stub-function 'global-form-feed-st-mode "form-feed-st")
-(stub-function 'global-window-tool-bar-mode "window-tool-bar")
-(stub-function 'global-diff-hl-mode "diff-hl")
-(stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl")
+(eval-and-compile
+  (defun stub-function (sym package)
+    "Define a stub replacement for SYM if needed."
+    (unless (fboundp sym)
+      (display-warning 'emacs (format "SETUP ISSUE: %s package is not installed." package))
+      (fset sym (lambda (&optional _)
+                  ;; Do nothing -- stub
+                  ))))
+  (stub-function 'bar-cursor-mode "bar-cursor")
+  (stub-function 'diff-hl-flydiff-mode "diff-hl")
+  (stub-function 'diff-hl-margin-mode "diff-hl")
+  (stub-function 'global-form-feed-st-mode "form-feed-st")
+  (stub-function 'global-window-tool-bar-mode "window-tool-bar")
+  (stub-function 'global-diff-hl-mode "diff-hl")
+  (stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl")
+  (stub-function 'window-tool-bar-debug-show-memory-use "window-tool-bar"))
 
 ;; Ensure doc-view can be used
 (unless (and (executable-find "dvipdf")
@@ -22,7 +36,6 @@
   (display-warning 'emacs "SETUP ISSUE: dvipdf and pdftotext programs are not installed."))
 
 ;; This file is known to be slow, so add a bit more time here.
-(defvar init-dir--long-load-time-warning)
 (cl-incf init-dir--long-load-time-warning 0.1)
 
 ;;; Package customization:
@@ -94,6 +107,8 @@
       split-height-threshold nil)
 
 ;; This only works on Linux
+(defvar font-use-system-font) ; Only exists in builds compiled with
+                              ; display support.
 (setf font-use-system-font t)
 
 ;; Toolbar display
@@ -105,8 +120,6 @@
 (tool-bar-mode -1)
 (setf tool-bar-map nil)
 
-(defvar pixel-scroll-precision-interpolate-page)
-(defvar xterm-extra-capabilities)
 (if window-system
     (progn (pixel-scroll-precision-mode 1)
            (setf pixel-scroll-precision-interpolate-page t))
@@ -123,7 +136,6 @@
                                         (call-process "explorer.exe" nil nil nil url)))))
 
 ;; Make Emacs display similar to modern editors.
-(defvar x-stretch-cursor)
 (setf frame-resize-pixelwise t
       frame-title-format "%b - Emacs"
       icon-title-format t

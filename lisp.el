@@ -1,10 +1,14 @@
 ;;; init/lisp.el --- (Common) Lisp customizations  -*- lexical-binding: t; -*-
 
+;;; Declarations:
+(declare-function slime-setup "slime")
+(defvar inferior-lisp-program)
+(defvar slime-easy-menu)
+
 ;;; Code:
 (add-hook 'lisp-mode-hook
           (defun my-lisp-mode-hook ()
-            (make-variable-buffer-local 'browse-url-browser-function)
-            (setf browse-url-browser-function 'w3m)
+            (setq-local browse-url-browser-function 'w3m)
             (font-lock-add-keywords nil '(("^\\s *;;;.*\n?" (0 'section-comment-face t))
                                           ("^;;;;.*\n?" (0 'file-comment-face t))))
 

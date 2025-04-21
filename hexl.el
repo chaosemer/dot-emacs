@@ -1,5 +1,20 @@
 ;;; init/hexl.el --- Hexl (hex editor) customizations  -*- lexical-binding: t; -*-
 
+;;; Declarations:
+(declare-function hexl-activate-ruler "hexl")
+(declare-function hexl-address-to-marker "hexl")
+(declare-function hexl-ascii-start-column "hexl")
+(declare-function hexl-backward-char "hexl")
+(declare-function hexl-current-address "hexl")
+(declare-function hexl-follow-line "hexl")
+(declare-function hexl-forward-char "hexl")
+(declare-function hexl-goto-address "hexl")
+(declare-function hexl-insert-hex-string "hexl")
+(declare-function hexl-insert-multibyte-char "hexl")
+(declare-function hexl-line-displen "hexl")
+(defvar hexl-max-address)
+(defvar hexl-mode-map)
+
 ;;; Code:
 (with-eval-after-load 'hexl
   (add-hook 'hexl-mode-hook

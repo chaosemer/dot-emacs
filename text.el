@@ -1,5 +1,10 @@
 ;;; init/text.el --- Text mode customizations  -*- lexical-binding: t; -*-
 
+;;; Declarations:
+(declare-function markdown-toggle-markup-hiding "markdown-mode")
+(defvar markdown-fontify-code-blocks-natively)
+(defvar markdown-mode-map)
+
 ;;; Code:
 (add-hook 'text-mode-hook
           (defun my-text-mode-hook ()

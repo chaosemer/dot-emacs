@@ -25,4 +25,4 @@ jobs:
         with:
           check: ${{ matrix.check }}
           file: '*.el'
-          warnings_as_errors: false
+          warnings_as_errors: true
