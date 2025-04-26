@@ -2,7 +2,7 @@
 
 ;;; Code:
 
-(setf ediff-split-window-function #'split-window-horizontally
+(setf ediff-split-window-function #'split-window-sensibly
       ediff-window-setup-function #'ediff-setup-windows-plain)
 
 ;; Restore window configuration when existing ediff.  Thanks to
@@ -22,8 +22,12 @@
 ;; no special code
 
 ;;; Kemaps:
-;; VC should use EDiff, as it provides a better visualization.
+;; I prefer customized interfaces for viewing diffs.
+;;
+;; Ediff by default. diff-hl for within a file.
 (keymap-global-set "<remap> <vc-diff>" 'vc-ediff)
+(with-eval-after-load 'diff-hl
+  (keymap-set diff-hl-mode-map "<remap> <vc-diff>" #'diff-hl-show-hunk))
 
 ;;; Custom commands:
 (defun hexl-find-file-noselect (file)
