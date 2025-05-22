@@ -149,12 +149,13 @@
  (setf delete-by-moving-to-trash t
 ;; BUG: This breaks M-x customize-themes visuals
 ;;       form-feed-st-include-modes '(prog-mode text-mode special-mode)
-      narrow-to-defun-include-comments t
-      outline-minor-mode-use-buttons 'in-margins
-      parse-sexp-lookup-properties t
-      truncate-partial-width-windows nil
-      use-dialog-box nil
-      use-short-answers t)
+       narrow-to-defun-include-comments t
+       outline-minor-mode-use-buttons 'in-margins
+       parse-sexp-lookup-properties t
+       sentence-end-double-space nil
+       truncate-partial-width-windows nil
+       use-dialog-box nil
+       use-short-answers t)
 
 ;; Ignore Unity .meta files as well, they show up everywhere.
 (add-to-list 'completion-ignored-extensions ".meta")
