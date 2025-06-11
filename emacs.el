@@ -226,10 +226,6 @@
 ;; Fancier paste (cua-specific)
 (keymap-global-set "<remap> <delete-selection-repeat-replace-region>" 'cua-paste-pop)
 
-;; I like to visually see the possible dynamic abbrevs.  Swap default bindings.
-(keymap-global-set "M-/" 'dabbrev-completion)
-(keymap-global-set "C-M-/" 'dabbrev-expand)
-
 ;; I'm always mistakenly hitting these
 (dolist (key '("C-<next>" "C-<prior>" "C-x m" "M-<home>" "M-<end>" "M-<begin>" "C-x <left>"
                "C-x <right>" "M-<begin>" "M-<next>" "M-<prior>" "C-M-v" "C-M-S-v" "ESC <begin>"
