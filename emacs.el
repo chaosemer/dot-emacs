@@ -146,16 +146,16 @@
           (defun my-prog-mode-hook ()
             (setf show-trailing-whitespace t)))
 
- (setf delete-by-moving-to-trash t
+(setf delete-by-moving-to-trash t
 ;; BUG: This breaks M-x customize-themes visuals
 ;;       form-feed-st-include-modes '(prog-mode text-mode special-mode)
-       narrow-to-defun-include-comments t
-       outline-minor-mode-use-buttons 'in-margins
-       parse-sexp-lookup-properties t
-       sentence-end-double-space nil
-       truncate-partial-width-windows nil
-       use-dialog-box nil
-       use-short-answers t)
+      narrow-to-defun-include-comments t
+      outline-minor-mode-use-buttons 'in-margins
+      parse-sexp-lookup-properties t
+      sentence-end-double-space nil
+      truncate-partial-width-windows nil
+      use-dialog-box nil
+      use-short-answers t)
 
 ;; Ignore Unity .meta files as well, they show up everywhere.
 (add-to-list 'completion-ignored-extensions ".meta")
@@ -231,6 +231,9 @@
                "C-x <right>" "M-<begin>" "M-<next>" "M-<prior>" "C-M-v" "C-M-S-v" "ESC <begin>"
                "ESC <end>" "ESC <home>" "ESC <next>" "ESC <prior>"))
   (keymap-global-unset key))
+(setq-default mode-line-buffer-identification
+              (mapcar (lambda (str) (substring-no-properties str))
+                      mode-line-buffer-identification))
 
 ;; Prefer creating new windows horizontally
 (keymap-global-set "C-x 2" 'split-window-right)
