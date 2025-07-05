@@ -49,7 +49,10 @@
   (keymap-set c-mode-base-map "C-c M-<right>" 'c-forward-conditional)
   (keymap-set c-mode-base-map "C-c M-<left>" 'c-backward-conditional)
   (keymap-set c-mode-base-map "C-c M-<up>" 'c-up-conditional-with-else)
-  (keymap-set c-mode-base-map "C-c M-<down>" 'c-down-conditional))
+  (keymap-set c-mode-base-map "C-c M-<down>" 'c-down-conditional)
+
+  ;; Remove the TAB binding to get the normal completion behavior
+  (keymap-unset c-mode-base-map "TAB"))
 
 ;; ebrowse's default prefix key binding of "C-c C m -" is EXTREMELY
 ;; inconvenient.  Nothing else uses C-c C, so I'm moving it to that.
