@@ -6,10 +6,10 @@
 ;;; Code:
 (add-hook 'emacs-lisp-mode-hook
           (defun my-emacs-lisp-mode-hook ()
-            (eldoc-mode)))
-(add-hook 'ielm-mode-hook
-          (defun my-ielm-mode-hook ()
-            (eldoc-mode)))
+            (eldoc-mode)
+            (make-local-variable 'sentence-end-double-space)
+            (setf sentence-end-double-space t)))
+(add-hook 'ielm-mode-hook #'my-emacs-lisp-mode-hook)
 
 ;;; Faces:
 (font-lock-add-keywords 'emacs-lisp-mode

@@ -152,7 +152,7 @@
       narrow-to-defun-include-comments t
       outline-minor-mode-use-buttons 'in-margins
       parse-sexp-lookup-properties t
-      sentence-end-double-space nil
+      sentence-end-double-space nil     ;Except ELisp, see elisp.el
       truncate-partial-width-windows nil
       use-dialog-box nil
       use-short-answers t)
