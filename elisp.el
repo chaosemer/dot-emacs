@@ -4,11 +4,11 @@
 (defvar ielm-mode-hook)
 
 ;;; Code:
-(add-hook 'emacs-lisp-mode-hook
-          (defun my-emacs-lisp-mode-hook ()
-            (eldoc-mode)
-            (make-local-variable 'sentence-end-double-space)
-            (setf sentence-end-double-space t)))
+(defun my-emacs-lisp-mode-hook ()
+  (eldoc-mode)
+  (make-local-variable 'sentence-end-double-space)
+  (setf sentence-end-double-space t))
+(add-hook 'emacs-lisp-mode-hook #'my-emacs-lisp-mode-hook)
 (add-hook 'ielm-mode-hook #'my-emacs-lisp-mode-hook)
 
 ;;; Faces:
