@@ -11,6 +11,7 @@
 ;; Currently tested against:
 ;; * GNU Emacs 29.4
 ;; * GNU Emacs 30.1
+;; * GNU Emacs 30.2
 
 ;;; Declarations:
 (declare-function ibuffer-do-sort-by-alphabetic "ibuf-ext")
