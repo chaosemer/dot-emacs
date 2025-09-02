@@ -1,31 +1,10 @@
 ;;; init/text.el --- Text mode customizations  -*- lexical-binding: t; -*-
 
-;;; Declarations:
-(declare-function markdown-toggle-markup-hiding "markdown-mode")
-(defvar markdown-fontify-code-blocks-natively)
-(defvar markdown-mode-map)
-
 ;;; Code:
 (add-hook 'text-mode-hook
           (defun my-text-mode-hook ()
             (unless (member major-mode '(mail-mode org-mode))
               visual-line-mode)))
-
-(add-hook 'markdown-mode-hook
-          (defun my-markdown-mode-hook ()
-            ;; Normally, electric pair mode is on and helpful, but in
-            ;; Markdown mode it makes URLs be automatically hidden
-            ;; before they're typed in.
-            (electric-pair-local-mode -1)
-            (markdown-toggle-markup-hiding 1)))
-
-;; Actually, I prefer GitHub flavored markdown
-(add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode))
-
-;; Make sure we delete selection on highlight.
-(put 'markdown-enter-key 'delete-selection t)
-
-(setf markdown-fontify-code-blocks-natively t)
 
 ;;; Keymaps:
 (with-eval-after-load 'markdown-mode

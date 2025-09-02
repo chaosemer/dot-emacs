@@ -166,8 +166,8 @@
             (with-current-buffer (get-buffer "*scratch*")
               (setf buffer-offer-save t))))
 (setf initial-major-mode 'gfm-mode
-      initial-scratch-message (concat "Scratch buffer for notes\n"
-                                      "========================\n"
+      initial-scratch-message (concat "# Scratch buffer for notes\n"
+                                      "\n"
                                       "Put notes here..."))
 
 ;; When deugging xterm-mouse issues, having a large buffer is quite
