@@ -2,6 +2,8 @@
 
 ;;; Declarations:
 (defvar markdown-fontify-code-blocks-natively)
+(defvar markdown-hide-markup)
+(defvar markdown-mode-map)
 
 ;;; Code:
 
@@ -37,3 +39,9 @@ LAST: See adviced functions, above."
 ;;; Faces:
 (with-eval-after-load 'markdown-mode
   (set-face-attribute 'markdown-header-delimiter-face nil :height 0.7))
+
+;;; Keymaps:
+(with-eval-after-load 'markdown-mode
+  ;; Make markdown mode always indent / unintent with TAB / S-TAB
+  (keymap-set markdown-mode-map "TAB" 'markdown-demote-list-item)
+  (keymap-set markdown-mode-map "<backtab>" 'markdown-promote-list-item))
