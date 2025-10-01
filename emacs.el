@@ -27,8 +27,7 @@
   (stub-function 'global-form-feed-st-mode "form-feed-st")
   (stub-function 'global-window-tool-bar-mode "window-tool-bar")
   (stub-function 'global-diff-hl-mode "diff-hl")
-  (stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl")
-  (stub-function 'window-tool-bar-debug-show-memory-use "window-tool-bar"))
+  (stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl"))
 
 ;; Ensure doc-view can be used
 (unless (and (executable-find "dvipdf")
@@ -240,6 +239,7 @@
 (keymap-global-set "C-x 3" 'split-window-below)
 
 ;; My experimental package, <http://github.com/chaosemer/window-tool-bar>
+(require 'window-tool-bar)
 (keymap-global-set "C-x C-m" #'window-tool-bar-debug-show-memory-use)
 
 ;;; Custom commands:
