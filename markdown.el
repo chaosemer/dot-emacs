@@ -3,6 +3,7 @@
 ;;; Declarations:
 (defvar markdown-fontify-code-blocks-natively)
 (defvar markdown-hide-markup)
+(defvar markdown-indent-on-enter)
 (defvar markdown-mode-map)
 
 ;;; Code:
@@ -13,7 +14,8 @@
 ;; Make sure we delete selection on highlight.
 (put 'markdown-enter-key 'delete-selection t)
 
-(setf markdown-fontify-code-blocks-natively t)
+(setf markdown-fontify-code-blocks-natively t
+      markdown-indent-on-enter 'indent-and-new-item)
 
 ;; Always replace bullets with their cooler looking style
 (defun always-prettify-markdown (old-fn last)
