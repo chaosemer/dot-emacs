@@ -8,6 +8,11 @@
 
 ;;; Code:
 
+(add-hook 'markdown-mode-hook
+          (defun my-markdown-mode-hook ()
+            (visual-line-mode)
+            (visual-wrap-prefix-mode)))
+
 ;; Actually, I prefer GitHub flavored markdown
 (add-to-list 'major-mode-remap-alist '(markdown-mode . gfm-mode))
 
