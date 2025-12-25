@@ -127,8 +127,8 @@
   (setf xterm-set-window-title t)
   (when (string-match "microsoft" (shell-command-to-string "uname -r"))
     ;; Windows Console does not properly report that it supports
-    ;; setSelection. It does not support other functionality.
-    (setq xterm-extra-capabilities '(setSelection))
+    ;; setSelection or reportBackground.
+    (setq xterm-extra-capabilities '(reportBackground setSelection))
 
     ;; Use the default Windows browser.
     (setq browse-url-browser-function (lambda (url &rest _)
