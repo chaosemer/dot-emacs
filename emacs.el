@@ -21,7 +21,6 @@
       (fset sym (lambda (&optional _)
                   ;; Do nothing -- stub
                   ))))
-  (stub-function 'bar-cursor-mode "bar-cursor")
   (stub-function 'diff-hl-flydiff-mode "diff-hl")
   (stub-function 'diff-hl-margin-mode "diff-hl")
   (stub-function 'global-form-feed-st-mode "form-feed-st")
@@ -65,8 +64,6 @@
 
 ;;; Global customizations:
 
-(progn (bar-cursor-mode 1)
-       (setf minor-mode-alist (assoc-delete-all 'bar-cursor-mode minor-mode-alist)))
 (column-number-mode 1)
 (context-menu-mode 1)
 (cua-mode 1)
@@ -110,6 +107,11 @@
                               ; display support.
 (setf font-use-system-font t)
 
+;; Bar cursor toggling (abandon bar-cursor-mode)
+(defun update-cursor-type ()
+  (setf cursor-type (if overwrite-mode 'box t)))
+(add-hook 'overwrite-mode-hook #'update-cursor-type)
+
 ;; Toolbar display
 
 ;; tool-bar-mode is not preloaded on emacs-nox builds
@@ -124,7 +126,11 @@
            (setf pixel-scroll-precision-interpolate-page t))
   (xterm-mouse-mode 1)
   (diff-hl-margin-mode 1)
-  (setf xterm-set-window-title t)
+  ;; TODO(upstream): Not yet available in Emacs -- see bug#80091
+  (defvar xterm-update-cursor)
+
+  (setf xterm-set-window-title t
+        xterm-update-cursor t)
   (when (string-match "microsoft" (shell-command-to-string "uname -r"))
     ;; Windows Console does not properly report that it supports
     ;; setSelection or reportBackground.
@@ -155,6 +161,7 @@
       truncate-partial-width-windows nil
       use-dialog-box nil
       use-short-answers t)
+(modify-all-frames-parameters '((cursor-type . bar)))
 
 ;; Ignore Unity .meta files as well, they show up everywhere.
 (add-to-list 'completion-ignored-extensions ".meta")

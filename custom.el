@@ -30,8 +30,8 @@
  '(mouse-wheel-progressive-speed nil)
  '(nxml-slash-auto-complete-flag t)
  '(package-selected-packages
-   '(bar-cursor diff-hl dired-icon form-feed-st init-dir markdown-mode slime
-                window-tool-bar))
+   '(diff-hl dired-icon form-feed-st init-dir markdown-mode slime
+             window-tool-bar))
  '(package-vc-selected-packages
    '((window-tool-bar :vc-backend Git :url
                       "http://github.com/chaosemer/window-tool-bar")
@@ -39,8 +39,7 @@
                "http://github.com/chaosemer/init-dir")))
  '(server-window 'switch-to-buffer-other-frame)
  '(show-paren-style 'expression)
- '(vc-handled-backends '(SVN Git Hg))
- '(visible-cursor nil))
+ '(vc-handled-backends '(SVN Git Hg)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
