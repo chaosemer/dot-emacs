@@ -123,7 +123,13 @@
 
 (if window-system
     (progn (pixel-scroll-precision-mode 1)
-           (setf pixel-scroll-precision-interpolate-page t))
+           (setf pixel-scroll-precision-interpolate-page t)
+
+           (when (string-match "microsoft" (shell-command-to-string "uname -r"))
+             ;; Disable the primary selection, it breaks Emacs on
+             ;; WSLg.
+             ;; https://www.lukas-barth.net/blog/emacs-wsl-copy-clipboard/
+             (setq select-active-regions nil)))
   (xterm-mouse-mode 1)
   (diff-hl-margin-mode 1)
   ;; TODO(upstream): Not yet available in Emacs -- see bug#80091
