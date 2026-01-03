@@ -61,7 +61,7 @@
                    (setf pixel-scroll-precision-large-scroll-height nil)))
       (propertize " " 'invisible t 'rear-nonsticky t)))))
 
-;; TODO(upstream): The command `ielm-return' doesn't work well with
+;; TODO(upstreaming in bug#80123): The command `ielm-return' doesn't work well with
 ;; `electric-pair-mode'.  This is because while in this mode, you
 ;; always have a complete sexp.
 (display-warning 'emacs "Fixing `ielm-return' when not at end of line")
