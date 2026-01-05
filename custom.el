@@ -30,8 +30,8 @@
  '(mouse-wheel-progressive-speed nil)
  '(nxml-slash-auto-complete-flag t)
  '(package-selected-packages
-   '(diff-hl dired-icon form-feed-st init-dir markdown-mode slime
-             window-tool-bar))
+   '(adoc-mode diff-hl dired-icon form-feed-st init-dir kotlin-mode
+               markdown-mode nickel-mode slime window-tool-bar))
  '(package-vc-selected-packages
    '((window-tool-bar :vc-backend Git :url
                       "http://github.com/chaosemer/window-tool-bar")
