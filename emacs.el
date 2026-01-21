@@ -1,7 +1,6 @@
 ;;; init/emacs.el --- Global Emacs customizations  -*- lexical-binding: t; -*-
 
 ;;; Declarations:
-(declare-function horizontal-scroll-bar-mode "scroll-bar")
 (declare-function tool-bar-mode "tool-bar")
 (defvar init-dir--long-load-time-warning)
 (defvar markdown-header-scaling)
@@ -355,10 +354,12 @@ FILE: File to find the sibling file of."
 (keymap-global-set "C-x 5 h" 'find-sibling-file-other-frame)
 
 ;;; Turn on the horizontal scroll bar when `truncate-lines' is set TODO(package)
-(defun toggle-horizontal-scroll-bar (symbol newval operation where)
+(defun maybe-show-horizontal-scroll-bar (symbol newval operation where)
   "Toggle the horizontal scroll bar based on `truncate-lines'.
-If `truncate-lines' is non-nil, the horizontal scroll bar will be
-displayed.  If nil, the horizontal scroll bar will be hidden.
+If `truncate-lines' is non-nil in the current buffer, set the horizontal
+scroll bar to be displayed as well.  If `truncate-lines' is nil, the
+horizontal scroll bar will be based on frame parameters.  Also see
+`toggle-horizontal-scroll-bar' and `horizontal-scroll-bar-mode'.
 
 This function may be passed to `add-variable-watcher'.
 Parameters SYMBOL, NEWVAL, OPERATION, and WHERE are as documented
@@ -366,11 +367,12 @@ there."
   (when (and (eq symbol 'truncate-lines)
              (eq operation 'set)
              (bufferp where))
-    (setq horizontal-scroll-bar (if newval 'bottom
-                                  nil)) ; t would be more appropriate,
-                                        ; but then workaround below
-                                        ; for macOS specific bug
-                                        ; wouldn't work.
+    (setq horizontal-scroll-bar
+          (if newval
+              ;; Forced on
+              'bottom
+            ;; Fallback to default
+            t))
 
     ;; Force any windows displaying this buffer to show a scroll bar
     (dolist (window (get-buffer-window-list where nil t))
@@ -381,10 +383,4 @@ there."
 ;; because initial frame is non-graphical doesn't mean all frames are
 ;; not graphical.
 (when (bound-and-true-p x-toolkit-scroll-bars)
-  (add-variable-watcher 'truncate-lines #'toggle-horizontal-scroll-bar)
-
-  ;; Workaround needed on macOS due to
-  ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=72331
-  ;; TODO: Fixed in Emacs 30.
-  (horizontal-scroll-bar-mode)
-  (setq-default horizontal-scroll-bar nil))
+  (add-variable-watcher 'truncate-lines #'maybe-show-horizontal-scroll-bar))
