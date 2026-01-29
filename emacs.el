@@ -190,7 +190,8 @@
 (setf (face-background 'show-paren-match)
       (if (> (display-color-cells) 256) "light gray" "blue")
       (face-background 'show-paren-mismatch) "red"
-      (face-foreground 'show-paren-mismatch) "white")
+      (face-foreground 'show-paren-mismatch) "white"
+      (face-background 'vertical-border) "#2d2d2d")
 
 ;;; Section and File level comment functionality.
 ;;;
