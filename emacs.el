@@ -23,6 +23,7 @@
   (stub-function 'diff-hl-flydiff-mode "diff-hl")
   (stub-function 'diff-hl-margin-mode "diff-hl")
   (stub-function 'global-form-feed-st-mode "form-feed-st")
+  (stub-function 'global-kkp-mode "kkp")
   (stub-function 'global-window-tool-bar-mode "window-tool-bar")
   (stub-function 'global-diff-hl-mode "diff-hl")
   (stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl"))
@@ -71,6 +72,7 @@
 (progn (global-form-feed-st-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'form-feed-st-mode minor-mode-alist)))
 (global-goto-address-mode 1)
+(global-kkp-mode 1)
 (progn (global-subword-mode 1)
        (setf minor-mode-alist (assoc-delete-all 'subword-mode minor-mode-alist)))
 (setf (default-value 'indent-tabs-mode) nil

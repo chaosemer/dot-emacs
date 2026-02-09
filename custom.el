@@ -30,7 +30,7 @@
  '(mouse-wheel-progressive-speed nil)
  '(nxml-slash-auto-complete-flag t)
  '(package-selected-packages
-   '(adoc-mode diff-hl dired-icon form-feed-st init-dir kotlin-mode
+   '(adoc-mode diff-hl dired-icon form-feed-st init-dir kkp kotlin-mode
                markdown-mode nickel-mode slime window-tool-bar))
  '(package-vc-selected-packages
    '((window-tool-bar :vc-backend Git :url
