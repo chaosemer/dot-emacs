@@ -1,6 +1,9 @@
 ;;; init/vc.el --- Customizing Version Control menus and such  -*- lexical-binding: t; -*-
 
 ;;; Code:
+
+;; Always show full dates for logs
+(setf vc-git-log-switches "--format=fuller")
 
 ;;; Custom commands:
 (with-eval-after-load 'vc-git
