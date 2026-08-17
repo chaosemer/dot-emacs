@@ -128,3 +128,8 @@ simply inserts a newline."
             (ibuffer-switch-to-saved-filter-groups "Home")
             (ibuffer-do-sort-by-alphabetic)
             (setf ibuffer-hidden-filter-groups '("Starred"))))
+
+;; TODO(in discussion in bug#81639) Ghostty is intended to be xterm compatible
+(unless (member '("ghostty" . "xterm") term-file-aliases)
+  (display-warning 'emacs "Adding ghostty to xterm alias")
+  (add-to-list 'term-file-aliases '("ghostty" . "xterm")))
