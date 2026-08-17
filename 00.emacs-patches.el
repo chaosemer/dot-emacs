@@ -133,3 +133,8 @@ simply inserts a newline."
 (unless (member '("ghostty" . "xterm") term-file-aliases)
   (display-warning 'emacs "Adding ghostty to xterm alias")
   (add-to-list 'term-file-aliases '("ghostty" . "xterm")))
+
+;; TODO(fixed in Emacs 31, I think) Ghostty supports OSC52
+(when (string= (getenv "TERM") "ghostty")
+  (display-warning 'emacs "Automatically enabling OSC52 on ghostty")
+  (setq xterm-extra-capabilities '(setSelection)))
