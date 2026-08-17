@@ -28,6 +28,7 @@
 (defvar ielm-dynamic-return)
 (defvar init-dir--long-load-time-warning)
 (defvar pixel-scroll-precision-large-scroll-height)
+(defvar xterm-extra-capabilities)
 
 ;;; Code:
 
