@@ -139,3 +139,9 @@ simply inserts a newline."
 (when (string= (getenv "TERM") "ghostty")
   (display-warning 'emacs "Automatically enabling OSC52 on ghostty")
   (setq xterm-extra-capabilities '(setSelection)))
+
+;; TODO(discussed in https://github.com/benotn/kkp/issues/29)
+(require 'kkp nil t)
+(when (equal (alist-get ?\e kkp--non-printable-keys-with-u-terminator) "<escape>")
+  (display-warning 'emacs "Make kkp.el properly map \\e to ESC")
+  (setf (alist-get ?\e kkp--non-printable-keys-with-u-terminator) "ESC"))
