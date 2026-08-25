@@ -1,6 +1,7 @@
 ;;; init/elisp.el --- Emacs Lisp customizations  -*- lexical-binding: t; -*-
 
 ;;; Declarations:
+(defvar ielm-dynamic-return)
 (defvar ielm-mode-hook)
 
 ;;; Code:
@@ -10,6 +11,8 @@
   (setf sentence-end-double-space t))
 (add-hook 'emacs-lisp-mode-hook #'my-emacs-lisp-mode-hook)
 (add-hook 'ielm-mode-hook #'my-emacs-lisp-mode-hook)
+
+(setf ielm-dynamic-return 'point)
 
 ;;; Faces:
 (font-lock-add-keywords 'emacs-lisp-mode
