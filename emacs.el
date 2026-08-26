@@ -69,12 +69,10 @@
 (cua-mode 1)
 (electric-pair-mode 1)
 (fido-mode 1)
-(progn (global-form-feed-st-mode 1)
-       (setf minor-mode-alist (assoc-delete-all 'form-feed-st-mode minor-mode-alist)))
+(global-form-feed-st-mode 1)
 (global-goto-address-mode 1)
 (global-kkp-mode 1)
-(progn (global-subword-mode 1)
-       (setf minor-mode-alist (assoc-delete-all 'subword-mode minor-mode-alist)))
+(global-subword-mode 1)
 (setf (default-value 'indent-tabs-mode) nil
       tab-always-indent 'complete)
 (recentf-mode 1)
@@ -83,6 +81,9 @@
 (savehist-mode 1)
 (tooltip-mode -1)
 (url-handler-mode 1)
+
+(defvar mode-line-collapse-minor-modes) ;TODO(Only needed pre-Emacs 31)
+(setf mode-line-collapse-minor-modes '(eldoc-mode form-feed-st-mode subword-mode))
 
 ;; Diff-hl is particularly heavyweight (2025-03-31)
 ;; Defer until the first file is loaded.
