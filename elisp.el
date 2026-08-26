@@ -6,7 +6,6 @@
 
 ;;; Code:
 (defun my-emacs-lisp-mode-hook ()
-  (eldoc-mode)
   (make-local-variable 'sentence-end-double-space)
   (setf sentence-end-double-space t))
 (add-hook 'emacs-lisp-mode-hook #'my-emacs-lisp-mode-hook)

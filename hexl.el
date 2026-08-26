@@ -21,7 +21,6 @@
             (defun my-hexl-mode-hook ()
               (hexl-follow-line)
               (hexl-activate-ruler)
-              (turn-on-eldoc-mode)
               (setf truncate-lines t))))
 
 ;;; Custom commands:
