@@ -31,7 +31,7 @@
  '(nxml-slash-auto-complete-flag t)
  '(package-selected-packages
    '(adoc-mode diff-hl form-feed-st init-dir kkp kotlin-mode
-               markdown-mode nickel-mode slime window-tool-bar))
+               markdown-mode nickel-mode slime wgrep window-tool-bar))
  '(package-vc-selected-packages
    '((window-tool-bar :vc-backend Git :url
                       "http://github.com/chaosemer/window-tool-bar")
