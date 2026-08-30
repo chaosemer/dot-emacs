@@ -19,17 +19,20 @@
 ;; Face remappings for side windows
 (defface my-side-window
   '((t :background "#101018"))
-  "Face applied to all side windows.")
+  "Face applied to all side windows."
+  :group 'local)
 (defface my-mode-line-active-side-window
   '((t :inherit mode-line-active
        :background "#202028"
        :box "#404050"))
-  "Face replacement for `mode-line' in side windows.")
+  "Face replacement for `mode-line' in side windows."
+  :group 'local)
 (defface my-mode-line-inactive-side-window
   '((t :inherit mode-line-inactive
        :background "#101018"
        :box "#202020"))
-  "Face replacement for `mode-line-inactive' in side windows.")
+  "Face replacement for `mode-line-inactive' in side windows."
+  :group 'local)
 
 (setf face-remapping-alist
       `((default
