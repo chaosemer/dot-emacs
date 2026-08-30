@@ -63,6 +63,7 @@
              "^\\*Find\\*$"
              "^\\*Help\\*$"
              "^\\*Ibuffer\\*$"
+             "^\\*Ido Completions\\*$"
              "^\\*Local Variables\\*$"
              "^\\*Message\\*$"
              "^\\*Messages\\*$"
@@ -100,7 +101,7 @@
 OLD-FN: Old function, provided by advice system.
 WINDOW: See `shrink-window-if-larger-than-buffer'."
   (setq window (or window (window-normalize-window window t)))
-  
+
   (unless (window-parameter window 'window-side)
     (funcall old-fn window)))
 
