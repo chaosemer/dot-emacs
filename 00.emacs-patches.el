@@ -20,6 +20,7 @@
 (defvar ielm-dynamic-multiline-inputs)
 (defvar ielm-dynamic-return)
 (defvar init-dir--long-load-time-warning)
+(defvar kkp--non-printable-keys-with-u-terminator)
 (defvar pixel-scroll-precision-large-scroll-height)
 (defvar xterm-extra-capabilities)
 
@@ -104,6 +105,7 @@ simply inserts a newline."
 
 ;; TODO(discussed in https://github.com/benotn/kkp/issues/29)
 (require 'kkp nil t)
-(when (equal (alist-get ?\e kkp--non-printable-keys-with-u-terminator) "<escape>")
+(when (and (boundp 'kkp--non-printable-keys-with-u-terminator)
+           (equal (alist-get ?\e kkp--non-printable-keys-with-u-terminator) "<escape>"))
   (display-warning 'emacs "Make kkp.el properly map \\e to ESC")
   (setf (alist-get ?\e kkp--non-printable-keys-with-u-terminator) "ESC"))
