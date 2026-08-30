@@ -5,6 +5,8 @@
 (declare-function ibuffer-switch-to-saved-filter-groups "ibuf-ext")
 (declare-function ibuffer-toggle-filter-group "ibuf-ext")
 (declare-function tool-bar-mode "tool-bar")
+(defvar completion-eager-display)
+(defvar completion-eager-update)
 (defvar ibuffer-hidden-filter-groups)
 (defvar ibuffer-mode-filter-group-map)
 (defvar ibuffer-saved-filter-groups)
@@ -75,7 +77,18 @@
 (context-menu-mode 1)
 (cua-mode 1)
 (electric-pair-mode 1)
-(fido-mode 1)
+(if (string-version-lessp emacs-version "31.1")
+    (fido-mode 1)
+  (setf completion-eager-display t
+        completion-eager-update t
+        completion-ignore-case t
+        read-file-name-completion-ignore-case t
+        read-buffer-completion-ignore-case t
+        completions-max-height 20
+        completions-detailed t
+        completion-auto-help 'always
+        completions-format 'one-column
+        minibuffer-visible-completions t))
 (global-form-feed-st-mode 1)
 (global-goto-address-mode 1)
 (global-kkp-mode 1)
