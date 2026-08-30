@@ -1,7 +1,14 @@
 ;;; init/emacs.el --- Global Emacs customizations  -*- lexical-binding: t; -*-
 
 ;;; Declarations:
+(declare-function ibuffer-do-sort-by-alphabetic "ibuf-ext")
+(declare-function ibuffer-switch-to-saved-filter-groups "ibuf-ext")
+(declare-function ibuffer-toggle-filter-group "ibuf-ext")
 (declare-function tool-bar-mode "tool-bar")
+(defvar ibuffer-hidden-filter-groups)
+(defvar ibuffer-mode-filter-group-map)
+(defvar ibuffer-saved-filter-groups)
+(defvar ibuffer-show-empty-filter-groups)
 (defvar init-dir--long-load-time-warning)
 (defvar markdown-header-scaling)
 (defvar outline-minor-mode-use-buttons)
@@ -254,6 +261,9 @@
 (keymap-global-set "C-x 2" 'split-window-right)
 (keymap-global-set "C-x 3" 'split-window-below)
 
+;; Use ibuffer for buffer management
+(keymap-global-set "C-x C-b" 'ibuffer)
+
 ;; My experimental package, <http://github.com/chaosemer/window-tool-bar>
 (require 'window-tool-bar)
 (keymap-global-set "C-x C-m" #'window-tool-bar-debug-show-memory-use)
@@ -388,3 +398,20 @@ there."
 ;; not graphical.
 (when (bound-and-true-p x-toolkit-scroll-bars)
   (add-variable-watcher 'truncate-lines #'maybe-show-horizontal-scroll-bar))
+
+;;; Customizations for `ibuffer'
+
+(add-hook 'ibuffer-mode-hook
+          (defun my-ibuffer-hook ()
+            (ibuffer-switch-to-saved-filter-groups "Home")
+            (ibuffer-do-sort-by-alphabetic)
+            (setf ibuffer-hidden-filter-groups '("Starred"))))
+(setf ibuffer-show-empty-filter-groups nil
+      ibuffer-saved-filter-groups '(("Home"
+                                     ("Files" (visiting-file))
+                                     ("Starred" (starred-name)))))
+
+;; Make it mouse friendly
+(with-eval-after-load 'ibuffer
+  (keymap-set ibuffer-mode-filter-group-map
+              "<mouse-1>" #'ibuffer-toggle-filter-group))

@@ -14,17 +14,9 @@
 ;; * GNU Emacs 31.1
 
 ;;; Declarations:
-(declare-function ibuffer-do-sort-by-alphabetic "ibuf-ext")
-(declare-function ibuffer-switch-to-saved-filter-groups "ibuf-ext")
-(declare-function ibuffer-toggle-filter-group "ibuf-ext")
 (declare-function ielm-pm "ielm")
 (declare-function ielm-send-input "ielm")
 (defvar comint-prompt-regexp)
-(defvar ibuffer-hidden-filter-groups)
-(defvar ibuffer-hidden-filter-groups)
-(defvar ibuffer-mode-filter-group-map)
-(defvar ibuffer-saved-filter-groups)
-(defvar ibuffer-show-empty-filter-groups)
 (defvar ielm-dynamic-multiline-inputs)
 (defvar ielm-dynamic-return)
 (defvar init-dir--long-load-time-warning)
@@ -98,39 +90,6 @@ simply inserts a newline."
                   (newline 1)))
               (newline-and-indent)))
         (newline)))))
-
-;; https://www2.lib.uchicago.edu/keith/emacs/ recommends alternaties
-;; to `list-buffers'.
-(display-warning
- 'emacs
- (concat
-  "You are trying out alternative bindings for C-x C-b.\n"
-  "  Toggle the binding: "
-  (buttonize "[list-buffers]"
-             (lambda (&rest _)
-               (keymap-global-set "C-x C-b" #'list-buffers)))
-  " "
-  (buttonize "[bs-show]"
-             (lambda (&rest _)
-               (keymap-global-set "C-x C-b" #'bs-show)))
-  " "
-  (buttonize "[ibuffer]"
-             (lambda (&rest _)
-               (keymap-global-set "C-x C-b" #'ibuffer)))
-  (propertize " " 'invisible t 'rear-nonsticky t)))
-(keymap-global-set "C-x C-b" #'ibuffer)
-(with-eval-after-load 'ibuffer
-  (keymap-set ibuffer-mode-filter-group-map
-              "<mouse-1>" #'ibuffer-toggle-filter-group))
-(setf ibuffer-show-empty-filter-groups nil
-      ibuffer-saved-filter-groups '(("Home"
-                                     ("Files" (visiting-file))
-                                     ("Starred" (starred-name)))))
-(add-hook 'ibuffer-mode-hook
-          (defun my-ibuffer-hook ()
-            (ibuffer-switch-to-saved-filter-groups "Home")
-            (ibuffer-do-sort-by-alphabetic)
-            (setf ibuffer-hidden-filter-groups '("Starred"))))
 
 ;; TODO(in discussion in bug#81639) Ghostty is intended to be xterm compatible
 (unless (member '("ghostty" . "xterm") term-file-aliases)
