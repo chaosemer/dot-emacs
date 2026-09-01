@@ -76,6 +76,7 @@
 (column-number-mode 1)
 (context-menu-mode 1)
 (cua-mode 1)
+(editorconfig-mode 1)
 (electric-pair-mode 1)
 (if (string-version-lessp emacs-version "31.1")
     (fido-mode 1)
@@ -104,8 +105,14 @@
 (global-goto-address-mode 1)
 (global-kkp-mode 1)
 (global-subword-mode 1)
+;; TODO(emacs31) Function only available on Emacs 31
+(when (fboundp 'global-xref-mouse-mode)
+  (global-xref-mouse-mode 1))
 (setf (default-value 'indent-tabs-mode) nil
       tab-always-indent 'complete)
+;; TODO(emacs31) Function only available on Emacs 31
+(when (fboundp 'package-autosuggest-mode)
+  (package-autosuggest-mode 1))
 (recentf-mode 1)
 (repeat-mode 1)
 (save-place-mode 1)
@@ -182,6 +189,7 @@
 ;; Make Emacs display similar to modern editors.
 (setf frame-resize-pixelwise t
       frame-title-format "%b - Emacs"
+      frame-inhibit-implied-resize t
       icon-title-format t
       scroll-conservatively most-positive-fixnum
       window-resize-pixelwise t
@@ -191,15 +199,21 @@
             (setf show-trailing-whitespace t)))
 
 (setf delete-by-moving-to-trash t
+      dired-auto-revert-buffer t
 ;; BUG: This breaks M-x customize-themes visuals
 ;;       form-feed-st-include-modes '(prog-mode text-mode special-mode)
+      mouse-drag-and-drop-region t
+      mouse-drag-and-drop-region-cross-program t
       narrow-to-defun-include-comments t
       outline-minor-mode-use-buttons 'in-margins
       parse-sexp-lookup-properties t
+      save-interprogram-paste-before-kill t
       sentence-end-double-space nil     ;Except ELisp, see elisp.el
+      shell-command-prompt-show-cwd t
       truncate-partial-width-windows nil
       use-dialog-box nil
-      use-short-answers t)
+      use-short-answers t
+      vc-find-revision-no-save t)
 (modify-all-frames-parameters '((cursor-type . bar)))
 
 ;; Ignore Unity .meta files as well, they show up everywhere.
