@@ -88,7 +88,18 @@
         completions-detailed t
         completion-auto-help 'always
         completions-format 'one-column
-        minibuffer-visible-completions t))
+        minibuffer-visible-completions t)
+
+  ;; Minibuffer complete on RET in all cases, but allow C-u RET to do
+  ;; allow non-completion
+  (defun my-minibuffer-complete-and-exit (dont-do-completion)
+    (interactive "P")
+    (if dont-do-completion
+        (exit-minibuffer)
+      (let ((minibuffer-completion-confirm nil))
+        (minibuffer-complete-and-exit))))
+  (keymap-set minibuffer-mode-map "<remap> <minibuffer-complete-and-exit>"
+              #'my-minibuffer-complete-and-exit))
 (global-form-feed-st-mode 1)
 (global-goto-address-mode 1)
 (global-kkp-mode 1)
