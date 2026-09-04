@@ -1,8 +1,9 @@
 ;;; init/vc.el --- Customizing Version Control menus and such  -*- lexical-binding: t; -*-
 
+;;; Declarations:
+(defvar vc-dir-auto-hide-up-to-date)
+
 ;;; Code:
-
-
 (setf
  ;; Always show full dates for logs
  vc-git-log-switches "--format=fuller"

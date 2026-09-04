@@ -16,6 +16,8 @@
 (defvar outline-minor-mode-use-buttons)
 (defvar pixel-scroll-precision-interpolate-page)
 (defvar tool-bar-map)
+(defvar vc-find-revision-no-save)
+(defvar view-lossage-auto-refresh)
 (defvar x-stretch-cursor)
 (defvar xterm-extra-capabilities)
 (defvar xterm-set-window-title)
@@ -100,7 +102,7 @@
       (let ((minibuffer-completion-confirm nil))
         (minibuffer-complete-and-exit))))
   (keymap-set minibuffer-mode-map "<remap> <minibuffer-complete-and-exit>"
-              #'my-minibuffer-complete-and-exit))
+              'my-minibuffer-complete-and-exit))
 (global-form-feed-st-mode 1)
 (global-goto-address-mode 1)
 (global-kkp-mode 1)
