@@ -2,8 +2,11 @@
 
 ;;; Code:
 
-;; Always show full dates for logs
-(setf vc-git-log-switches "--format=fuller")
+
+(setf
+ ;; Always show full dates for logs
+ vc-git-log-switches "--format=fuller"
+ vc-dir-auto-hide-up-to-date t)
 
 ;;; Custom commands:
 (with-eval-after-load 'vc-git

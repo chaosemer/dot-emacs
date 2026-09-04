@@ -121,7 +121,11 @@
 (url-handler-mode 1)
 
 (defvar mode-line-collapse-minor-modes) ;TODO(Only needed pre-Emacs 31)
-(setf mode-line-collapse-minor-modes '(eldoc-mode form-feed-st-mode subword-mode))
+(setf mode-line-collapse-minor-modes
+      '(eldoc-mode
+        form-feed-st-mode
+        subword-mode
+        visual-line-mode))
 
 ;; Diff-hl is particularly heavyweight (2025-03-31)
 ;; Defer until the first file is loaded.
@@ -213,7 +217,8 @@
       truncate-partial-width-windows nil
       use-dialog-box nil
       use-short-answers t
-      vc-find-revision-no-save t)
+      vc-find-revision-no-save t
+      view-lossage-auto-refresh t)
 (modify-all-frames-parameters '((cursor-type . bar)))
 
 ;; Ignore Unity .meta files as well, they show up everywhere.
