@@ -5,8 +5,6 @@
 (declare-function ibuffer-switch-to-saved-filter-groups "ibuf-ext")
 (declare-function ibuffer-toggle-filter-group "ibuf-ext")
 (declare-function tool-bar-mode "tool-bar")
-(defvar completion-eager-display)
-(defvar completion-eager-update)
 (defvar ibuffer-hidden-filter-groups)
 (defvar ibuffer-mode-filter-group-map)
 (defvar ibuffer-saved-filter-groups)
@@ -75,51 +73,11 @@
 
 ;;; Global customizations:
 
-(column-number-mode 1)
-(context-menu-mode 1)
 (cua-mode 1)
-(editorconfig-mode 1)
-(electric-pair-mode 1)
-(if (string-version-lessp emacs-version "31.1")
-    (fido-mode 1)
-  (setf completion-eager-display t
-        completion-eager-update t
-        completion-ignore-case t
-        read-file-name-completion-ignore-case t
-        read-buffer-completion-ignore-case t
-        completions-max-height 20
-        completions-detailed t
-        completion-auto-help 'always
-        completion-show-help nil
-        completions-format 'one-column
-        minibuffer-visible-completions t)
-
-  ;; Minibuffer complete on RET in all cases, but allow C-u RET to do
-  ;; allow non-completion
-  (defun my-minibuffer-complete-and-exit (dont-do-completion)
-    (interactive "P")
-    (if dont-do-completion
-        (exit-minibuffer)
-      (let ((minibuffer-completion-confirm nil))
-        (minibuffer-complete-and-exit))))
-  (keymap-set minibuffer-mode-map "<remap> <minibuffer-complete-and-exit>"
-              'my-minibuffer-complete-and-exit))
 (global-form-feed-st-mode 1)
 (global-goto-address-mode 1)
 (global-kkp-mode 1)
 (global-subword-mode 1)
-;; TODO(emacs31) Function only available on Emacs 31
-(when (fboundp 'global-xref-mouse-mode)
-  (global-xref-mouse-mode 1))
-(setf (default-value 'indent-tabs-mode) nil
-      tab-always-indent 'complete)
-;; TODO(emacs31) Function only available on Emacs 31
-(when (fboundp 'package-autosuggest-mode)
-  (package-autosuggest-mode 1))
-(recentf-mode 1)
-(repeat-mode 1)
-(save-place-mode 1)
-(savehist-mode 1)
 (tooltip-mode -1)
 (url-handler-mode 1)
 
@@ -128,7 +86,8 @@
       '(eldoc-mode
         form-feed-st-mode
         subword-mode
-        visual-line-mode))
+        visual-line-mode
+        which-key-mode))
 
 ;; Diff-hl is particularly heavyweight (2025-03-31)
 ;; Defer until the first file is loaded.
@@ -148,11 +107,6 @@
                                         ;an 80 column wide value to
                                         ;make room for margins
       split-height-threshold nil)
-
-;; This only works on Linux
-(defvar font-use-system-font) ; Only exists in builds compiled with
-                              ; display support.
-(setf font-use-system-font t)
 
 ;; Bar cursor toggling (abandon bar-cursor-mode)
 (defun update-cursor-type ()
@@ -194,34 +148,25 @@
                                         (call-process "explorer.exe" nil nil nil url)))))
 
 ;; Make Emacs display similar to modern editors.
-(setf frame-resize-pixelwise t
-      frame-title-format "%b - Emacs"
-      frame-inhibit-implied-resize t
+(setf frame-title-format "%b - Emacs"
       icon-title-format t
       scroll-conservatively most-positive-fixnum
-      window-resize-pixelwise t
       x-stretch-cursor t)
 (add-hook 'prog-mode-hook
           (defun my-prog-mode-hook ()
             (setf show-trailing-whitespace t)))
 
 (setf delete-by-moving-to-trash t
-      dired-auto-revert-buffer t
 ;; BUG: This breaks M-x customize-themes visuals
 ;;       form-feed-st-include-modes '(prog-mode text-mode special-mode)
-      mouse-drag-and-drop-region t
-      mouse-drag-and-drop-region-cross-program t
       mouse-drag-mode-line-buffer t
       narrow-to-defun-include-comments t
       outline-minor-mode-use-buttons 'in-margins
       parse-sexp-lookup-properties t
-      save-interprogram-paste-before-kill t
       sentence-end-double-space nil     ;Except ELisp, see elisp.el
-      shell-command-prompt-show-cwd t
       truncate-partial-width-windows nil
       use-dialog-box nil
       use-short-answers t
-      vc-find-revision-no-save t
       view-lossage-auto-refresh t)
 (modify-all-frames-parameters '((cursor-type . bar)))
 

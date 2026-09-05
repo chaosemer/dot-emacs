@@ -15,7 +15,6 @@
  '(calculator-electric-mode t)
  '(calculator-number-digits 10)
  '(compilation-ask-about-save nil)
- '(compilation-scroll-output t)
  '(cscope-option-do-not-update-database t)
  '(cursor-in-non-selected-windows nil)
  '(custom-file "~/.config/emacs/init/custom.el")
