@@ -90,6 +90,7 @@
         completions-max-height 20
         completions-detailed t
         completion-auto-help 'always
+        completion-show-help nil
         completions-format 'one-column
         minibuffer-visible-completions t)
 
@@ -210,6 +211,7 @@
 ;;       form-feed-st-include-modes '(prog-mode text-mode special-mode)
       mouse-drag-and-drop-region t
       mouse-drag-and-drop-region-cross-program t
+      mouse-drag-mode-line-buffer t
       narrow-to-defun-include-comments t
       outline-minor-mode-use-buttons 'in-margins
       parse-sexp-lookup-properties t
