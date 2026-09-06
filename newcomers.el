@@ -61,7 +61,9 @@
 ;; Completion-related options
 ;; TODO(emacs31): Many of these are only available in Emacs 31
 (if (string-version-lessp emacs-version "31.1")
-    (fido-mode 1)
+    (progn
+      (fido-mode 1)
+      (setf tab-always-indent 'complete))
   (setf minibuffer-visible-completions t
         completions-detailed t
         completions-group t
