@@ -12,6 +12,7 @@
 (setf
  ;; Display like most file browsers
  ls-lisp-dirs-first t
+ dired-free-space nil
  dired-listing-switches (concat dired-listing-switches " --human-readable")
 
  ;; Only three columns
