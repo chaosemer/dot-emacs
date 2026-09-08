@@ -159,10 +159,14 @@
 (setf delete-by-moving-to-trash t
 ;; BUG: This breaks M-x customize-themes visuals
 ;;       form-feed-st-include-modes '(prog-mode text-mode special-mode)
+      isearch-allow-scroll t
+      isearch-lazy-count t
+      kill-do-not-save-duplicates t
       mouse-drag-mode-line-buffer t
       narrow-to-defun-include-comments t
       outline-minor-mode-use-buttons 'in-margins
       parse-sexp-lookup-properties t
+      show-paren-context-when-offscreen 'child-frame
       sentence-end-double-space nil     ;Except ELisp, see elisp.el
       truncate-partial-width-windows nil
       use-dialog-box nil
@@ -372,7 +376,8 @@ Parameters SYMBOL, NEWVAL, OPERATION, and WHERE are as documented
 there."
   (when (and (eq symbol 'truncate-lines)
              (eq operation 'set)
-             (bufferp where))
+             (bufferp where)
+             (not (string-equal (buffer-name where) " *show-paren context*")))
     (setq horizontal-scroll-bar
           (if newval
               ;; Forced on
