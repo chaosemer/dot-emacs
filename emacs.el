@@ -377,7 +377,9 @@ there."
   (when (and (eq symbol 'truncate-lines)
              (eq operation 'set)
              (bufferp where)
-             (not (string-equal (buffer-name where) " *show-paren context*")))
+             ;; Don't affect internal buffers
+             (or (not (string= (substring (buffer-name where) 0 1) " "))
+                 (buffer-file-name where)))
     (setq horizontal-scroll-bar
           (if newval
               ;; Forced on
