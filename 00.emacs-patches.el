@@ -56,9 +56,9 @@
                    (setf pixel-scroll-precision-large-scroll-height nil)))
       (propertize " " 'invisible t 'rear-nonsticky t)))))
 
-;; TODO(upstreamed in 31.1): The command `ielm-return' doesn't work well with
-;; `electric-pair-mode'.  This is because while in this mode, you
-;; always have a complete sexp.
+;; TODO(emacs31): Upstreamed in 31.1. The command `ielm-return'
+;; doesn't work well with `electric-pair-mode'.  This is because while
+;; in this mode, you always have a complete sexp.
 (when (string-version-lessp emacs-version "31.1")
   (display-warning 'emacs "Fixing `ielm-return' when not at end of line")
   (with-eval-after-load 'ielm
@@ -92,12 +92,13 @@ simply inserts a newline."
               (newline-and-indent)))
         (newline)))))
 
-;; TODO(in discussion in bug#81639) Ghostty is intended to be xterm compatible
-(unless (member '("ghostty" . "xterm") term-file-aliases)
+;; TODO(emacs32) Upstreamed in in discussion in bug#81639
+(unless (or (assoc "ghostty" term-file-aliases)
+            (locate-library "term/ghostty"))
   (display-warning 'emacs "Adding ghostty to xterm alias")
   (add-to-list 'term-file-aliases '("ghostty" . "xterm")))
 
-;; TODO(fixed in 31.1) Ghostty supports OSC52
+;; TODO(emacs31): Ghostty supports OSC52
 (when (and (string-version-lessp emacs-version "31.1")
            (string= (getenv "TERM") "ghostty"))
   (display-warning 'emacs "Automatically enabling OSC52 on ghostty")

@@ -24,7 +24,7 @@
       ;;pixel-scroll-mode t - I use pixel-scroll-precision-mode instead
       mouse-drag-and-drop-region t
       mouse-drag-and-drop-region-cross-program t)
-;; TODO(emacs31) Function only available on Emacs 31
+;; TODO(emacs31): Function only available on Emacs 31
 (when (fboundp 'global-xref-mouse-mode)
   (global-xref-mouse-mode 1))
 
@@ -96,7 +96,7 @@
               'my-minibuffer-complete-and-exit))
 
 ;; Package-related options
-;; TODO(emacs31) Function only available on Emacs 31
+;; TODO(emacs31): Function only available on Emacs 31
 (when (fboundp 'package-autosuggest-mode)
   (package-autosuggest-mode 1))
 ;;(setf package-menu-use-current-if-no-marks t) - TODO: Do I like this setting?

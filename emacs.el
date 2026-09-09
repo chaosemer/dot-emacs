@@ -81,7 +81,7 @@
 (tooltip-mode -1)
 (url-handler-mode 1)
 
-(defvar mode-line-collapse-minor-modes) ;TODO(Only needed pre-Emacs 31)
+(defvar mode-line-collapse-minor-modes) ;TODO(emacs31): newly defined in Emacs 31
 (setf mode-line-collapse-minor-modes
       '(eldoc-mode
         form-feed-st-mode
@@ -133,7 +133,7 @@
              (setq select-active-regions nil)))
   (xterm-mouse-mode 1)
   (diff-hl-margin-mode 1)
-  ;; TODO(upstream): Not yet available in Emacs -- see bug#80091
+  ;; TODO(emacs31): Upstreamed in bug#80091
   (defvar xterm-update-cursor)
 
   (setf xterm-set-window-title t
