@@ -110,3 +110,10 @@ simply inserts a newline."
            (equal (alist-get ?\e kkp--non-printable-keys-with-u-terminator) "<escape>"))
   (display-warning 'emacs "Make kkp.el properly map \\e to ESC")
   (setf (alist-get ?\e kkp--non-printable-keys-with-u-terminator) "ESC"))
+
+;; TODO(terminfo): Many terminals support overline, but declare
+;; themselves as xterm-256color
+(when (and (fboundp 'tty-enable-overline)
+           (string= (tty-type) "xterm-256color"))
+  (display-warning 'emacs "Force-enabling overline support")
+  (tty-enable-overline t))
