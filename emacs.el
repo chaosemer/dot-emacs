@@ -147,6 +147,15 @@
     (setq browse-url-browser-function (lambda (url &rest _)
                                         (call-process "explorer.exe" nil nil nil url)))))
 
+;; In SSH terminals, just copy the URL
+(defun my-browse-url-copy-url (url &optional _args)
+  "Copy URL to the clipboard so that the URL can it can be pasted remotely."
+  (kill-new  url)
+  (message "URL copied to clipboard: %s" url))
+
+(when (or (getenv "SSH_CLIENT") (getenv "SSH_TTY"))
+  (setf browse-url-browser-function #'my-browse-url-copy-url))
+
 ;; Make Emacs display similar to modern editors.
 (setf frame-title-format "%b - Emacs"
       icon-title-format t
