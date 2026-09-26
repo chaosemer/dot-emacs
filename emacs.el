@@ -196,6 +196,12 @@
                                       "\n"
                                       "Put notes here..."))
 
+;; Dashboard customization
+(setf dashboard-center-content t
+      dashboard-items '((recents . 10) (projects . 10))
+      dashboard-projects-backend 'project-el
+      initial-buffer-choice #'dashboard-open)
+
 ;; When deugging xterm-mouse issues, having a large buffer is quite
 ;; helpful.
 (lossage-size 10000)
