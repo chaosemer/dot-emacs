@@ -5,6 +5,9 @@
 (declare-function ibuffer-switch-to-saved-filter-groups "ibuf-ext")
 (declare-function ibuffer-toggle-filter-group "ibuf-ext")
 (declare-function tool-bar-mode "tool-bar")
+(defvar dashboard-center-content)
+(defvar dashboard-items)
+(defvar dashboard-projects-backend)
 (defvar ibuffer-hidden-filter-groups)
 (defvar ibuffer-mode-filter-group-map)
 (defvar ibuffer-saved-filter-groups)
@@ -35,7 +38,12 @@
   (stub-function 'global-kkp-mode "kkp")
   (stub-function 'global-window-tool-bar-mode "window-tool-bar")
   (stub-function 'global-diff-hl-mode "diff-hl")
-  (stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl"))
+  (stub-function 'global-diff-hl-show-hunk-mouse-mode "diff-hl")
+
+  ;; Dashboard stub is special because it shows the initial splash screen
+  (unless (fboundp 'dashboard-open)
+    (display-warning 'emacs "SETUP ISSUE: dashboard package is not installed.")
+    (fset 'dashboard-open (lambda (&rest _) (display-startup-screen)))))
 
 ;; Ensure doc-view can be used
 (unless (and (executable-find "dvipdf")
